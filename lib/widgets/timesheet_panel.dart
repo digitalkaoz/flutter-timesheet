@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:pdf/pdf.dart' show PdfPageFormat;
+import 'package:printing/printing.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:timesheet_flutter/model/client.dart';
 import 'package:timesheet_flutter/model/timesheet.dart';
 import 'package:timesheet_flutter/screens/dialog/finish_timesheet.dart';
 import 'package:timesheet_flutter/services/theme.dart';
+import 'package:timesheet_flutter/widgets/report_pdf.dart';
 import 'package:timesheet_flutter/widgets/rows.dart';
 
 class TimesheetPanel {
@@ -46,7 +49,11 @@ class TimesheetPanel {
     final List<Widget> buttons = [
       FlatButton(
         child: Text("Export"),
-        onPressed: () {},
+        onPressed: () async {
+          await Printing.layoutPdf(
+              onLayout: (PdfPageFormat format) async =>
+                  PdfReport(client, timesheet).build(format).save());
+        },
       ),
     ];
 
@@ -82,10 +89,18 @@ class TimesheetPanel {
     }
 
     if (timesheet.archived) {
-      return DataTable(
-        columns: HEADER_COLUMNS,
-        columnSpacing: 0,
-        rows: timesheet.times.map((t) => TimeRow.buildRow(t).first).toList(),
+      return Column(
+        children: <Widget>[
+          DataTable(
+            columns: HEADER_COLUMNS,
+            columnSpacing: 0,
+            rows:
+                timesheet.times.map((t) => TimeRow.buildRow(t).first).toList(),
+          ),
+          ButtonBar(
+            children: _buildButtons(context),
+          ),
+        ],
       );
     }
     return Column(

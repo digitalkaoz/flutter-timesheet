@@ -22,7 +22,7 @@ class TimeField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (value != null) {
-      controller.text = value.format(context);
+      controller.text = timeFormat(value);
     }
 
     return TextFormField(

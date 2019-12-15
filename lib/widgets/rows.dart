@@ -154,13 +154,13 @@ class TimeRow extends StatelessWidget {
             ),
             style: TextStyle(fontWeight: FontWeight.w600))),
         DataCell(
-          Text('${time.start.hour}:${time.start.minute}'),
+          Text(timeFormat(time.start)),
         ),
         DataCell(
           Text(durationFormat(time.pause)),
         ),
         DataCell(
-          Text('${time.end.hour}:${time.end.minute}'),
+          Text(timeFormat(time.end)),
         ),
         DataCell(Text(
           durationFormat(time.total),

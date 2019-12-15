@@ -19,9 +19,19 @@ const invertedFormField = InputDecoration(
 
 String durationFormat(Duration duration) {
   if (duration == null) {
-    return '0:00';
+    return '00:00';
   }
-  return duration.toString().substring(0, duration.toString().lastIndexOf(':'));
+  return duration
+      .toString()
+      .substring(0, duration.toString().lastIndexOf(':'))
+      .padLeft(5, '0');
+}
+
+String timeFormat(TimeOfDay time) {
+  if (time == null) {
+    return '00:00';
+  }
+  return "${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}";
 }
 
 String dateFormat(DateTime date) {

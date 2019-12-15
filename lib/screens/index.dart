@@ -3,10 +3,12 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:timesheet_flutter/model/clients.dart';
+import 'package:timesheet_flutter/screens/client.dart';
+import 'package:timesheet_flutter/screens/no_clients.dart';
 import 'package:timesheet_flutter/services/theme.dart';
 import 'package:timesheet_flutter/widgets/app_bar.dart';
 import 'package:timesheet_flutter/widgets/bottom_sheet.dart';
-import 'package:timesheet_flutter/widgets/client/client_pages.dart';
+import 'package:timesheet_flutter/widgets/drawer.dart';
 import 'package:timesheet_flutter/widgets/time_add_form.dart';
 
 class IndexScreen extends StatelessWidget {
@@ -19,10 +21,13 @@ class IndexScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: NavBar(),
+      drawer: ClientDrawer(),
       body: Observer(
         builder: (_) => Stack(
           children: <Widget>[
-            ClientPages(),
+            clients.current == null
+                ? NoClientsPage()
+                : ClientOverview(clients.current),
             clients.current == null
                 ? Container()
                 : SlidingBottomSheet(

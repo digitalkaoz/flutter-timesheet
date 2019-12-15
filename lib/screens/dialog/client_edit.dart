@@ -5,12 +5,12 @@ import 'package:timesheet_flutter/model/clients.dart';
 import 'package:timesheet_flutter/model/timesheet.dart';
 import 'package:timesheet_flutter/services/theme.dart';
 
-class ClientAddForm extends StatefulWidget {
+class ClientEditForm extends StatefulWidget {
   @override
-  _ClientAddFormState createState() => _ClientAddFormState();
+  _ClientEditFormState createState() => _ClientEditFormState();
 }
 
-class _ClientAddFormState extends State<ClientAddForm> {
+class _ClientEditFormState extends State<ClientEditForm> {
   final TextEditingController _controller = TextEditingController();
 
   bool submittable = false;
@@ -24,16 +24,23 @@ class _ClientAddFormState extends State<ClientAddForm> {
   @override
   Widget build(BuildContext context) {
     final Clients clients = Provider.of<Clients>(context);
+    final Client client = clients.current;
+
+    if (client == null) {
+      return Container();
+    }
+
+    _controller.value = TextEditingValue(text: client.name);
 
     return SimpleDialog(
-      title: Text('Add new client'),
+      title: Text('Edit ${client.name}'),
       contentPadding: EdgeInsets.all(20),
       children: [
         Column(
           children: <Widget>[
             TextFormField(
               controller: _controller,
-              autofocus: true,
+              autofocus: false,
               autovalidate: true,
               validator: (value) {
                 final errorMessage = clients.validateName(_controller.text);

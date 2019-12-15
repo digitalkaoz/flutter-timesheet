@@ -36,8 +36,8 @@ abstract class ClientsBase with Store {
   }
 
   @action
-  void setCurrent(int index) {
-    currentIndex = index;
+  void setCurrent(Client client) {
+    currentIndex = clients.indexOf(client);
   }
 
   @action
