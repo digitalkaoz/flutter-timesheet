@@ -19,10 +19,14 @@ class TimeAddForm extends StatelessWidget {
   final end = TextEditingController();
   final pause = TextEditingController();
   final date = TextEditingController();
+  final bool dense;
+
+  TimeAddForm({Key key, this.dense = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final PanelController sheet = Provider.of<PanelController>(context);
+    final Widget spacer = SizedBox(height: dense ? 10 : 20);
     return Observer(
       builder: (_) {
         final Timesheet timesheet =
@@ -35,9 +39,8 @@ class TimeAddForm extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              SizedBox(
-                height: 20,
-              ),
+              spacer,
+              Text("New Time", style: Theme.of(context).textTheme.headline),
               _invertedInput(
                 DescriptionField(
                   value: time.description,
@@ -47,9 +50,7 @@ class TimeAddForm extends StatelessWidget {
                   },
                 ),
               ),
-              SizedBox(
-                height: 20,
-              ),
+              spacer,
               _invertedInput(
                 TimeField(
                   value: time.start,
@@ -60,9 +61,7 @@ class TimeAddForm extends StatelessWidget {
                   hint: "Start Time",
                 ),
               ),
-              SizedBox(
-                height: 20,
-              ),
+              spacer,
               _invertedInput(
                 TimeField(
                   value: time.end,
@@ -73,9 +72,7 @@ class TimeAddForm extends StatelessWidget {
                   hint: "End Time",
                 ),
               ),
-              SizedBox(
-                height: 20,
-              ),
+              spacer,
               _invertedInput(
                 DurationField(
                   controller: pause,
@@ -86,9 +83,7 @@ class TimeAddForm extends StatelessWidget {
                   hint: "Pause Time",
                 ),
               ),
-              SizedBox(
-                height: 20,
-              ),
+              spacer,
               _invertedInput(
                 DateField(
                   value: time.date,
@@ -97,9 +92,7 @@ class TimeAddForm extends StatelessWidget {
                   hint: "Date",
                 ),
               ),
-              SizedBox(
-                height: 20,
-              ),
+              spacer,
               ButtonBar(
                 alignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -121,17 +114,25 @@ class TimeAddForm extends StatelessWidget {
                     textColor: defaultColor,
                     onPressed: time.valid
                         ? () {
-                    				if (timesheet.isNewtime) {
-															timesheet.addTime();
-														} else {
-                    					timesheet.times.replaceRange(timesheet.times.indexOf(timesheet.editableTime), timesheet.times.indexOf(timesheet.editableTime)+1, [timesheet.editableTime]);
-														}
+                            if (timesheet.isNewtime) {
+                              timesheet.addTime();
+                            } else {
+                              timesheet.times.replaceRange(
+                                  timesheet.times
+                                      .indexOf(timesheet.editableTime),
+                                  timesheet.times
+                                          .indexOf(timesheet.editableTime) +
+                                      1,
+                                  [timesheet.editableTime]);
+                            }
 
                             _clear(timesheet.editableTime, context);
-                            sheet.close();
+                            try {
+                              sheet.close();
+                            } catch (e) {}
                           }
                         : null,
-                    child: Text(timesheet.isNewtime ? "Save": "Update"),
+                    child: Text(timesheet.isNewtime ? "Save" : "Update"),
                   ),
                 ],
               ),

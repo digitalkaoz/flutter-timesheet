@@ -7,6 +7,10 @@ import 'package:timesheet_flutter/screens/dialog/client_edit.dart';
 import 'package:timesheet_flutter/services/theme.dart';
 
 class ClientDrawer extends StatelessWidget {
+  final Widget child;
+
+  const ClientDrawer({Key key, this.child}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final Clients clients = Provider.of<Clients>(context);
@@ -44,7 +48,8 @@ class ClientDrawer extends StatelessWidget {
             title: Text("Delete"),
             leading: Icon(Icons.delete),
             onTap: () => _showDialog(context, ClientDelete()),
-          )
+          ),
+          child != null ? child : Container()
         ],
       ),
     );

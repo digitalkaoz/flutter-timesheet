@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:timesheet_flutter/model/time.dart';
 import 'package:timesheet_flutter/services/theme.dart';
@@ -25,6 +26,13 @@ const List<DataColumn> HEADER_COLUMNS = [
     ),
     numeric: true,
   ),
+];
+
+const List<DataColumn> WEB_HEADER_COLUMNS = [
+  ...HEADER_COLUMNS,
+  DataColumn(
+    label: Text('Actions'),
+  )
 ];
 
 const List<DataColumn> ROW_COLUMNS = [
@@ -64,11 +72,18 @@ const List<DataColumn> ROW_COLUMNS = [
   ),
 ];
 
+const List<DataColumn> WEB_ROW_COLUMNS = [
+  ...ROW_COLUMNS,
+  DataColumn(
+    label: Text('Actions'),
+  )
+];
+
 class HeaderRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DataTable(
-      columns: HEADER_COLUMNS,
+      columns: kIsWeb ? WEB_HEADER_COLUMNS : HEADER_COLUMNS,
       rows: [],
       columnSpacing: 0,
     );
@@ -101,7 +116,6 @@ class TimeRow extends StatelessWidget {
         return true;
       },
       onDismissed: (DismissDirection direction) {
-        print("delete");
         if (deleteCallback != null) {
           deleteCallback(time);
         }
@@ -137,7 +151,7 @@ class TimeRow extends StatelessWidget {
           DataTable(
             headingRowHeight: 0,
             columnSpacing: 0,
-            columns: ROW_COLUMNS,
+            columns: kIsWeb ? WEB_ROW_COLUMNS : ROW_COLUMNS,
             rows: buildRow(time),
           )
         ],
@@ -145,28 +159,57 @@ class TimeRow extends StatelessWidget {
     );
   }
 
-  static List<DataRow> buildRow(Time time) {
-    return [
-      DataRow(cells: [
-        DataCell(Text(
-            dateFormat(
-              time.date,
-            ),
-            style: TextStyle(fontWeight: FontWeight.w600))),
-        DataCell(
-          Text(timeFormat(time.start)),
+  static List<DataRow> buildRow(Time time,
+      {bool archived: false,
+      Function(Time) deleteCallback,
+      Function(Time) editCallback}) {
+    var cells = [
+      DataCell(
+        Text(
+          dateFormat(
+            time.date,
+          ),
+          style: TextStyle(fontWeight: FontWeight.w600),
         ),
-        DataCell(
-          Text(durationFormat(time.pause)),
-        ),
-        DataCell(
-          Text(timeFormat(time.end)),
-        ),
-        DataCell(Text(
+      ),
+      DataCell(
+        Text(timeFormat(time.start)),
+      ),
+      DataCell(
+        Text(durationFormat(time.pause)),
+      ),
+      DataCell(
+        Text(timeFormat(time.end)),
+      ),
+      DataCell(
+        Text(
           durationFormat(time.total),
           style: TextStyle(color: defaultColor, fontWeight: FontWeight.bold),
-        ))
-      ])
+        ),
+      )
+    ];
+
+    if (kIsWeb && archived == false) {
+      cells.add(DataCell(Container(
+        child: Row(
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () => editCallback(time),
+            ),
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () => deleteCallback(time),
+            ),
+          ],
+        ),
+      )));
+    }
+
+    return [
+      DataRow(
+        cells: cells,
+      )
     ];
   }
 }

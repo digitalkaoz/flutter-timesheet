@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:pdf/pdf.dart' show PdfPageFormat;
@@ -6,7 +7,9 @@ import 'package:printing/printing.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:timesheet_flutter/model/client.dart';
+import 'package:timesheet_flutter/model/time.dart';
 import 'package:timesheet_flutter/model/timesheet.dart';
+import 'package:timesheet_flutter/screens/dialog/delete_time.dart';
 import 'package:timesheet_flutter/screens/dialog/finish_timesheet.dart';
 import 'package:timesheet_flutter/services/theme.dart';
 import 'package:timesheet_flutter/widgets/report_pdf.dart';
@@ -77,8 +80,6 @@ class TimesheetPanel {
   }
 
   Widget _buildBody(BuildContext context, Timesheet timesheet) {
-    final PanelController sheet = Provider.of<PanelController>(context);
-
     if (timesheet.times.isEmpty) {
       return Container(
         padding: EdgeInsets.only(bottom: 20),
@@ -88,14 +89,20 @@ class TimesheetPanel {
       );
     }
 
-    if (timesheet.archived) {
+    if (timesheet.archived || kIsWeb) {
       return Column(
         children: <Widget>[
           DataTable(
-            columns: HEADER_COLUMNS,
+            columns: kIsWeb && timesheet.archived == false
+                ? WEB_HEADER_COLUMNS
+                : HEADER_COLUMNS,
             columnSpacing: 0,
-            rows:
-                timesheet.times.map((t) => TimeRow.buildRow(t).first).toList(),
+            rows: timesheet.times
+                .map((t) => TimeRow.buildRow(t,
+                    archived: timesheet.archived,
+                    deleteCallback: (time) => _deleteTime(time, context),
+                    editCallback: (time) => _editTime(time, context)).first)
+                .toList(),
           ),
           ButtonBar(
             children: _buildButtons(context),
@@ -103,6 +110,7 @@ class TimesheetPanel {
         ],
       );
     }
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -113,11 +121,8 @@ class TimesheetPanel {
           shrinkWrap: true,
           itemBuilder: (_, int index) {
             return TimeRow(
-              deleteCallback: (time) => timesheet.times.remove(time),
-              editCallback: (time) {
-                client.currentTimesheet.setCurrentTime(time);
-                sheet.open();
-              },
+              deleteCallback: (time) => _deleteTime(time, context),
+              editCallback: (time) => _editTime(time, context),
               time: timesheet.times[index],
             );
           },
@@ -128,5 +133,21 @@ class TimesheetPanel {
         ),
       ],
     );
+  }
+
+  _deleteTime(Time time, BuildContext context) async {
+    await showDialog(
+      context: context,
+      child: DeleteTime(
+        time: time,
+        timesheet: timesheet,
+      ),
+    );
+  }
+
+  _editTime(Time time, BuildContext context) {
+    final PanelController sheet = Provider.of<PanelController>(context);
+    client.currentTimesheet.setCurrentTime(time);
+    sheet.open();
   }
 }

@@ -63,7 +63,7 @@ abstract class TimesheetBase with Store {
   @action
   void addTime() {
     times.add(editableTime);
-    times.sort((a, b) => a.date.compareTo(b.date));
+    times.sort((a, b) => b.date.compareTo(a.date));
     editableTime = Time();
   }
 }

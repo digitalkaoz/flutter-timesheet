@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 final theme = ThemeData(
-  primarySwatch: Colors.blue,
-  floatingActionButtonTheme: FloatingActionButtonThemeData(),
+  primarySwatch: defaultColor,
+  canvasColor: defaultColor,
 );
 
 const defaultColor = Colors.blue;
