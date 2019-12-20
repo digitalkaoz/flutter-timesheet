@@ -30,6 +30,7 @@ class ClientOverview extends StatelessWidget {
             mainAxisAlignment: !client.hasTimesheets
                 ? MainAxisAlignment.center
                 : MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               !client.hasTimesheets
                   ? Container(

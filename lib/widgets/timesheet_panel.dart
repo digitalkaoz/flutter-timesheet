@@ -1,19 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:pdf/pdf.dart' show PdfPageFormat;
-import 'package:printing/printing.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:timesheet_flutter/model/client.dart';
 import 'package:timesheet_flutter/model/time.dart';
 import 'package:timesheet_flutter/model/timesheet.dart';
 import 'package:timesheet_flutter/screens/dialog/delete_time.dart';
-import 'package:timesheet_flutter/screens/dialog/finish_timesheet.dart';
 import 'package:timesheet_flutter/services/theme.dart';
-import 'package:timesheet_flutter/widgets/report_pdf.dart';
-import 'package:timesheet_flutter/widgets/rows.dart';
+import 'package:timesheet_flutter/widgets/dismissible_timesheet.dart';
+import 'package:timesheet_flutter/widgets/editable_timesheet.dart';
 
 class TimesheetPanel {
   final Timesheet timesheet;
@@ -48,37 +44,6 @@ class TimesheetPanel {
     );
   }
 
-  List<Widget> _buildButtons(BuildContext context) {
-    final List<Widget> buttons = [
-      FlatButton(
-        child: Text("Export"),
-        onPressed: () async {
-          await Printing.layoutPdf(
-              onLayout: (PdfPageFormat format) async =>
-                  PdfReport(client, timesheet).build(format).save());
-        },
-      ),
-    ];
-
-    if (!timesheet.archived) {
-      buttons.add(
-        FlatButton(
-          child: Text("Finish"),
-          onPressed: () => showDialog<void>(
-            context: context,
-            barrierDismissible: false, // user must tap button!
-            builder: (BuildContext context) => FinishTimesheet(
-              client: client,
-              timesheet: timesheet,
-            ),
-          ),
-        ),
-      );
-    }
-
-    return buttons;
-  }
-
   Widget _buildBody(BuildContext context, Timesheet timesheet) {
     if (timesheet.times.isEmpty) {
       return Container(
@@ -90,48 +55,17 @@ class TimesheetPanel {
     }
 
     if (timesheet.archived || kIsWeb) {
-      return Column(
-        children: <Widget>[
-          DataTable(
-            columns: kIsWeb && timesheet.archived == false
-                ? WEB_HEADER_COLUMNS
-                : HEADER_COLUMNS,
-            columnSpacing: 0,
-            rows: timesheet.times
-                .map((t) => TimeRow.buildRow(t,
-                    archived: timesheet.archived,
-                    deleteCallback: (time) => _deleteTime(time, context),
-                    editCallback: (time) => _editTime(time, context)).first)
-                .toList(),
-          ),
-          ButtonBar(
-            children: _buildButtons(context),
-          ),
-        ],
+      return EditableTimsheet(
+        timesheet: timesheet,
+        deleteCallback: (time) => _deleteTime(time, context),
+        editCallback: (time) => _editTime(time, context),
       );
     }
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        HeaderRow(),
-        ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemBuilder: (_, int index) {
-            return TimeRow(
-              deleteCallback: (time) => _deleteTime(time, context),
-              editCallback: (time) => _editTime(time, context),
-              time: timesheet.times[index],
-            );
-          },
-          itemCount: timesheet.times.length,
-        ),
-        ButtonBar(
-          children: _buildButtons(context),
-        ),
-      ],
+    return DismissibleTimesheet(
+      timesheet: timesheet,
+      deleteCallback: (time) => _deleteTime(time, context),
+      editCallback: (time) => _editTime(time, context),
     );
   }
 

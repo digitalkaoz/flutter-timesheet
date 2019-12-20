@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 
 final theme = ThemeData(
   primarySwatch: defaultColor,
-  canvasColor: defaultColor,
+  canvasColor: Colors.grey[100],
 );
 
 const defaultColor = Colors.blue;

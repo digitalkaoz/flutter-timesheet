@@ -20,7 +20,9 @@ class DescriptionField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    controller.text = value;
+    if (value != null && value.isNotEmpty) {
+      controller.text = value;
+    }
 
     return TextFormField(
       controller: controller,

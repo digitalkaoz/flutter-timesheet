@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:timesheet_flutter/model/client.dart';
 import 'package:timesheet_flutter/model/clients.dart';
 import 'package:timesheet_flutter/model/time.dart';
 import 'package:timesheet_flutter/model/timesheet.dart';
@@ -29,8 +30,12 @@ class TimeAddForm extends StatelessWidget {
     final Widget spacer = SizedBox(height: dense ? 10 : 20);
     return Observer(
       builder: (_) {
-        final Timesheet timesheet =
-            Provider.of<Clients>(context).current.currentTimesheet;
+        final Client client = Provider.of<Clients>(context).current;
+
+        if (client == null) {
+          return Container();
+        }
+        final Timesheet timesheet = client.currentTimesheet;
         final Time time = timesheet.editableTime;
 
         return Container(
@@ -40,11 +45,11 @@ class TimeAddForm extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               spacer,
-              Text("New Time", style: Theme.of(context).textTheme.headline),
               _invertedInput(
                 DescriptionField(
                   value: time.description,
                   controller: description,
+                  hint: "Description",
                   onChanged: (String value) {
                     time.description = value;
                   },
