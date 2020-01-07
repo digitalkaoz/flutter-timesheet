@@ -5,10 +5,9 @@ import 'package:timesheet_flutter/services/container.dart';
 import 'package:timesheet_flutter/services/routes.dart';
 import 'package:timesheet_flutter/services/theme.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(TimesheetApp());
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class TimesheetApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

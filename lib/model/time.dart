@@ -4,7 +4,19 @@ import 'package:mobx/mobx.dart';
 part 'time.g.dart';
 
 // This is the class used by rest of your codebase
-class Time = TimeBase with _$Time;
+class Time extends TimeBase with _$Time {
+  static Time fromMap(Map<String, dynamic> serializedTime) {
+    final time = Time();
+    time.description = serializedTime['description'];
+    time.start =
+        TimeOfDay.fromDateTime(DateTime.parse(serializedTime['start']));
+    time.end = TimeOfDay.fromDateTime(DateTime.parse(serializedTime['end']));
+    time.pause = Duration(seconds: serializedTime['pause']);
+    time.date = DateTime.parse(serializedTime['date']);
+
+    return time;
+  }
+}
 
 // The store-class
 abstract class TimeBase with Store {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:timesheet_flutter/model/client.dart';
 import 'package:timesheet_flutter/model/clients.dart';
-import 'package:timesheet_flutter/model/timesheet.dart';
+import 'package:timesheet_flutter/model/local_storage.dart';
 import 'package:timesheet_flutter/services/theme.dart';
 
 class ClientEditForm extends StatefulWidget {
@@ -24,6 +24,8 @@ class _ClientEditFormState extends State<ClientEditForm> {
   @override
   Widget build(BuildContext context) {
     final Clients clients = Provider.of<Clients>(context);
+    final Storage storage = Provider.of<Storage>(context);
+
     final Client client = clients.current;
 
     if (client == null) {
@@ -67,17 +69,12 @@ class _ClientEditFormState extends State<ClientEditForm> {
                 ),
                 RaisedButton(
                   color: defaultColor,
-                  child: Text('Create'),
+                  child: Text('Save'),
                   onPressed: clients.validateName(_controller.text) == null
                       ? () {
                           final name = _controller.text;
                           if (name.isNotEmpty) {
-                            Client c = Client(name);
-                            c.addSheet(Timesheet());
-                            clients.addClient(c);
-
-                            Navigator.of(context)
-                                .pop("added $name! swipe right to get there");
+                            client.setName(name);
                             return;
                           }
 

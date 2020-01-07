@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:timesheet_flutter/model/client.dart';
 import 'package:timesheet_flutter/model/clients.dart';
+import 'package:timesheet_flutter/model/local_storage.dart';
 import 'package:timesheet_flutter/model/timesheet.dart';
 import 'package:timesheet_flutter/services/theme.dart';
 
@@ -24,6 +25,7 @@ class _ClientAddFormState extends State<ClientAddForm> {
   @override
   Widget build(BuildContext context) {
     final Clients clients = Provider.of<Clients>(context);
+    final Storage storage = Provider.of<Storage>(context);
 
     return SimpleDialog(
       title: Text('Add new client'),
@@ -65,8 +67,8 @@ class _ClientAddFormState extends State<ClientAddForm> {
                       ? () {
                           final name = _controller.text;
                           if (name.isNotEmpty) {
-                            Client c = Client(name);
-                            c.addSheet(Timesheet());
+                            Client c = Client(storage, name);
+                            c.addSheet(Timesheet(storage));
                             clients.addClient(c);
 
                             Navigator.of(context)
