@@ -38,6 +38,12 @@ class TimeField extends StatelessWidget {
   _showDialog(BuildContext context) async {
     final TimeOfDay time = await showTimePicker(
       context: context,
+      builder: (BuildContext context, Widget child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child,
+        );
+      },
       initialTime: value ?? TimeOfDay.now(),
     );
 

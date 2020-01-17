@@ -119,17 +119,7 @@ class TimeAddForm extends StatelessWidget {
                     textColor: defaultColor,
                     onPressed: time.valid
                         ? () {
-                            if (timesheet.isNewtime) {
-                              timesheet.addTime();
-                            } else {
-                              timesheet.times.replaceRange(
-                                  timesheet.times
-                                      .indexOf(timesheet.editableTime),
-                                  timesheet.times
-                                          .indexOf(timesheet.editableTime) +
-                                      1,
-                                  [timesheet.editableTime]);
-                            }
+                            timesheet.saveTime();
 
                             _clear(timesheet.editableTime, context);
                             try {

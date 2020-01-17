@@ -4,7 +4,7 @@ import 'package:timesheet_flutter/model/time.dart';
 import 'package:timesheet_flutter/model/timesheet.dart';
 import 'package:timesheet_flutter/services/theme.dart';
 
-final List<DataColumn> HEADER_COLUMNS = [
+const List<DataColumn> HEADER_COLUMNS = [
   DataColumn(
     label: Text('Date'),
   ),
@@ -53,7 +53,7 @@ List<DataColumn> headerColumns(Timesheet timesheet, bool isSmall) {
   return columns;
 }
 
-final List<DataColumn> ROW_COLUMNS = [
+const List<DataColumn> ROW_COLUMNS = [
   DataColumn(
     label: Text(
       'Date',

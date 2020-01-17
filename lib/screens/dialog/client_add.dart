@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:timesheet_flutter/model/client.dart';
 import 'package:timesheet_flutter/model/clients.dart';
-import 'package:timesheet_flutter/model/local_storage.dart';
+import 'package:timesheet_flutter/model/persistence/local_storage.dart';
 import 'package:timesheet_flutter/model/timesheet.dart';
 import 'package:timesheet_flutter/services/theme.dart';
 
@@ -67,16 +67,12 @@ class _ClientAddFormState extends State<ClientAddForm> {
                       ? () {
                           final name = _controller.text;
                           if (name.isNotEmpty) {
-                            Client c = Client(storage, name);
-                            c.addSheet(Timesheet(storage));
+                            Client c = Client.generate(storage);
                             clients.addClient(c);
-
-                            Navigator.of(context)
-                                .pop("added $name! swipe right to get there");
-                            return;
+                            c.setName(name);
+                            c.addSheet(Timesheet.generate(storage));
+                            Navigator.of(context).pop();
                           }
-
-                          Navigator.of(context).pop();
                         }
                       : null,
                 ),

@@ -1,25 +1,36 @@
 import 'dart:convert';
 
 import 'package:mobx/mobx.dart';
-import 'package:timesheet_flutter/model/local_storage.dart';
+import 'package:timesheet_flutter/model/persistence/local_storage.dart';
 import 'package:timesheet_flutter/model/timesheet.dart';
+import 'package:uuid/uuid.dart';
 
 part 'client.g.dart';
 
 class Client extends ClientBase with _$Client {
-  Client(storage, name) : super(storage, name);
+  Client(storage, id) : super(storage, id);
 
-  static Client fromString(Storage storage, String serialized) {
+  factory Client.fromString(Storage storage, String serialized) {
     final data = jsonDecode(serialized);
 
-    return Client(storage, data['name']);
+    final c = Client(storage, data['id']);
+    c.name = data['name'];
+    (data["sheets"].cast<String>() ?? [])
+        .forEach((String id) => c.timesheets.add(Timesheet(storage, id)));
+
+    return c;
+  }
+
+  factory Client.generate(Storage storage) {
+    return Client(storage, Uuid().v4());
   }
 }
 
 abstract class ClientBase with Store {
   final Storage storage;
+  final String id;
 
-  ClientBase(this.storage, this.name);
+  ClientBase(this.storage, this.id);
 
   @observable
   String name = '';
@@ -54,28 +65,34 @@ abstract class ClientBase with Store {
 
   @action
   setName(String newName) {
-    String oldName = name;
     name = newName;
 
     autorun((_) async {
-      await storage.saveClient(this, oldName);
+      await storage.saveClient(this);
     });
   }
 
   @action
   void finishSheet(Timesheet timesheet) {
-    timesheets.insert(0, Timesheet(storage));
-    timesheet.archive();
+    final sheet = timesheets.firstWhere((t) => t.id == timesheet.id);
 
-    autorun((_) async {
-      await storage.saveTimesheet(timesheets.elementAt(0));
-    });
+    if (sheet != null) {
+      timesheets.insert(0, Timesheet.generate(storage));
+      sheet.archive();
+    }
   }
 
+  @override
   String toString() {
+    return "$name";
+  }
+
+  String toJson() {
     return jsonEncode(
       {
+        "id": id,
         "name": name,
+        "sheets": timesheets.map((t) => t.id).toList(),
       },
     );
   }

@@ -1,6 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:timesheet_flutter/model/client.dart';
-import 'package:timesheet_flutter/model/local_storage.dart';
+import 'package:timesheet_flutter/model/persistence/local_storage.dart';
 
 part 'clients.g.dart';
 
@@ -45,6 +45,15 @@ abstract class ClientsBase with Store {
   @action
   Future<void> load() async {
     clients = ObservableList.of(await storage.load());
+
+    final String activeId = await storage.getCurrentClient();
+    if (activeId != null) {
+      clients.forEach((client) {
+        if (client.id == activeId) {
+          currentIndex = clients.indexOf(client);
+        }
+      });
+    }
   }
 
   @action
@@ -61,7 +70,8 @@ abstract class ClientsBase with Store {
     clients.add(client);
 
     autorun((_) async {
-      await storage.addClient(client);
+      await storage.saveClient(client);
+      await storage.setCurrentClient(client);
     });
   }
 
@@ -74,6 +84,7 @@ abstract class ClientsBase with Store {
 
     autorun((_) async {
       await storage.deleteClient(client);
+      await storage.setCurrentClient(clients.elementAt(currentIndex));
     });
   }
 

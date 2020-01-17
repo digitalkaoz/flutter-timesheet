@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:timesheet_flutter/model/clients.dart';
-import 'package:timesheet_flutter/model/local_storage.dart';
+import 'package:timesheet_flutter/model/persistence/local_storage.dart';
 import 'package:timesheet_flutter/model/timesheet.dart';
 
 import '../model/client.dart';
@@ -18,7 +18,8 @@ Clients fakeData(Storage storage) {
 }
 
 Client generateClient(Storage storage, String name) {
-  Client c = Client(storage, name);
+  Client c = Client.generate(storage);
+  c.name = name;
   c.addSheet(generateTimesheet(storage));
   c.addSheet(generateTimesheet(storage));
   c.addSheet(generateTimesheet(storage));
@@ -30,19 +31,19 @@ Client generateClient(Storage storage, String name) {
 }
 
 Timesheet generateTimesheet(Storage storage) {
-  Timesheet t = Timesheet(storage);
+  Timesheet t = Timesheet.generate(storage);
   t.archived = Random().nextBool();
 
   t.editableTime = generateTime();
-  t.addTime();
+  t.saveTime();
   t.editableTime = generateTime();
-  t.addTime();
+  t.saveTime();
   t.editableTime = generateTime();
-  t.addTime();
+  t.saveTime();
   t.editableTime = generateTime();
-  t.addTime();
+  t.saveTime();
   t.editableTime = generateTime();
-  t.addTime();
+  t.saveTime();
 
   return t;
 }

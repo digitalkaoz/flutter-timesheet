@@ -1,24 +1,32 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
 
 part 'time.g.dart';
 
-// This is the class used by rest of your codebase
 class Time extends TimeBase with _$Time {
-  static Time fromMap(Map<String, dynamic> serializedTime) {
+  Time() : super();
+
+  factory Time.fromString(String serializedTime) {
+    final data = jsonDecode(serializedTime);
+
+    return Time.fromMap(data);
+  }
+
+  factory Time.fromMap(Map<String, dynamic> data) {
     final time = Time();
-    time.description = serializedTime['description'];
-    time.start =
-        TimeOfDay.fromDateTime(DateTime.parse(serializedTime['start']));
-    time.end = TimeOfDay.fromDateTime(DateTime.parse(serializedTime['end']));
-    time.pause = Duration(seconds: serializedTime['pause']);
-    time.date = DateTime.parse(serializedTime['date']);
+    time.description = data['description'];
+    time.start = TimeOfDay.fromDateTime(DateTime.parse(data['start']));
+    time.end = TimeOfDay.fromDateTime(DateTime.parse(data['end']));
+    time.pause = Duration(seconds: data['pause']);
+    time.date = DateTime.parse(data['date']);
 
     return time;
   }
 }
 
-// The store-class
 abstract class TimeBase with Store {
   @observable
   String description = '';
@@ -43,8 +51,8 @@ abstract class TimeBase with Store {
 
     final DateTime startTime =
         DateTime(date.year, date.month, date.day, start.hour, start.minute);
-    final DateTime endTime =
-        DateTime(date.year, date.month, date.day, end.hour, end.minute);
+    final DateTime endTime = DateTime(date.year, date.month,
+        start.hour <= end.hour ? date.day : date.day + 1, end.hour, end.minute);
 
     return endTime.subtract(pause).difference(startTime);
   }
@@ -57,5 +65,24 @@ abstract class TimeBase with Store {
   @override
   String toString() {
     return "$date $total";
+  }
+
+  Map<String, dynamic> toMap() {
+    DateTime endDate =
+        end.hour < start.hour ? date.add(Duration(days: 1)) : date;
+
+    return {
+      "description": description,
+      "start":
+          "${DateFormat('yyyy-MM-dd').format(date)}T${start.hour.toString().padLeft(2, '0')}:${start.minute.toString().padLeft(2, '0')}",
+      "end":
+          "${DateFormat('yyyy-MM-dd').format(endDate)}T${end.hour.toString().padLeft(2, '0')}:${end.minute.toString().padLeft(2, '0')}",
+      "pause": pause.inSeconds,
+      "date": date.toIso8601String(),
+    };
+  }
+
+  String toJson() {
+    return jsonEncode(toMap());
   }
 }

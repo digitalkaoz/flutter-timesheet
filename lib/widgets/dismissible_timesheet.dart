@@ -82,12 +82,17 @@ class TimeRow extends StatelessWidget {
       key: ValueKey<Time>(time),
       confirmDismiss: (DismissDirection direction) async {
         if (direction == DismissDirection.endToStart) {
+          //edit
           if (editCallback != null) {
             editCallback(time);
           }
           return false;
         }
-        return true;
+
+        if (deleteCallback != null) {
+          deleteCallback(time);
+        }
+        return false;
       },
       onDismissed: (DismissDirection direction) {
         if (deleteCallback != null) {

@@ -27,7 +27,7 @@ class DeleteTime extends StatelessWidget {
         FlatButton(
           child: Text('Yes'),
           onPressed: () {
-            timesheet.times.remove(time);
+            timesheet.removeTime(time);
             Navigator.of(context).pop();
           },
         ),
