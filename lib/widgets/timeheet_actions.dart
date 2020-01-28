@@ -6,6 +6,7 @@ import 'package:timesheet_flutter/model/client.dart';
 import 'package:timesheet_flutter/model/clients.dart';
 import 'package:timesheet_flutter/model/timesheet.dart';
 import 'package:timesheet_flutter/screens/dialog/finish_timesheet.dart';
+import 'package:timesheet_flutter/widgets/platform/button.dart';
 import 'package:timesheet_flutter/widgets/report_pdf.dart';
 
 class TimesheetActions extends StatelessWidget {
@@ -27,7 +28,7 @@ class TimesheetActions extends StatelessWidget {
     final Client client = Provider.of<Clients>(context).current;
 
     final List<Widget> buttons = [
-      FlatButton(
+      Button(
         child: Text("Export"),
         onPressed: () async {
           await Printing.layoutPdf(
@@ -39,7 +40,7 @@ class TimesheetActions extends StatelessWidget {
 
     if (!timesheet.archived) {
       buttons.add(
-        FlatButton(
+        Button(
           child: Text("Finish"),
           onPressed: () => showDialog<void>(
             context: context,

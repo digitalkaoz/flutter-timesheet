@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide RaisedButton;
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +11,7 @@ import 'package:timesheet_flutter/widgets/form/date_field.dart';
 import 'package:timesheet_flutter/widgets/form/description_field.dart';
 import 'package:timesheet_flutter/widgets/form/duration_field.dart';
 import 'package:timesheet_flutter/widgets/form/time_field.dart';
+import 'package:timesheet_flutter/widgets/platform/button.dart';
 
 import '../services/theme.dart';
 
@@ -49,7 +50,7 @@ class TimeAddForm extends StatelessWidget {
                 DescriptionField(
                   value: time.description,
                   controller: description,
-                  hint: "Description",
+                  hint: "Description".padRight(20),
                   onChanged: (String value) {
                     time.description = value;
                   },
@@ -63,7 +64,7 @@ class TimeAddForm extends StatelessWidget {
                   onChanged: (TimeOfDay value) {
                     time.start = value;
                   },
-                  hint: "Start Time",
+                  hint: "Start".padRight(20),
                 ),
               ),
               spacer,
@@ -74,7 +75,7 @@ class TimeAddForm extends StatelessWidget {
                   onChanged: (TimeOfDay value) {
                     time.end = value;
                   },
-                  hint: "End Time",
+                  hint: "End".padRight(20),
                 ),
               ),
               spacer,
@@ -85,7 +86,7 @@ class TimeAddForm extends StatelessWidget {
                   onChanged: (value) {
                     time.pause = value;
                   },
-                  hint: "Pause Time",
+                  hint: "Pause".padRight(20),
                 ),
               ),
               spacer,
@@ -94,7 +95,7 @@ class TimeAddForm extends StatelessWidget {
                   value: time.date,
                   controller: date,
                   onChanged: (DateTime value) => time.date = value,
-                  hint: "Date",
+                  hint: "Date".padRight(15),
                 ),
               ),
               spacer,
@@ -103,7 +104,7 @@ class TimeAddForm extends StatelessWidget {
                 children: <Widget>[
                   timesheet.isNewtime
                       ? Container()
-                      : FlatButton(
+                      : Button(
                           color: defaultColor,
                           child: Text("Cancel"),
                           onPressed: () {
@@ -113,10 +114,10 @@ class TimeAddForm extends StatelessWidget {
                           },
                         ),
                   RaisedButton(
-                    color: Colors.white,
-                    disabledColor: defaultColor,
-                    disabledTextColor: Colors.white.withAlpha(75),
-                    textColor: defaultColor,
+                    color: defaultColor,
+                    //disabledColor: defaultColor,
+                    //disabledTextColor: Colors.white.withAlpha(75),
+                    //textColor: defaultColor,
                     onPressed: time.valid
                         ? () {
                             timesheet.saveTime();
@@ -145,8 +146,7 @@ class TimeAddForm extends StatelessWidget {
     end.value = TextEditingValue(
         text: time.end != null ? time.end.format(context) : "");
     pause.value = TextEditingValue(
-        text:
-            time.pause != null ? DurationField.formatDuration(time.pause) : "");
+        text: time.pause != null ? durationFormat(time.pause) : "");
     date.value = TextEditingValue(
         text: DateFormat('yyyy-MM-dd').format(time.date ?? DateTime.now()));
   }

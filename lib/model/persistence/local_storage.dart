@@ -3,45 +3,37 @@ import 'package:timesheet_flutter/model/client.dart';
 import 'package:timesheet_flutter/model/timesheet.dart';
 
 abstract class Storage {
-  static const CLIENTS = 'clients';
-
-  Future<List<Client>> load();
-
+  List<Client> load();
   Future<bool> setCurrentClient(Client client);
-
-  Future<String> getCurrentClient();
-
+  String getCurrentClient();
   Future<bool> deleteClient(Client client);
-
   Future<bool> saveClient(Client client);
-
   Future<bool> saveTimesheet(Timesheet sheet);
-
-  Future<Timesheet> loadTimesheet(String id) {}
+  Timesheet loadTimesheet(String id);
 }
 
 class LocalStorage implements Storage {
-  @override
-  Future<bool> setCurrentClient(Client client) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+  static const CLIENTS = 'clients';
+  static const CURRENT = 'current';
 
-    return prefs.setString("current", client.id);
+  final SharedPreferences prefs;
+
+  LocalStorage(this.prefs);
+
+  @override
+  Future<bool> setCurrentClient(Client client) {
+    return prefs.setString(CURRENT, client.id);
   }
 
   @override
-  Future<String> getCurrentClient() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    return prefs.getString("current");
+  String getCurrentClient() {
+    return prefs.getString(CURRENT);
   }
 
   @override
-  Future<List<Client>> load() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+  List<Client> load() {
     //await prefs.clear();
-
-    List<String> serializedClients = prefs.getStringList(Storage.CLIENTS);
-
+    List<String> serializedClients = prefs.getStringList(CLIENTS);
     List<Client> clients = [];
 
     if (serializedClients == null) {
@@ -56,21 +48,17 @@ class LocalStorage implements Storage {
   }
 
   @override
-  Future<Timesheet> loadTimesheet(String id) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
+  Timesheet loadTimesheet(String id) {
     final serializedSheet = prefs.getString("timesheet_$id");
-    if (serializedSheet == null) {
-      return null;
+
+    if (serializedSheet != null) {
+      return Timesheet.fromString(this, serializedSheet);
     }
-    return Timesheet.fromString(this, serializedSheet);
   }
 
   @override
   Future<bool> deleteClient(Client client) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    final clients = prefs.getStringList(Storage.CLIENTS);
+    final clients = prefs.getStringList(CLIENTS);
 
     if (clients == null) {
       return true;
@@ -84,14 +72,12 @@ class LocalStorage implements Storage {
       return false;
     });
 
-    return prefs.setStringList(Storage.CLIENTS, clients);
+    return prefs.setStringList(CLIENTS, clients);
   }
 
   @override
   Future<bool> saveClient(Client client) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    var clients = prefs.getStringList(Storage.CLIENTS);
+    var clients = prefs.getStringList(CLIENTS);
 
     if (clients == null) {
       clients = [];
@@ -107,14 +93,11 @@ class LocalStorage implements Storage {
 
     clients.add(client.toJson());
 
-    return prefs.setStringList(Storage.CLIENTS, clients);
+    return prefs.setStringList(CLIENTS, clients);
   }
 
   @override
-  Future<bool> saveTimesheet(Timesheet sheet) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String key = 'timesheet_${sheet.id}';
-
-    return prefs.setString(key, sheet.toJson());
+  Future<bool> saveTimesheet(Timesheet sheet) {
+    return prefs.setString('timesheet_${sheet.id}', sheet.toJson());
   }
 }

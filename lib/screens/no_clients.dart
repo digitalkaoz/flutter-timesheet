@@ -7,27 +7,18 @@ class NoClientsPage extends StatelessWidget {
     return Container(
       child: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Text('you dont have any clients yet, try to add one'),
+            Text('Add a client to start!'),
             FloatingActionButton(
+              elevation: 0,
               child: Icon(Icons.add),
               tooltip: "Add another Client",
-              onPressed: () => _showDialog(context),
+              onPressed: () => showClientAddDialog(context),
             )
           ],
         ),
       ),
     );
-  }
-
-  void _showDialog(BuildContext context) async {
-    final message = await showDialog<String>(
-        context: context, builder: (_) => ClientAddForm());
-    if (message != null) {
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text(message),
-      ));
-    }
   }
 }

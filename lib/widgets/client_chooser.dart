@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:timesheet_flutter/model/client.dart';
 import 'package:timesheet_flutter/model/clients.dart';
 import 'package:timesheet_flutter/services/theme.dart';
+import 'package:timesheet_flutter/widgets/platform/dropdown_field.dart';
 
 class ClientChooser extends StatelessWidget {
   @override
@@ -17,19 +18,17 @@ class ClientChooser extends StatelessWidget {
     return Observer(
       builder: (_) => Container(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+        height: 35,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
         ),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton<Client>(
-            iconSize: 30,
-            isDense: true,
-            iconEnabledColor: defaultColor,
-            value: clients.current,
-            onChanged: (Client selected) => clients.setCurrent(selected),
-            items: _buildClients(clients),
-          ),
+        child: Dropdown<Client>(
+          value: clients.current,
+          onChange: (dynamic selected) => selected.runtimeType == Client
+              ? clients.setCurrent(selected)
+              : clients.setCurrentIndex(selected),
+          items: _buildClients(clients),
         ),
       ),
     );
@@ -38,9 +37,11 @@ class ClientChooser extends StatelessWidget {
   List<DropdownMenuItem> _buildClients(Clients clients) {
     return clients.clients
         .map((client) => DropdownMenuItem(
-              child: Text(
-                client.name,
-                style: TextStyle(color: defaultColor),
+              child: Center(
+                child: Text(
+                  client.name,
+                  style: TextStyle(color: defaultColor),
+                ),
               ),
               value: client,
               key: Key(client.name),

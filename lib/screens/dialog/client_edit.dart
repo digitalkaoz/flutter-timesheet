@@ -1,24 +1,16 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:timesheet_flutter/model/client.dart';
 import 'package:timesheet_flutter/model/clients.dart';
-import 'package:timesheet_flutter/services/theme.dart';
+import 'package:timesheet_flutter/widgets/platform/dialog.dart';
+import 'package:timesheet_flutter/widgets/platform/dialog_button.dart';
+import 'package:timesheet_flutter/widgets/platform/input.dart';
 
-class ClientEditForm extends StatefulWidget {
-  @override
-  _ClientEditFormState createState() => _ClientEditFormState();
-}
+class ClientEditForm extends StatelessWidget {
+  final TextEditingController _controller;
 
-class _ClientEditFormState extends State<ClientEditForm> {
-  final TextEditingController _controller = TextEditingController();
-
-  bool submittable = false;
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-  }
+  const ClientEditForm(this._controller);
 
   @override
   Widget build(BuildContext context) {
@@ -31,59 +23,45 @@ class _ClientEditFormState extends State<ClientEditForm> {
 
     _controller.value = TextEditingValue(text: client.name);
 
-    return SimpleDialog(
-      title: Text('Edit ${client.name}'),
-      contentPadding: EdgeInsets.all(20),
-      children: [
-        Column(
-          children: <Widget>[
-            TextFormField(
-              controller: _controller,
-              autofocus: false,
-              autovalidate: true,
-              validator: (value) {
-                final errorMessage = clients.validateName(_controller.text);
-
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  if (errorMessage == null) {
-                    setState(() => submittable = true);
-                  } else {
-                    setState(() => submittable = false);
-                  }
-                });
-
-                return errorMessage;
-              },
-              decoration: InputDecoration(
-                hintText: 'Client Name',
-              ),
-            ),
-            ButtonBar(
-              children: <Widget>[
-                FlatButton(
-                  child: Text('Cancel'),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-                RaisedButton(
-                  color: defaultColor,
-                  child: Text('Save'),
-                  onPressed: clients.validateName(_controller.text) == null
-                      ? () {
-                          final name = _controller.text;
-                          if (name.isNotEmpty) {
-                            client.setName(name);
-                            return;
-                          }
-
-                          Navigator.of(context).pop();
-                        }
-                      : null,
-                ),
-              ],
-            )
-          ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      child: Input(
+        controller: _controller,
+        autofocus: false,
+        decoration: InputDecoration(
+          hintText: 'Client Name',
         ),
-      ],
+      ),
     );
+  }
+}
+
+showClientEditDialog(BuildContext context) async {
+  final TextEditingController _controller = TextEditingController();
+  final Clients clients = Provider.of<Clients>(context, listen: false);
+
+  final message = await showAlertDialog(context,
+      Text("Edit ${clients.current.name}"), ClientEditForm(_controller), [
+    DialogButton(
+      child: Text('Cancel'),
+      onTap: () => Navigator.of(context).pop(),
+    ),
+    DialogButton(
+        primary: true,
+        child: Text('Save'),
+        onTap: () {
+          final name = _controller.text;
+          if (name.isNotEmpty) {
+            clients.current.setName(name);
+            Navigator.of(context).pop();
+          }
+        }),
+  ]);
+  if (message != null) {
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(message),
+      ));
+    }
   }
 }

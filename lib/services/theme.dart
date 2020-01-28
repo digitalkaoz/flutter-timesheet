@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -7,6 +8,13 @@ final theme = ThemeData(
 );
 
 const defaultColor = Colors.blue;
+
+final CupertinoThemeData ios_theme = CupertinoThemeData(
+  //primarySwatch: MaterialColor(0xf0000000, {}),
+  brightness: Brightness.light,
+  primaryColor: defaultColor,
+  scaffoldBackgroundColor: Colors.grey[100],
+);
 
 final invertedFormFieldWrapper =
     BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20));

@@ -57,30 +57,22 @@ class TimesheetPanel {
     if (timesheet.archived || kIsWeb) {
       return EditableTimsheet(
         timesheet: timesheet,
-        deleteCallback: (time) => _deleteTime(time, context),
+        deleteCallback: (time) =>
+            showTimeDeleteDialog(context, timesheet, time),
         editCallback: (time) => _editTime(time, context),
       );
     }
 
     return DismissibleTimesheet(
       timesheet: timesheet,
-      deleteCallback: (time) => _deleteTime(time, context),
+      deleteCallback: (time) => showTimeDeleteDialog(context, timesheet, time),
       editCallback: (time) => _editTime(time, context),
     );
   }
 
-  _deleteTime(Time time, BuildContext context) async {
-    await showDialog(
-      context: context,
-      child: DeleteTime(
-        time: time,
-        timesheet: timesheet,
-      ),
-    );
-  }
-
   _editTime(Time time, BuildContext context) {
-    final PanelController sheet = Provider.of<PanelController>(context);
+    final PanelController sheet =
+        Provider.of<PanelController>(context, listen: false);
     client.currentTimesheet.setCurrentTime(time);
     sheet.open();
   }

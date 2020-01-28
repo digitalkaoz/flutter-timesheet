@@ -43,10 +43,10 @@ abstract class ClientsBase with Store {
   }
 
   @action
-  Future<void> load() async {
-    clients = ObservableList.of(await storage.load());
+  void load() {
+    clients = ObservableList.of(storage.load());
 
-    final String activeId = await storage.getCurrentClient();
+    final String activeId = storage.getCurrentClient();
     if (activeId != null) {
       clients.forEach((client) {
         if (client.id == activeId) {
@@ -63,6 +63,15 @@ abstract class ClientsBase with Store {
     autorun((_) async {
       await storage.setCurrentClient(client);
     });
+  }
+
+  @action
+  void setCurrentIndex(int index) {
+    final c = clients.elementAt(index);
+
+    if (c != null) {
+      setCurrent(clients.elementAt(index));
+    }
   }
 
   @action
@@ -84,7 +93,9 @@ abstract class ClientsBase with Store {
 
     autorun((_) async {
       await storage.deleteClient(client);
-      await storage.setCurrentClient(clients.elementAt(currentIndex));
+      if (clients.isNotEmpty) {
+        await storage.setCurrentClient(clients.elementAt(currentIndex));
+      }
     });
   }
 

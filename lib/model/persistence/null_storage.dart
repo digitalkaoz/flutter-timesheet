@@ -9,12 +9,12 @@ class NullStorage implements Storage {
   }
 
   @override
-  Future<String> getCurrentClient() async {
+  String getCurrentClient() {
     return "current";
   }
 
   @override
-  Future<List<Client>> load() async {
+  List<Client> load() {
     return [];
   }
 
@@ -34,7 +34,5 @@ class NullStorage implements Storage {
   }
 
   @override
-  Future<Timesheet> loadTimesheet(String id) async {
-    return null;
-  }
+  Timesheet loadTimesheet(String id) {}
 }

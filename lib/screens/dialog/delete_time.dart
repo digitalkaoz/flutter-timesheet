@@ -1,37 +1,38 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:timesheet_flutter/model/time.dart';
 import 'package:timesheet_flutter/model/timesheet.dart';
+import 'package:timesheet_flutter/widgets/platform/dialog.dart';
+import 'package:timesheet_flutter/widgets/platform/dialog_button.dart';
 
 class DeleteTime extends StatelessWidget {
-  final Timesheet timesheet;
-  final Time time;
-
-  const DeleteTime({Key key, this.timesheet, this.time}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text('Delete Time'),
-      content: SingleChildScrollView(
-        child: ListBody(
-          children: <Widget>[
-            Text('Really delete this Time?'),
-          ],
-        ),
-      ),
-      actions: <Widget>[
-        FlatButton(
-          child: Text('Cancel'),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        FlatButton(
-          child: Text('Yes'),
-          onPressed: () {
-            timesheet.removeTime(time);
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
-    );
+    return Text('Really delete this Time?');
+  }
+}
+
+showTimeDeleteDialog(
+    BuildContext context, Timesheet timesheet, Time time) async {
+  final message =
+      await showAlertDialog(context, Text("Delete Time"), DeleteTime(), [
+    DialogButton(
+      child: Text('Cancel'),
+      onTap: () => Navigator.of(context).pop(),
+    ),
+    DialogButton(
+        primary: true,
+        child: Text('Yes'),
+        onTap: () {
+          timesheet.removeTime(time);
+          Navigator.of(context).pop("deleted time!");
+        }),
+  ]);
+  if (message != null) {
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(message),
+      ));
+    }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:timesheet_flutter/services/theme.dart';
+import 'package:timesheet_flutter/widgets/platform/time_input.dart';
 
 import 'duration_field.dart';
 
@@ -25,30 +26,13 @@ class TimeField extends StatelessWidget {
       controller.text = timeFormat(value);
     }
 
-    return TextFormField(
+    return TimeInput(
       controller: controller,
+      placeholder: hint,
+      plain: true,
+      border: InputBorder.none,
       focusNode: NoKeyboardEditableTextFocusNode(),
-      decoration: invertedFormField.copyWith(hintText: hint),
-      onTap: () async {
-        await _showDialog(context);
-      },
+      onChange: (time) => onChanged(time),
     );
-  }
-
-  _showDialog(BuildContext context) async {
-    final TimeOfDay time = await showTimePicker(
-      context: context,
-      builder: (BuildContext context, Widget child) {
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-          child: child,
-        );
-      },
-      initialTime: value ?? TimeOfDay.now(),
-    );
-
-    if (time != null) {
-      onChanged(time);
-    }
   }
 }

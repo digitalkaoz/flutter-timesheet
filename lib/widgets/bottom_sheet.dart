@@ -7,6 +7,7 @@ class SlidingBottomSheet extends StatelessWidget {
   final PanelController controller;
   final Widget panel;
   final Widget body;
+  final Widget collapsed;
 
   const SlidingBottomSheet({
     Key key,
@@ -14,6 +15,7 @@ class SlidingBottomSheet extends StatelessWidget {
     this.controller,
     @required this.panel,
     this.body,
+    this.collapsed,
   }) : super(key: key);
 
   @override
@@ -23,8 +25,11 @@ class SlidingBottomSheet extends StatelessWidget {
           topLeft: Radius.circular(16), topRight: Radius.circular(16)),
       color: defaultColor,
       minHeight: height,
+      maxHeight: 550,
       controller: controller,
+      collapsed: collapsed,
       backdropEnabled: true,
+      parallaxEnabled: true,
       panel: panel,
       body: body,
     );

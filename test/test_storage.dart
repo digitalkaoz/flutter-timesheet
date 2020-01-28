@@ -2,10 +2,13 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mockito/mockito.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timesheet_flutter/model/client.dart';
 import 'package:timesheet_flutter/model/persistence/null_storage.dart';
 import 'package:timesheet_flutter/model/time.dart';
 import 'package:timesheet_flutter/model/timesheet.dart';
+
+class MockPrefs extends Mock implements SharedPreferences {}
 
 class MockStorage extends Mock implements NullStorage {
   Time robertTime() {
@@ -35,24 +38,24 @@ class MockStorage extends Mock implements NullStorage {
     return time;
   }
 
-  Timesheet emptySheet() {
-    return Timesheet(this, "1337");
+  Timesheet emptySheet([String id = "1337"]) {
+    return Timesheet(this, id);
   }
 
-  Timesheet sheet() {
-    final sheet = Timesheet(this, "1337");
+  Timesheet sheet([String id = "1337"]) {
+    final sheet = Timesheet(this, id);
     sheet.times.add(robertTime());
     sheet.times.add(silkeTime());
 
     return sheet;
   }
 
-  Client emptyClient() {
-    return Client(this, "4711");
+  Client emptyClient([String id = "4711"]) {
+    return Client(this, id);
   }
 
-  Client client() {
-    final client = Client(this, "4711");
+  Client client([String id = "4711"]) {
+    final client = Client(this, id);
     client.addSheet(sheet());
 
     return client;

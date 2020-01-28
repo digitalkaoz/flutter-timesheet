@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
 import 'package:intl/intl.dart';
-
-import '../../services/theme.dart';
+import 'package:timesheet_flutter/services/theme.dart';
+import 'package:timesheet_flutter/widgets/platform/input.dart';
 
 class DurationField extends StatelessWidget {
   final format = DateFormat(DateFormat.HOUR_MINUTE);
@@ -20,30 +22,50 @@ class DurationField extends StatelessWidget {
   }) : super(key: key);
 
   _showDialog(BuildContext context) async {
-    final Duration duration = await showDurationPicker(
-      context: context,
-      snapToMins: 5.0,
-      initialTime: Duration(hours: 0, minutes: 0),
-    );
+    Duration duration;
+
+    switch (defaultTargetPlatform) {
+      case TargetPlatform.iOS:
+        await showCupertinoModalPopup(
+          context: context,
+          builder: (_) => GestureDetector(
+            onTap: () => null,
+            child: CupertinoTimerPicker(
+              onTimerDurationChanged: (Duration pause) {
+                duration = pause;
+              },
+              initialTimerDuration: value,
+              minuteInterval: 5,
+              mode: CupertinoTimerPickerMode.hm,
+              alignment: Alignment.bottomCenter,
+            ),
+          ),
+        );
+        break;
+      default:
+        duration = await showDurationPicker(
+          context: context,
+          snapToMins: 5.0,
+          initialTime: Duration(hours: 0, minutes: 0),
+        );
+    }
 
     if (duration != null) {
-      controller.text = formatDuration(duration);
+      controller.text = durationFormat(duration);
       onChanged(duration);
     }
   }
 
-  static String formatDuration(Duration duration) {
-    return duration.toString().split('.').first.padLeft(8, "0");
-  }
-
   @override
   Widget build(BuildContext context) {
-    controller.text = formatDuration(value ?? Duration());
+    controller.text = durationFormat(value ?? Duration());
 
-    return TextFormField(
+    return Input(
       controller: controller,
+      plain: true,
       focusNode: NoKeyboardEditableTextFocusNode(),
-      decoration: invertedFormField.copyWith(hintText: hint),
+      placeholder: hint,
+      border: InputBorder.none,
       onTap: () async {
         await _showDialog(context);
       },

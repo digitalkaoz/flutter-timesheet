@@ -5,6 +5,7 @@ import 'package:timesheet_flutter/screens/landscape_desktop.dart';
 import 'package:timesheet_flutter/screens/landscape_mobile.dart';
 import 'package:timesheet_flutter/screens/portrait_mobile.dart';
 import 'package:timesheet_flutter/widgets/device.dart';
+import 'package:timesheet_flutter/widgets/platform/spinner.dart';
 
 class IndexScreen extends StatefulWidget {
   static const ROUTE = '/';
@@ -14,43 +15,42 @@ class IndexScreen extends StatefulWidget {
 }
 
 class _IndexScreenState extends State<IndexScreen> {
-  Future<void> loadedClients;
+  bool loadedClients = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    if (loadedClients == null) {
-      loadedClients = Provider.of<Clients>(context).load();
+    if (loadedClients == false) {
+      Provider.of<Clients>(context).load();
+      loadedClients = true;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: loadedClients,
-      builder: (_, AsyncSnapshot future) {
-        if (ConnectionState.done != future.connectionState) {
-          return Center(
-            child: CircularProgressIndicator(),
+    if (loadedClients == false) {
+      return Material(
+        child: Center(
+          child: Spinner(),
+        ),
+      );
+    }
+
+    return OrientationBuilder(
+      builder: (_, Orientation orientation) {
+        if (orientation == Orientation.landscape) {
+          return DeviceWidget(
+            phone: (_) => LandscapeMobile(),
+            tablet: (_) => LandscapeMobile(),
+            web: (_) => LandscapeDesktop(),
           );
         }
-        return OrientationBuilder(
-          builder: (_, Orientation orientation) {
-            if (orientation == Orientation.landscape) {
-              return DeviceWidget(
-                phone: (_) => LandscapeMobile(),
-                tablet: (_) => LandscapeMobile(),
-                web: (_) => LandscapeDesktop(),
-              );
-            }
 
-            return DeviceWidget(
-              phone: (_) => PortraitMobile(),
-              tablet: (_) => PortraitMobile(),
-              web: (_) => PortraitMobile(),
-            );
-          },
+        return DeviceWidget(
+          phone: (_) => PortraitMobile(),
+          tablet: (_) => PortraitMobile(),
+          web: (_) => PortraitMobile(),
         );
       },
     );

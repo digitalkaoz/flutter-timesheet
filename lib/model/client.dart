@@ -15,8 +15,16 @@ class Client extends ClientBase with _$Client {
 
     final c = Client(storage, data['id']);
     c.name = data['name'];
-    (data["sheets"].cast<String>() ?? [])
-        .forEach((String id) => c.timesheets.add(Timesheet(storage, id)));
+    (data["sheets"].cast<String>() ?? []).forEach((String id) {
+      final sheet = storage.loadTimesheet(id);
+      if (sheet != null) {
+        c.timesheets.add(sheet);
+      }
+    });
+
+    if (c.timesheets.isEmpty) {
+      c.timesheets.add(Timesheet.generate(storage));
+    }
 
     return c;
   }

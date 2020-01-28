@@ -11,30 +11,27 @@ class MenuItems extends StatelessWidget {
         ListTile(
           title: Text("New Client"),
           leading: Icon(Icons.create_new_folder),
-          onTap: () => _showDialog(context, ClientAddForm()),
+          onTap: () async {
+            await showClientAddDialog(context);
+            Navigator.pop(context);
+          },
         ),
         ListTile(
           title: Text("Edit"),
           leading: Icon(Icons.edit),
-          onTap: () => _showDialog(context, ClientEditForm()),
+          onTap: () async {
+            await showClientEditDialog(context);
+            Navigator.pop(context);
+          },
         ),
         ListTile(
-          title: Text("Delete"),
-          leading: Icon(Icons.delete),
-          onTap: () => _showDialog(context, ClientDelete()),
-        ),
+            title: Text("Delete"),
+            leading: Icon(Icons.delete),
+            onTap: () async {
+              await showClientDeleteDialog(context);
+              Navigator.pop(context);
+            }),
       ],
     );
-  }
-
-  void _showDialog(BuildContext context, Widget widget) async {
-    var message = await showDialog(context: context, builder: (_) => widget);
-    if (message != null) {
-      Scaffold.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-        ),
-      );
-    }
   }
 }

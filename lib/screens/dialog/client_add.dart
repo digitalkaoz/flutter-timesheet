@@ -1,86 +1,67 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:timesheet_flutter/model/client.dart';
 import 'package:timesheet_flutter/model/clients.dart';
 import 'package:timesheet_flutter/model/persistence/local_storage.dart';
 import 'package:timesheet_flutter/model/timesheet.dart';
-import 'package:timesheet_flutter/services/theme.dart';
+import 'package:timesheet_flutter/widgets/platform/dialog.dart';
+import 'package:timesheet_flutter/widgets/platform/dialog_button.dart';
+import 'package:timesheet_flutter/widgets/platform/input.dart';
 
-class ClientAddForm extends StatefulWidget {
-  @override
-  _ClientAddFormState createState() => _ClientAddFormState();
-}
+class ClientAddForm extends StatelessWidget {
+  final TextEditingController _controller;
 
-class _ClientAddFormState extends State<ClientAddForm> {
-  final TextEditingController _controller = TextEditingController();
-
-  bool submittable = false;
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-  }
+  ClientAddForm(this._controller);
 
   @override
   Widget build(BuildContext context) {
     final Clients clients = Provider.of<Clients>(context);
-    final Storage storage = Provider.of<Storage>(context);
 
-    return SimpleDialog(
-      title: Text('Add new client'),
-      contentPadding: EdgeInsets.all(20),
-      children: [
-        Column(
-          children: <Widget>[
-            TextFormField(
-              controller: _controller,
-              autofocus: true,
-              autovalidate: true,
-              validator: (value) {
-                final errorMessage = clients.validateName(_controller.text);
-
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  if (errorMessage == null) {
-                    setState(() => submittable = true);
-                  } else {
-                    setState(() => submittable = false);
-                  }
-                });
-
-                return errorMessage;
-              },
-              decoration: InputDecoration(
-                hintText: 'Client Name',
-              ),
-            ),
-            ButtonBar(
-              children: <Widget>[
-                FlatButton(
-                  child: Text('Cancel'),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-                RaisedButton(
-                  color: defaultColor,
-                  child: Text('Create'),
-                  onPressed: clients.validateName(_controller.text) == null
-                      ? () {
-                          final name = _controller.text;
-                          if (name.isNotEmpty) {
-                            Client c = Client.generate(storage);
-                            clients.addClient(c);
-                            c.setName(name);
-                            c.addSheet(Timesheet.generate(storage));
-                            Navigator.of(context).pop();
-                          }
-                        }
-                      : null,
-                ),
-              ],
-            )
-          ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Input(
+        controller: _controller,
+        autofocus: true,
+        validator: (value) => clients.validateName(_controller.text),
+        decoration: InputDecoration(
+          hintText: 'Client Name',
         ),
-      ],
+      ),
     );
+  }
+}
+
+showClientAddDialog(BuildContext context) async {
+  final TextEditingController _controller = TextEditingController();
+  final Clients clients = Provider.of<Clients>(context, listen: false);
+  final Storage storage = Provider.of<Storage>(context, listen: false);
+
+  final message = await showAlertDialog(
+      context, Text("Add Client"), ClientAddForm(_controller), [
+    DialogButton(
+      child: Text('Cancel'),
+      onTap: () => Navigator.of(context).pop(),
+    ),
+    DialogButton(
+        primary: true,
+        child: Text('Create'),
+        onTap: () {
+          final name = _controller.text;
+          if (name.isNotEmpty) {
+            Client c = Client.generate(storage);
+            clients.addClient(c);
+            c.setName(name);
+            c.addSheet(Timesheet.generate(storage));
+            Navigator.of(context).pop();
+          }
+        }),
+  ]);
+  if (message != null) {
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(message),
+      ));
+    }
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
-import '../../services/theme.dart';
+import 'package:timesheet_flutter/widgets/platform/input.dart';
 
 class DescriptionField extends StatelessWidget {
   final format = DateFormat(DateFormat.HOUR_MINUTE);
@@ -24,10 +23,11 @@ class DescriptionField extends StatelessWidget {
       controller.text = value;
     }
 
-    return TextFormField(
+    return Input(
       controller: controller,
-      decoration: invertedFormField.copyWith(
-          hintText: hint, contentPadding: EdgeInsets.only(left: 10)),
+      plain: true,
+      border: InputBorder.none,
+      placeholder: "Description",
     );
   }
 }

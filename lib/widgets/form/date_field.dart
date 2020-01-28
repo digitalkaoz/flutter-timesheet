@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:timesheet_flutter/widgets/platform/date_input.dart';
 
-import '../../services/theme.dart';
 import 'duration_field.dart';
 
 class DateField extends StatelessWidget {
@@ -23,26 +23,24 @@ class DateField extends StatelessWidget {
   Widget build(BuildContext context) {
     controller.text = format.format(value ?? DateTime.now());
 
-    return TextFormField(
+    return DateInput(
       controller: controller,
+      plain: true,
+      border: InputBorder.none,
       focusNode: NoKeyboardEditableTextFocusNode(),
-      decoration: invertedFormField.copyWith(hintText: hint),
-      onTap: () async {
-        await _showDialog(context);
+      placeholder: hint,
+      min: DateTime.now().subtract(Duration(days: 600)),
+      max: DateTime.now().add(Duration(days: 1)),
+      initial: value ?? DateTime.now(),
+      onChange: (date) => onChanged(date),
+      validator: (value) {
+        try {
+          DateTime.parse(value);
+          return null;
+        } catch (e) {
+          return 'invalid date';
+        }
       },
     );
-  }
-
-  _showDialog(BuildContext context) async {
-    final DateTime date = await showDatePicker(
-      context: context,
-      firstDate: DateTime.now().subtract(Duration(days: 600)),
-      lastDate: DateTime.now().add(Duration(days: 1)),
-      initialDate: value ?? DateTime.now(),
-    );
-
-    if (date != null) {
-      onChanged(date);
-    }
   }
 }
