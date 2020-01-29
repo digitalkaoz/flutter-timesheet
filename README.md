@@ -1,16 +1,67 @@
-# timesheet_flutter
+# Flutter Timesheet App
 
-A Flutter Timesheet Application
+> a Timesheet Application, because all others suxx ;)
+
+This whole App is totally educational to me. If you value this work like me download the App
+from the App-Store of your Platform :)
+
+## Highlights
+
+* Cross-Platform (native Android/IOS Components)
+* Adaptive Layouts for different Orientations and Devices
+* Mobx for State-Management
+* Stored in Local-Storage
+* Works on Web
+
+## Features
+
+* multiple Clients
+* PDF Export of Timesheets
+* automatic Range/Sum of Timesheets
+* editable/deletable Times
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+we store everything inside a `Makefile`.
 
-A few resources to get you started if this is your first Flutter project:
+**Install flutter dependencies**
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+```shell script
+$ make install
+```
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+**Watch `mobx` part generations when editing Stores**
+
+```shell script
+$ make codegen-watch
+```
+
+**Run Tests**
+
+```shell script
+$ make test
+```
+
+**Rebuild Icons**
+
+```shell script
+$ make icons
+```
+
+**Create Production Bundles**
+
+```shell script
+$ make bundle
+```
+
+**Sync Production Bundle to a device**
+
+```shell script
+$ make to_device
+```
+
+## TODOS
+
+* Landscape Mobile
+* Portrait/Landscape Tablet
+* Portrait/Landscape Web
