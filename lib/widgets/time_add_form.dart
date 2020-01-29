@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart' hide RaisedButton;
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:timesheet_flutter/model/client.dart';
@@ -24,6 +23,14 @@ class TimeAddForm extends StatelessWidget {
   final bool dense;
 
   TimeAddForm({Key key, this.dense = false}) : super(key: key);
+
+  void _unfocus(BuildContext context) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +59,9 @@ class TimeAddForm extends StatelessWidget {
                   controller: description,
                   hint: "Description".padRight(20),
                   onChanged: (String value) {
+                    print("set desc: $value");
                     time.description = value;
+                    _unfocus(context);
                   },
                 ),
               ),
@@ -63,6 +72,7 @@ class TimeAddForm extends StatelessWidget {
                   controller: start,
                   onChanged: (TimeOfDay value) {
                     time.start = value;
+                    _unfocus(context);
                   },
                   hint: "Start".padRight(20),
                 ),
@@ -74,6 +84,7 @@ class TimeAddForm extends StatelessWidget {
                   controller: end,
                   onChanged: (TimeOfDay value) {
                     time.end = value;
+                    _unfocus(context);
                   },
                   hint: "End".padRight(20),
                 ),
@@ -85,6 +96,7 @@ class TimeAddForm extends StatelessWidget {
                   value: time.pause,
                   onChanged: (value) {
                     time.pause = value;
+                    _unfocus(context);
                   },
                   hint: "Pause".padRight(20),
                 ),
@@ -94,7 +106,10 @@ class TimeAddForm extends StatelessWidget {
                 DateField(
                   value: time.date,
                   controller: date,
-                  onChanged: (DateTime value) => time.date = value,
+                  onChanged: (DateTime value) {
+                    time.date = value;
+                    _unfocus(context);
+                  },
                   hint: "Date".padRight(15),
                 ),
               ),
@@ -109,20 +124,17 @@ class TimeAddForm extends StatelessWidget {
                           child: Text("Cancel"),
                           onPressed: () {
                             timesheet.setCurrentTime(Time());
-                            _clear(timesheet.editableTime, context);
                             sheet.close();
                           },
                         ),
                   RaisedButton(
-                    color: defaultColor,
+                    color: Colors.white,
                     //disabledColor: defaultColor,
                     //disabledTextColor: Colors.white.withAlpha(75),
                     //textColor: defaultColor,
                     onPressed: time.valid
                         ? () {
                             timesheet.saveTime();
-
-                            _clear(timesheet.editableTime, context);
                             try {
                               sheet.close();
                             } catch (e) {}
@@ -137,18 +149,6 @@ class TimeAddForm extends StatelessWidget {
         );
       },
     );
-  }
-
-  _clear(Time time, BuildContext context) {
-    description.value = TextEditingValue(text: time.description);
-    start.value = TextEditingValue(
-        text: time.start != null ? time.start.format(context) : "");
-    end.value = TextEditingValue(
-        text: time.end != null ? time.end.format(context) : "");
-    pause.value = TextEditingValue(
-        text: time.pause != null ? durationFormat(time.pause) : "");
-    date.value = TextEditingValue(
-        text: DateFormat('yyyy-MM-dd').format(time.date ?? DateTime.now()));
   }
 
   Widget _invertedInput(Widget widget) {

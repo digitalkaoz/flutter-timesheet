@@ -32,7 +32,7 @@ class LocalStorage implements Storage {
 
   @override
   List<Client> load() {
-    //await prefs.clear();
+    //prefs.clear();
     List<String> serializedClients = prefs.getStringList(CLIENTS);
     List<Client> clients = [];
 

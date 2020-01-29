@@ -77,10 +77,10 @@ abstract class ClientsBase with Store {
   @action
   void addClient(Client client) {
     clients.add(client);
+    setCurrent(client);
 
     autorun((_) async {
       await storage.saveClient(client);
-      await storage.setCurrentClient(client);
     });
   }
 

@@ -41,20 +41,20 @@ class Input extends StatelessWidget {
   final bool plain;
   final InputBorder border;
 
-  const Input(
-      {Key key,
-      this.controller,
-      this.decoration,
-      this.validator,
-      this.keyboardType,
-      this.obscure = false,
-      this.placeholder,
-      this.autofocus = false,
-      this.focusNode,
-      this.onTap,
-      this.plain = false,
-      this.border})
-      : super(key: key);
+  const Input({
+    Key key,
+    this.controller,
+    this.decoration,
+    this.validator,
+    this.keyboardType,
+    this.obscure = false,
+    this.placeholder,
+    this.autofocus = false,
+    this.focusNode,
+    this.onTap,
+    this.plain = false,
+    this.border,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -85,9 +85,13 @@ class Input extends StatelessWidget {
         obscureText: obscure,
         focusNode: focusNode,
         keyboardType: keyboardType,
-        decoration: InputDecoration(labelText: placeholder, border: border
-            //border: InputBorder.none,
-            ),
+        textAlignVertical: TextAlignVertical.center,
+        decoration: InputDecoration(
+          isDense: true,
+          labelText: placeholder,
+          border: border,
+          alignLabelWithHint: true,
+        ),
       ),
     );
   }

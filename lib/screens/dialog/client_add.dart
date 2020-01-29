@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:timesheet_flutter/model/client.dart';
 import 'package:timesheet_flutter/model/clients.dart';
 import 'package:timesheet_flutter/model/persistence/local_storage.dart';
-import 'package:timesheet_flutter/model/timesheet.dart';
 import 'package:timesheet_flutter/widgets/platform/dialog.dart';
 import 'package:timesheet_flutter/widgets/platform/dialog_button.dart';
 import 'package:timesheet_flutter/widgets/platform/input.dart';
@@ -50,9 +49,8 @@ showClientAddDialog(BuildContext context) async {
           final name = _controller.text;
           if (name.isNotEmpty) {
             Client c = Client.generate(storage);
-            clients.addClient(c);
             c.setName(name);
-            c.addSheet(Timesheet.generate(storage));
+            clients.addClient(c);
             Navigator.of(context).pop();
           }
         }),

@@ -137,7 +137,7 @@ abstract class TimesheetBase with Store {
 
   @override
   String toString() {
-    return "${start != null ? start.toIso8601String() : ""} ${last != null ? last.toIso8601String() : ""} $total";
+    return "Timesheet<$id> : ${start != null ? start.toIso8601String() : ""} ${last != null ? last.toIso8601String() : ""} $total";
   }
 
   String toJson() {

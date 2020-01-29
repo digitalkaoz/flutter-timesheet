@@ -51,11 +51,12 @@ void main() {
   test("Stringable", () async {
     final time = Time();
 
+    time.description = "foo";
     time.date = DateTime(1981, 5, 25);
     time.start = TimeOfDay(hour: 12, minute: 0);
     time.end = TimeOfDay(hour: 13, minute: 0);
 
-    expect(time.toString(), "1981-05-25 00:00:00.000 1:00:00.000000");
+    expect(time.toString(), "foo: 1981-05-25 00:00:00.000 1:00:00.000000");
   });
 
   group('JSON serializable', () {

@@ -14,7 +14,7 @@ void main() {
     final sheet = storage().sheet();
 
     expect(sheet.toString(),
-        "1981-05-25T00:00:00.000 1979-06-26T00:00:00.000 3:00:00.000000");
+        "Timesheet<1337> : 1981-05-25T00:00:00.000 1979-06-26T00:00:00.000 3:00:00.000000");
   });
 
   group('total time', () {

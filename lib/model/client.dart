@@ -19,18 +19,19 @@ class Client extends ClientBase with _$Client {
       final sheet = storage.loadTimesheet(id);
       if (sheet != null) {
         c.timesheets.add(sheet);
+      } else {
+        c.timesheets.add(Timesheet(storage, id));
       }
     });
-
-    if (c.timesheets.isEmpty) {
-      c.timesheets.add(Timesheet.generate(storage));
-    }
 
     return c;
   }
 
   factory Client.generate(Storage storage) {
-    return Client(storage, Uuid().v4());
+    final c = Client(storage, Uuid().v4());
+    c.addSheet(Timesheet.generate(storage));
+
+    return c;
   }
 }
 
@@ -68,6 +69,7 @@ abstract class ClientBase with Store {
 
     autorun((_) async {
       await storage.saveClient(this);
+      await storage.saveTimesheet(timesheet);
     });
   }
 

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:timesheet_flutter/widgets/platform/input.dart';
 
 class DescriptionField extends StatelessWidget {
-  final format = DateFormat(DateFormat.HOUR_MINUTE);
   final String value;
   final TextEditingController controller;
   final String hint;
@@ -13,19 +11,20 @@ class DescriptionField extends StatelessWidget {
     Key key,
     @required this.onChanged,
     this.hint,
-    this.controller,
+    @required this.controller,
     this.value,
-  }) : super(key: key);
+  }) : super(key: key) {
+    controller.text = value;
+    controller.addListener(() => onChanged(controller.text));
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (value != null && value.isNotEmpty) {
-      controller.text = value;
-    }
-
     return Input(
       controller: controller,
       plain: true,
+      focusNode: FocusNode(),
+      autofocus: false,
       border: InputBorder.none,
       placeholder: "Description",
     );

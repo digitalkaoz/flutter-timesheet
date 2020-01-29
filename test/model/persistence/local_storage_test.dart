@@ -131,7 +131,7 @@ void main() {
       final p = MockPrefs();
       final s = LocalStorage(p);
 
-      final result = await s.load();
+      final result = s.load();
 
       expect(result, []);
     });

@@ -64,7 +64,7 @@ abstract class TimeBase with Store {
 
   @override
   String toString() {
-    return "$date $total";
+    return "$description: $date $total";
   }
 
   Map<String, dynamic> toMap() {

@@ -21,7 +21,7 @@ class DurationField extends StatelessWidget {
     this.value,
   }) : super(key: key);
 
-  _showDialog(BuildContext context) async {
+  _showDialog(BuildContext context, Duration value) async {
     Duration duration;
 
     switch (defaultTargetPlatform) {
@@ -34,7 +34,7 @@ class DurationField extends StatelessWidget {
               onTimerDurationChanged: (Duration pause) {
                 duration = pause;
               },
-              initialTimerDuration: value,
+              initialTimerDuration: value ?? Duration(hours: 0, minutes: 0),
               minuteInterval: 5,
               mode: CupertinoTimerPickerMode.hm,
               alignment: Alignment.bottomCenter,
@@ -46,7 +46,7 @@ class DurationField extends StatelessWidget {
         duration = await showDurationPicker(
           context: context,
           snapToMins: 5.0,
-          initialTime: Duration(hours: 0, minutes: 0),
+          initialTime: value ?? Duration(hours: 0, minutes: 0),
         );
     }
 
@@ -58,7 +58,7 @@ class DurationField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    controller.text = durationFormat(value ?? Duration());
+    controller.text = durationFormat(value);
 
     return Input(
       controller: controller,
@@ -67,7 +67,7 @@ class DurationField extends StatelessWidget {
       placeholder: hint,
       border: InputBorder.none,
       onTap: () async {
-        await _showDialog(context);
+        await _showDialog(context, value);
       },
     );
   }

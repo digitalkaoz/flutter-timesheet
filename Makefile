@@ -7,8 +7,12 @@ codegen-watch:
 	flutter packages pub run build_runner watch --delete-conflicting-outputs
 
 bundle:
+	rm -f build/timesheet.apks
 	flutter build appbundle
-	bundletool build-apks --bundle=build/app/outputs/bundle/release/app-release.aab --output=build/kita_parent.apks
+	bundletool build-apks --bundle=build/app/outputs/bundle/release/app-release.aab --output=build/timesheet.apks
+
+icons:
+	flutter pub run flutter_launcher_icons:main
 
 to_device:
-	bundletool install-apks --apks=build/kita_parent.apks --device-id=FA69T0301176
+	bundletool install-apks --apks=build/timesheet.apks --device-id=FA69T0301176
