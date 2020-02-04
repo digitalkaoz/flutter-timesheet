@@ -18,4 +18,4 @@ icons:
 	flutter pub run flutter_launcher_icons:main
 
 to_device:
-	bundletool install-apks --apks=build/timesheet.apks --device-id=FA69T0301176
+	bundletool install-apks --apks=build/timesheet.apks --device-id=9A261FFAZ004EC

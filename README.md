@@ -11,7 +11,8 @@ from the App-Store of your Platform :)
 * Adaptive Layouts for different Orientations and Devices
 * Mobx for State-Management
 * Stored in Local-Storage
-* Works on Web
+* Export/Import Data from other Instances 
+* Works on Web (t.b.d.)
 
 ## Features
 
@@ -19,6 +20,7 @@ from the App-Store of your Platform :)
 * PDF Export of Timesheets
 * automatic Range/Sum of Timesheets
 * editable/deletable Times
+* automatic dark mode detection
 
 ## Getting Started
 

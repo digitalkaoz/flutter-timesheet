@@ -34,5 +34,12 @@ class NullStorage implements Storage {
   }
 
   @override
-  Timesheet loadTimesheet(String id) {}
+  Timesheet loadTimesheet(String id) {
+  	return null;
+	}
+
+  @override
+  Future<bool> deleteTimesheet(Timesheet sheet) async {
+    return true;
+  }
 }

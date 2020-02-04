@@ -15,18 +15,23 @@ class Chip extends StatelessWidget {
               onTap: onTap,
               child: Material(
                 color: Colors.transparent,
-                child: _android(),
+                child: _android(_),
               ),
             ),
-        android: (_) => _android());
+        android: (_) => _android(_));
   }
 
-  Widget _android() {
+  Widget _android(_) {
     return ActionChip(
       onPressed: onTap,
       label: label,
-      backgroundColor: Colors.white,
-      labelStyle: TextStyle(color: defaultColor),
+      backgroundColor: Theme.of(_).brightness == Brightness.dark
+          ? Theme.of(_).accentColor
+          : Colors.white,
+      labelStyle: Theme.of(_).textTheme.caption.copyWith(
+          color: Theme.of(_).brightness == Brightness.dark
+              ? Theme.of(_).primaryColor
+              : defaultColor),
     );
   }
 }

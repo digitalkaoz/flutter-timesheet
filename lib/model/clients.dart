@@ -1,6 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:mobx/mobx.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:timesheet_flutter/model/client.dart';
 import 'package:timesheet_flutter/model/persistence/local_storage.dart';
+import 'package:timesheet_flutter/model/timesheet.dart';
 
 part 'clients.g.dart';
 
@@ -117,5 +122,39 @@ abstract class ClientsBase with Store {
     }
 
     return null;
+  }
+
+  Future<File> export() async {
+    final directory = await getExternalStorageDirectory();
+    final file = File('${directory.path}/timesheets.json');
+
+    final export = {};
+
+    clients.forEach((c) {
+      export[c.id] = c.toMap();
+      export[c.id]["sheets"] = c.timesheets.map((t) => t.toMap()).toList();
+    });
+
+    return file.writeAsString(jsonEncode(export));
+  }
+
+  import(File file) async {
+    final data = await file.readAsString();
+    final import = jsonDecode(data);
+
+    await Future.wait(
+        clients.map((c) async => await storage.deleteClient(c)).toList());
+    clients.clear();
+
+    import.forEach((k, v) {
+      v['sheets'] = v['sheets'].map((sheet) {
+        final t = Timesheet.fromMap(storage, sheet['id'], sheet);
+        storage.saveTimesheet(t);
+        return sheet['id'];
+      });
+
+      final c = Client.fromMap(storage, k, v);
+      addClient(c);
+    });
   }
 }

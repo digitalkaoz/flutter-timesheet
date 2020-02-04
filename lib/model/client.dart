@@ -13,7 +13,12 @@ class Client extends ClientBase with _$Client {
   factory Client.fromString(Storage storage, String serialized) {
     final data = jsonDecode(serialized);
 
-    final c = Client(storage, data['id']);
+    return Client.fromMap(storage, data['id'], data);
+  }
+
+  factory Client.fromMap(
+      Storage storage, String id, Map<String, dynamic> data) {
+    final c = Client(storage, id);
     c.name = data['name'];
     (data["sheets"].cast<String>() ?? []).forEach((String id) {
       final sheet = storage.loadTimesheet(id);
@@ -23,6 +28,8 @@ class Client extends ClientBase with _$Client {
         c.timesheets.add(Timesheet(storage, id));
       }
     });
+
+    c._sortSheets();
 
     return c;
   }
@@ -49,7 +56,11 @@ abstract class ClientBase with Store {
 
   @computed
   Timesheet get currentTimesheet {
-    return timesheets.firstWhere((t) => !t.archived);
+    return timesheets.firstWhere((t) => !t.archived, orElse: () {
+      final t = Timesheet.generate(storage);
+      addSheet(t);
+      return t;
+    });
   }
 
   bool get hasTimesheets {
@@ -59,13 +70,7 @@ abstract class ClientBase with Store {
   @action
   void addSheet(Timesheet timesheet) {
     timesheets.add(timesheet);
-    timesheets.sort((Timesheet a, Timesheet b) {
-      if (a.last != null && b.last != null) {
-        return a.last.compareTo(b.last);
-      }
-
-      return 0;
-    });
+    _sortSheets();
 
     autorun((_) async {
       await storage.saveClient(this);
@@ -87,8 +92,14 @@ abstract class ClientBase with Store {
     final sheet = timesheets.firstWhere((t) => t.id == timesheet.id);
 
     if (sheet != null) {
-      timesheets.insert(0, Timesheet.generate(storage));
+      final ts = Timesheet.generate(storage);
+      timesheets.insert(0, ts);
       sheet.archive();
+
+      autorun((_) async {
+        await storage.saveClient(this);
+        await storage.saveTimesheet(ts);
+      });
     }
   }
 
@@ -97,13 +108,25 @@ abstract class ClientBase with Store {
     return "$name";
   }
 
+  _sortSheets() {
+    timesheets.sort((Timesheet a, Timesheet b) {
+      if (a.last != null && b.last != null) {
+        return a.last.compareTo(b.last);
+      }
+
+      return 0;
+    });
+  }
+
   String toJson() {
-    return jsonEncode(
-      {
-        "id": id,
-        "name": name,
-        "sheets": timesheets.map((t) => t.id).toList(),
-      },
-    );
+    return jsonEncode(toMap());
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "id": id,
+      "name": name,
+      "sheets": timesheets.map((t) => t.id).toList(),
+    };
   }
 }

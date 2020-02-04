@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:timesheet_flutter/services/theme.dart';
@@ -22,6 +23,8 @@ class DurationField extends StatelessWidget {
   }) : super(key: key);
 
   _showDialog(BuildContext context, Duration value) async {
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+
     Duration duration;
 
     switch (defaultTargetPlatform) {
@@ -53,6 +56,7 @@ class DurationField extends StatelessWidget {
     if (duration != null) {
       controller.text = durationFormat(duration);
       onChanged(duration);
+      SystemChannels.textInput.invokeMethod('TextInput.hide');
     }
   }
 

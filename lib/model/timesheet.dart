@@ -13,7 +13,12 @@ class Timesheet extends TimesheetBase with _$Timesheet {
   factory Timesheet.fromString(Storage storage, String serialized) {
     final data = jsonDecode(serialized);
 
-    final t = Timesheet(storage, data['id']);
+    return Timesheet.fromMap(storage, data['id'], data);
+  }
+
+  factory Timesheet.fromMap(
+      Storage storage, String id, Map<String, dynamic> data) {
+    final t = Timesheet(storage, id);
     t.archived = data['archived'];
 
     (data['times'].cast<Map<String, dynamic>>() ?? [])
@@ -128,10 +133,10 @@ abstract class TimesheetBase with Store {
     }
 
     times.sort((a, b) => b.date.compareTo(a.date));
-    editableTime = Time();
 
     autorun((_) async {
       await storage.saveTimesheet(this);
+      editableTime = Time();
     });
   }
 
@@ -141,12 +146,14 @@ abstract class TimesheetBase with Store {
   }
 
   String toJson() {
-    return jsonEncode(
-      {
-        "id": id,
-        "archived": archived,
-        "times": times.map((Time t) => t.toMap()).toList(),
-      },
-    );
+    return jsonEncode(toMap());
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "id": id,
+      "archived": archived,
+      "times": times.map((Time t) => t.toMap()).toList(),
+    };
   }
 }

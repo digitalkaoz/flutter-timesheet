@@ -7,6 +7,10 @@ final theme = ThemeData(
   canvasColor: Colors.grey[100],
 );
 
+final themeDark = ThemeData.dark().copyWith(
+  accentColor: defaultColor,
+);
+
 const defaultColor = Colors.blue;
 
 final CupertinoThemeData ios_theme = CupertinoThemeData(
@@ -16,14 +20,12 @@ final CupertinoThemeData ios_theme = CupertinoThemeData(
   scaffoldBackgroundColor: Colors.grey[100],
 );
 
-final invertedFormFieldWrapper =
-    BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20));
-
-const invertedFormField = InputDecoration(
-  fillColor: Colors.white,
-  border: InputBorder.none,
-  filled: true,
-);
+invertedFormFieldWrapper(BuildContext context) => BoxDecoration(
+      color: Theme.of(context).brightness == Brightness.dark
+          ? Theme.of(context).accentColor
+          : Colors.white,
+      borderRadius: BorderRadius.circular(20),
+    );
 
 String durationFormat(Duration duration) {
   if (duration == null) {

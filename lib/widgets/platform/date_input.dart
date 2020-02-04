@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:timesheet_flutter/widgets/platform/icon.dart';
@@ -46,6 +47,8 @@ class DateInput extends StatelessWidget {
   }
 
   _onTap(BuildContext context) async {
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+
     DateTime date;
 
     switch (defaultTargetPlatform) {

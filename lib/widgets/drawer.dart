@@ -22,13 +22,14 @@ class ClientDrawer extends StatelessWidget {
       child: Column(
         children: <Widget>[
           DrawerHeader(
+            decoration: BoxDecoration(color: defaultColor),
             child: Center(
               child: Text(
                 client.name,
                 style: Theme.of(context)
                     .textTheme
                     .headline
-                    .copyWith(color: defaultColor),
+                    .copyWith(color: Colors.white),
               ),
             ),
           ),

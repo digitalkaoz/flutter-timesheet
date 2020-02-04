@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide RaisedButton;
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -25,11 +26,8 @@ class TimeAddForm extends StatelessWidget {
   TimeAddForm({Key key, this.dense = false}) : super(key: key);
 
   void _unfocus(BuildContext context) {
-    FocusScopeNode currentFocus = FocusScope.of(context);
-
-    if (!currentFocus.hasPrimaryFocus) {
-      currentFocus.unfocus();
-    }
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+    FocusScope.of(context).requestFocus(FocusNode());
   }
 
   @override
@@ -47,68 +45,71 @@ class TimeAddForm extends StatelessWidget {
         final Time time = timesheet.editableTime;
 
         return Container(
-          color: defaultColor,
+          color: Theme.of(context).primaryColor,
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               spacer,
               _invertedInput(
+                _,
                 DescriptionField(
                   value: time.description,
                   controller: description,
                   hint: "Description".padRight(20),
                   onChanged: (String value) {
-                    print("set desc: $value");
                     time.description = value;
-                    _unfocus(context);
                   },
                 ),
               ),
               spacer,
               _invertedInput(
+                _,
                 TimeField(
                   value: time.start,
                   controller: start,
                   onChanged: (TimeOfDay value) {
                     time.start = value;
-                    _unfocus(context);
+                    _unfocus(_);
                   },
                   hint: "Start".padRight(20),
                 ),
               ),
               spacer,
               _invertedInput(
+                _,
                 TimeField(
                   value: time.end,
                   controller: end,
                   onChanged: (TimeOfDay value) {
                     time.end = value;
-                    _unfocus(context);
+                    _unfocus(_);
                   },
                   hint: "End".padRight(20),
                 ),
               ),
               spacer,
               _invertedInput(
+                _,
                 DurationField(
                   controller: pause,
                   value: time.pause,
                   onChanged: (value) {
                     time.pause = value;
-                    _unfocus(context);
+                    _unfocus(_);
                   },
                   hint: "Pause".padRight(20),
                 ),
               ),
               spacer,
               _invertedInput(
+                _,
                 DateField(
                   value: time.date,
                   controller: date,
                   onChanged: (DateTime value) {
                     time.date = value;
-                    _unfocus(context);
+                    _unfocus(_);
                   },
                   hint: "Date".padRight(15),
                 ),
@@ -151,9 +152,9 @@ class TimeAddForm extends StatelessWidget {
     );
   }
 
-  Widget _invertedInput(Widget widget) {
+  Widget _invertedInput(BuildContext context, Widget widget) {
     return Container(
-      decoration: invertedFormFieldWrapper,
+      decoration: invertedFormFieldWrapper(context),
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: widget,
     );

@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:timesheet_flutter/services/theme.dart';
 
 class SlidingBottomSheet extends StatelessWidget {
   final double height;
@@ -23,7 +23,7 @@ class SlidingBottomSheet extends StatelessWidget {
     return SlidingUpPanel(
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16), topRight: Radius.circular(16)),
-      color: defaultColor,
+      color: Theme.of(context).primaryColor,
       minHeight: height,
       maxHeight: 550,
       controller: controller,

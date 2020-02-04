@@ -27,6 +27,7 @@ class DateField extends StatelessWidget {
       controller: controller,
       plain: true,
       border: InputBorder.none,
+      format: format,
       focusNode: NoKeyboardEditableTextFocusNode(),
       placeholder: hint,
       min: DateTime.now().subtract(Duration(days: 600)),

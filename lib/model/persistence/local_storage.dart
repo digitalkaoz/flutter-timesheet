@@ -4,11 +4,19 @@ import 'package:timesheet_flutter/model/timesheet.dart';
 
 abstract class Storage {
   List<Client> load();
+
   Future<bool> setCurrentClient(Client client);
+
   String getCurrentClient();
+
   Future<bool> deleteClient(Client client);
+
   Future<bool> saveClient(Client client);
+
   Future<bool> saveTimesheet(Timesheet sheet);
+
+  Future<bool> deleteTimesheet(Timesheet sheet);
+
   Timesheet loadTimesheet(String id);
 }
 
@@ -51,9 +59,10 @@ class LocalStorage implements Storage {
   Timesheet loadTimesheet(String id) {
     final serializedSheet = prefs.getString("timesheet_$id");
 
-    if (serializedSheet != null) {
-      return Timesheet.fromString(this, serializedSheet);
+    if (serializedSheet == null) {
+      return null;
     }
+    return Timesheet.fromString(this, serializedSheet);
   }
 
   @override
@@ -63,6 +72,9 @@ class LocalStorage implements Storage {
     if (clients == null) {
       return true;
     }
+
+    await Future.wait(
+        client.timesheets.map((t) => deleteTimesheet(t)).toList());
 
     clients.removeWhere((serializedClient) {
       final persistedClient = Client.fromString(this, serializedClient);
@@ -99,5 +111,10 @@ class LocalStorage implements Storage {
   @override
   Future<bool> saveTimesheet(Timesheet sheet) {
     return prefs.setString('timesheet_${sheet.id}', sheet.toJson());
+  }
+
+  @override
+  Future<bool> deleteTimesheet(Timesheet sheet) {
+    return prefs.remove('timesheet_${sheet.id}');
   }
 }

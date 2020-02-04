@@ -86,12 +86,6 @@ class Input extends StatelessWidget {
         focusNode: focusNode,
         keyboardType: keyboardType,
         textAlignVertical: TextAlignVertical.center,
-        decoration: InputDecoration(
-          isDense: true,
-          labelText: placeholder,
-          border: border,
-          alignLabelWithHint: true,
-        ),
       ),
     );
   }
