@@ -7,12 +7,12 @@ from the App-Store of your Platform :)
 
 ## Highlights
 
-* Cross-Platform (native Android/IOS Components)
-* Adaptive Layouts for different Orientations and Devices
-* Mobx for State-Management
-* Stored in Local-Storage
-* Export/Import Data from other Instances 
-* Works on Web (t.b.d.)
+* 🤖 🍎 Cross-Platform (native Android/IOS Components)
+* 📲 Adaptive Layouts for different Orientations and Devices
+* 🧠 Mobx for State-Management
+* 💾 Stored in Local-Storage
+* ⬇️ Export/Import Data from other Instances 
+* 🖥 Works on Web (t.b.d.)
 
 ## Features
 
