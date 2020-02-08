@@ -30,6 +30,7 @@ class TimeField extends StatelessWidget {
       controller: controller,
       placeholder: hint,
       plain: true,
+      initial: value,
       border: InputBorder.none,
       focusNode: NoKeyboardEditableTextFocusNode(),
       onChange: (time) => onChanged(time),

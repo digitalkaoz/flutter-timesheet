@@ -23,22 +23,31 @@ class TimesheetPanel {
       canTapOnHeader: true,
       headerBuilder: (BuildContext context, bool isExpanded) {
         return ListTile(
-          title: Observer(builder: (_) => _builtHeader()),
+          title: Observer(builder: (_) => _builtHeader(_)),
         );
       },
       body: _buildBody(context, timesheet),
     );
   }
 
-  Widget _builtHeader() {
+  Widget _builtHeader(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text("${dateFormat(timesheet.start)} - ${dateFormat(timesheet.last)}",
-            style: TextStyle(fontWeight: FontWeight.bold)),
+        Text(
+          "${dateFormat(timesheet.last)} - ${dateFormat(timesheet.start)}",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         Text(
           durationFormat(timesheet.total),
-          style: TextStyle(fontWeight: FontWeight.w400, color: defaultColor),
+          style: TextStyle(
+            fontWeight: FontWeight.w400,
+            color: (Theme.of(context).brightness == Brightness.dark
+                ? Theme.of(context).primaryColorLight
+                : Theme.of(context).primaryColorDark),
+          ),
         ),
       ],
     );

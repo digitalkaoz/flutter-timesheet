@@ -21,7 +21,7 @@ class PdfReport {
             Header(text: "Timesheet - ${client.name}"),
             SizedBox(height: 20),
             Text(
-              "${dateFormat(timesheet.start)} - ${dateFormat(timesheet.last)}",
+              "${dateFormat(timesheet.last)} - ${dateFormat(timesheet.start)}",
             ),
             SizedBox(height: 40),
             Expanded(
@@ -56,7 +56,7 @@ class PdfReport {
       ),
     );
 
-    timesheet.times.forEach(
+    timesheet.times.reversed.forEach(
       (Time time) => rows.add(
         TableRow(children: [
           _cell(dateFormat(time.date)),

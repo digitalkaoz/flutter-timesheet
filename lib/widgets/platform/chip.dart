@@ -29,6 +29,7 @@ class Chip extends StatelessWidget {
           ? Theme.of(_).accentColor
           : Colors.white,
       labelStyle: Theme.of(_).textTheme.caption.copyWith(
+          fontWeight: FontWeight.bold,
           color: Theme.of(_).brightness == Brightness.dark
               ? Theme.of(_).primaryColor
               : defaultColor),

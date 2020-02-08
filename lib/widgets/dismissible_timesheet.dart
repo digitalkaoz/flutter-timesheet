@@ -128,7 +128,7 @@ class TimeRow extends StatelessWidget {
         headingRowHeight: 0,
         columnSpacing: 0,
         columns: rowColumns(timesheet, time, true),
-        rows: rowValues(time, timesheet,
+        rows: rowValues(context, time, timesheet,
             editCallback: editCallback,
             deleteCallback: deleteCallback,
             isSmall: true),

@@ -62,30 +62,41 @@ class Input extends StatelessWidget {
       ios: (context) => CupertinoTextField(
         autofocus: autofocus,
         controller: controller,
-        prefix: Text(
-          placeholder ?? "",
-          style: TextStyle(color: defaultColor),
+        padding: EdgeInsets.symmetric(vertical: 8),
+        prefix: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Text(
+            placeholder ?? "",
+            style: TextStyle(color: defaultColor),
+          ),
         ),
         onTap: onTap,
         focusNode: focusNode,
         decoration: plain
-            ? BoxDecoration(borderRadius: BorderRadius.all(Radius.zero))
+            ? BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(16)),
+                color: Colors.white,
+              )
             : _kDefaultRoundedBorderDecoration,
         onChanged: validator,
         obscureText: obscure,
         //decoration: decoration,
         keyboardType: keyboardType,
       ),
-      android: (context) => TextFormField(
+      android: (_) => TextFormField(
         autofocus: autofocus,
         autovalidate: true,
         controller: controller,
         onTap: onTap,
         validator: validator,
         obscureText: obscure,
+        style: TextStyle(color: Colors.white),
         focusNode: focusNode,
         keyboardType: keyboardType,
         textAlignVertical: TextAlignVertical.center,
+        decoration: InputDecoration(
+          labelText: placeholder,
+        ).applyDefaults(Theme.of(_).inputDecorationTheme),
       ),
     );
   }

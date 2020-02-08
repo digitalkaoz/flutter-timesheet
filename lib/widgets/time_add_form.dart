@@ -33,11 +33,11 @@ class TimeAddForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final PanelController sheet = Provider.of<PanelController>(context);
+    final Client client = Provider.of<Clients>(context).current;
     final Widget spacer = SizedBox(height: dense ? 10 : 20);
+
     return Observer(
       builder: (_) {
-        final Client client = Provider.of<Clients>(context).current;
-
         if (client == null) {
           return Container();
         }
@@ -45,10 +45,13 @@ class TimeAddForm extends StatelessWidget {
         final Time time = timesheet.editableTime;
 
         return Container(
-          color: Theme.of(context).primaryColor,
+          color: Theme.of(context).primaryColorDark,
+          width: double.maxFinite,
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               spacer,
               _invertedInput(
@@ -116,7 +119,8 @@ class TimeAddForm extends StatelessWidget {
               ),
               spacer,
               ButtonBar(
-                alignment: MainAxisAlignment.spaceBetween,
+                alignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   timesheet.isNewtime
                       ? Container()
@@ -153,10 +157,6 @@ class TimeAddForm extends StatelessWidget {
   }
 
   Widget _invertedInput(BuildContext context, Widget widget) {
-    return Container(
-      decoration: invertedFormFieldWrapper(context),
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      child: widget,
-    );
+    return widget;
   }
 }

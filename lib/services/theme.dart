@@ -4,14 +4,45 @@ import 'package:intl/intl.dart';
 
 final theme = ThemeData(
   primarySwatch: defaultColor,
-  canvasColor: Colors.grey[100],
+  primaryColor: Color(0xff3f51b5),
+  primaryColorBrightness: Brightness.dark,
+  primaryColorLight: Color(0xffc5cae9),
+  primaryColorDark: Color(0xff303f9f),
+  accentColor: Color(0xff3f51b5),
+  accentColorBrightness: Brightness.dark,
+  canvasColor: Color(0xfffafafa),
+  hintColor: Colors.white,
+  inputDecorationTheme: InputDecorationTheme(
+    focusColor: Colors.white,
+    labelStyle: TextStyle(color: Colors.white),
+    border: OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+    enabledBorder:
+        OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+    disabledBorder: InputBorder.none,
+    contentPadding: EdgeInsets.only(left: 8, top: 4, bottom: 4),
+  ),
 );
 
 final themeDark = ThemeData.dark().copyWith(
   accentColor: defaultColor,
+  inputDecorationTheme: InputDecorationTheme(
+    focusColor: Colors.white,
+    prefixStyle: TextStyle(color: Colors.white),
+    hintStyle: TextStyle(color: Colors.white),
+    labelStyle: TextStyle(color: Colors.white),
+    suffixStyle: TextStyle(color: Colors.white),
+    border: OutlineInputBorder(),
+    disabledBorder: InputBorder.none,
+    contentPadding: EdgeInsets.only(left: 8, top: 4, bottom: 4),
+  ),
+  textTheme: TextTheme(
+    display3: TextStyle(color: defaultColor),
+    body1: TextStyle(color: defaultColor),
+    subhead: TextStyle(color: Colors.white),
+  ),
 );
 
-const defaultColor = Colors.blue;
+final defaultColor = Colors.indigo;
 
 final CupertinoThemeData ios_theme = CupertinoThemeData(
   //primarySwatch: MaterialColor(0xf0000000, {}),

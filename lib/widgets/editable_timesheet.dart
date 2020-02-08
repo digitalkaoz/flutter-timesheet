@@ -29,6 +29,7 @@ class EditableTimsheet extends StatelessWidget {
               columnSpacing: 0,
               rows: timesheet.times
                   .map((t) => rowValues(
+                        context,
                         t,
                         timesheet,
                         deleteCallback: deleteCallback,

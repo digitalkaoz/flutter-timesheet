@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:timesheet_flutter/services/theme.dart';
 import 'package:timesheet_flutter/widgets/platform/icon.dart';
 import 'package:timesheet_flutter/widgets/platform/widget.dart';
 
@@ -20,7 +19,7 @@ class PlatformNavBar extends StatelessWidget
   Widget build(BuildContext context) {
     return PlatformWidget(
       ios: (context) => CupertinoNavigationBar(
-        backgroundColor: defaultColor,
+        backgroundColor: Theme.of(context).primaryColorDark,
         leading: leading ??
             PlatformIcon(
               onTap: () {
@@ -60,6 +59,7 @@ class PlatformNavBar extends StatelessWidget
         trailing: trailing,
       ),
       android: (context) => AppBar(
+        backgroundColor: Theme.of(context).primaryColorDark,
         leading: leading,
         automaticallyImplyLeading: leading == null,
         centerTitle: true,

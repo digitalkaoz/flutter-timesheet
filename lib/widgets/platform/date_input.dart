@@ -57,6 +57,7 @@ class DateInput extends StatelessWidget {
           context: context,
           builder: (_) => Container(
             height: 250,
+            color: Theme.of(context).backgroundColor,
             child: GestureDetector(
               onTap: () => null,
               child: CupertinoDatePicker(
@@ -65,8 +66,8 @@ class DateInput extends StatelessWidget {
                 maximumDate: max,
                 minimumDate: min,
                 onDateTimeChanged: (DateTime newDate) {
-                  date = newDate;
                   if (newDate != null) {
+                    date = newDate;
                     String formatted = (this.format ??
                             DateFormat(DateFormat.YEAR_ABBR_MONTH_DAY))
                         .format(newDate);
@@ -85,12 +86,15 @@ class DateInput extends StatelessWidget {
           firstDate: min,
           lastDate: max,
         );
-        controller.text =
-            (this.format ?? DateFormat(DateFormat.YEAR_ABBR_MONTH_DAY))
-                .format(date);
+
+        if (date != null) {
+          controller.text =
+              (this.format ?? DateFormat(DateFormat.YEAR_ABBR_MONTH_DAY))
+                  .format(date);
+        }
     }
 
-    if (onChange != null) {
+    if (onChange != null && date != null) {
       onChange(date);
     }
   }

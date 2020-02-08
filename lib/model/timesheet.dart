@@ -93,18 +93,14 @@ abstract class TimesheetBase with Store {
     }
     times.remove(time);
 
-    autorun((_) async {
-      await storage.saveTimesheet(this);
-    });
+    storage.saveTimesheet(this);
   }
 
   @action
   archive() {
     archived = true;
 
-    autorun((_) async {
-      await storage.saveTimesheet(this);
-    });
+    storage.saveTimesheet(this);
   }
 
   @action
@@ -134,10 +130,7 @@ abstract class TimesheetBase with Store {
 
     times.sort((a, b) => b.date.compareTo(a.date));
 
-    autorun((_) async {
-      await storage.saveTimesheet(this);
-      editableTime = Time();
-    });
+    storage.saveTimesheet(this).then((value) => editableTime = Time());
   }
 
   @override

@@ -14,7 +14,7 @@ class TimeInput extends StatelessWidget {
   final String Function(String) validator;
   final String placeholder;
   final bool autofocus;
-  final DateTime initial;
+  final TimeOfDay initial;
   final FocusNode focusNode;
   final Function(TimeOfDay) onChange;
   final DateFormat format;
@@ -50,16 +50,21 @@ class TimeInput extends StatelessWidget {
 
     switch (defaultTargetPlatform) {
       case TargetPlatform.iOS:
-        time =
-            TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute);
+        final date = DateTime(
+            DateTime.now().year,
+            DateTime.now().month,
+            DateTime.now().day,
+            (initial ?? TimeOfDay.now()).hour,
+            (initial ?? TimeOfDay.now()).minute);
         await showCupertinoModalPopup(
           context: context,
           builder: (_) => Container(
             height: 250,
+            color: Theme.of(context).backgroundColor,
             child: GestureDetector(
               onTap: () => null,
               child: CupertinoDatePicker(
-                initialDateTime: initial,
+                initialDateTime: date,
                 mode: CupertinoDatePickerMode.time,
                 onDateTimeChanged: (DateTime newDate) {
                   time = TimeOfDay(hour: newDate.hour, minute: newDate.minute);
@@ -85,10 +90,12 @@ class TimeInput extends StatelessWidget {
           initialTime: initial ?? TimeOfDay.now(),
         );
 
-        controller.text = timeFormat(time);
+        if (time != null) {
+          controller.text = timeFormat(time);
+        }
     }
 
-    if (onChange != null) {
+    if (onChange != null && time != null) {
       onChange(time);
     }
   }

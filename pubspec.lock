@@ -205,9 +205,11 @@ packages:
   flutter_duration_picker:
     dependency: "direct main"
     description:
-      name: flutter_duration_picker
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: a44d26ff31ae593c4cb87e7e4d27951f7049c694
+      url: "git://github.com/cdharris/flutter_duration_picker.git"
+    source: git
     version: "1.0.4"
   flutter_launcher_icons:
     dependency: "direct dev"

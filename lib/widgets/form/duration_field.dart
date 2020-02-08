@@ -31,16 +31,20 @@ class DurationField extends StatelessWidget {
       case TargetPlatform.iOS:
         await showCupertinoModalPopup(
           context: context,
-          builder: (_) => GestureDetector(
-            onTap: () => null,
-            child: CupertinoTimerPicker(
-              onTimerDurationChanged: (Duration pause) {
-                duration = pause;
-              },
-              initialTimerDuration: value ?? Duration(hours: 0, minutes: 0),
-              minuteInterval: 5,
-              mode: CupertinoTimerPickerMode.hm,
-              alignment: Alignment.bottomCenter,
+          builder: (_) => Container(
+            height: 250,
+            color: Theme.of(context).backgroundColor,
+            child: GestureDetector(
+              onTap: () => null,
+              child: CupertinoTimerPicker(
+                onTimerDurationChanged: (Duration pause) {
+                  duration = pause;
+                },
+                initialTimerDuration: value ?? Duration(hours: 0, minutes: 0),
+                minuteInterval: 5,
+                mode: CupertinoTimerPickerMode.hm,
+                alignment: Alignment.bottomCenter,
+              ),
             ),
           ),
         );
@@ -69,7 +73,6 @@ class DurationField extends StatelessWidget {
       plain: true,
       focusNode: NoKeyboardEditableTextFocusNode(),
       placeholder: hint,
-      border: InputBorder.none,
       onTap: () async {
         await _showDialog(context, value);
       },

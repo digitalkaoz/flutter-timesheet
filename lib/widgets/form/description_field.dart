@@ -25,7 +25,6 @@ class DescriptionField extends StatelessWidget {
       plain: true,
       focusNode: FocusNode(),
       autofocus: false,
-      border: InputBorder.none,
       placeholder: "Description",
     );
   }

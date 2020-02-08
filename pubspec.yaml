@@ -11,7 +11,7 @@ description: A Flutter Timesheet Application
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.0.1+1
 
 environment:
   sdk: ">=2.5.0 <3.0.0"
@@ -25,7 +25,9 @@ dependencies:
   intl: ^0.15.8
   sliding_up_panel: ^0.3.6
   datetime_picker_formfield: ^0.4.3
-  flutter_duration_picker: ^1.0.4
+  flutter_duration_picker:
+    git:
+      url: git://github.com/cdharris/flutter_duration_picker.git
   printing: ^3.0.0
   flutter_device_type: ^0.2.0
   shared_preferences: ^0.5.6

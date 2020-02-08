@@ -114,7 +114,7 @@ List<DataColumn> rowColumns(Timesheet timesheet, Time time, bool isSmall) {
   return columns;
 }
 
-List<DataRow> rowValues(Time time, Timesheet timesheet,
+List<DataRow> rowValues(BuildContext context, Time time, Timesheet timesheet,
     {Function(Time) deleteCallback,
     Function(Time) editCallback,
     bool isSmall}) {
@@ -139,7 +139,11 @@ List<DataRow> rowValues(Time time, Timesheet timesheet,
     DataCell(
       Text(
         durationFormat(time.total),
-        style: TextStyle(color: defaultColor, fontWeight: FontWeight.bold),
+        style: TextStyle(
+            color: (Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : Theme.of(context).primaryColorDark),
+            fontWeight: FontWeight.bold),
       ),
     )
   ];
