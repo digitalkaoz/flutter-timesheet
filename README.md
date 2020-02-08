@@ -1,16 +1,15 @@
 # Flutter Timesheet App
 
-[![Timesheets](./assets/icon_android.png)](https://github.com/digitalkaoz/flutter-timesheet)
-
-
+<img src="https://github.com/digitalkaoz/flutter-timesheet/raw/master/assets/icon_android.png" width="100" height="100">
 
 > a Timesheet Application, because all others suxx ;)
 
 This whole App is totally educational to me. If you value this work (like me) download the App
 from the App-Store of your Platform :)
 
-[![Playstore](./assets/playstore.png)](http://play.google.com/store/apps/details?id=<package_name>)
-[![Applestore](./assets/applestore.png)](http://play.google.com/store/apps/details?id=<package_name>)
+<a href="" target="_blank"><img src="https://github.com/digitalkaoz/flutter-timesheet/raw/master/assets/playstore.png" height="100"></a>
+<a href="" target="_blank"><img src="https://github.com/digitalkaoz/flutter-timesheet/raw/master/assets/applestore.png" height="100"></a>
+
 
 ## Highlights
 
@@ -21,6 +20,16 @@ from the App-Store of your Platform :)
 * ⬇️ Export/Import Data from other Instances 
 * 🖥 Works on Web (t.b.d.)
 * 🌓 Dark Mode aware
+
+**Android**
+
+| ![Timesheet](screenshots/android5.png) | ![Dark Mode](screenshots/android1.png) | ![New Time](screenshots/android2.png) | ![Edit Time](screenshots/android3.png) | ![PDF Export](screenshots/android4.png) |
+|------------|-------------|-------------|-------------|-------------|
+
+**iOS**
+
+| ![Timesheet](screenshots/ios_iphone1.png) | ![New Time](screenshots/ios_iphone2.png) | ![Edit Time](screenshots/ios_iphone3.png) |
+|------------|-------------|-------------|
 
 ## Features
 
