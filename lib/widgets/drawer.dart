@@ -22,7 +22,7 @@ class ClientDrawer extends StatelessWidget {
       child: Column(
         children: <Widget>[
           DrawerHeader(
-            decoration: BoxDecoration(color: defaultColor),
+            decoration: BoxDecoration(color: bg(context)),
             child: Center(
               child: Text(
                 client.name,

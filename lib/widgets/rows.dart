@@ -1,8 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:timesheet_flutter/model/time.dart';
 import 'package:timesheet_flutter/model/timesheet.dart';
 import 'package:timesheet_flutter/services/theme.dart';
+
+import 'device.dart';
 
 const List<DataColumn> HEADER_COLUMNS = [
   DataColumn(
@@ -30,7 +31,7 @@ const List<DataColumn> HEADER_COLUMNS = [
 ];
 
 List<DataColumn> headerColumns(Timesheet timesheet, bool isSmall) {
-  var columns = HEADER_COLUMNS;
+  var columns = List.of(HEADER_COLUMNS);
 
   if (!isSmall) {
     columns.insert(
@@ -41,7 +42,7 @@ List<DataColumn> headerColumns(Timesheet timesheet, bool isSmall) {
     );
   }
 
-  if (kIsWeb && !timesheet.archived) {
+  if ((isWeb || isTablet) && !timesheet.archived) {
     columns.add(
       DataColumn(
         label: Text('Actions'),
@@ -91,7 +92,7 @@ const List<DataColumn> ROW_COLUMNS = [
 ];
 
 List<DataColumn> rowColumns(Timesheet timesheet, Time time, bool isSmall) {
-  var columns = ROW_COLUMNS;
+  var columns = List.of(ROW_COLUMNS);
 
   if (!isSmall) {
     columns.insert(
@@ -102,7 +103,7 @@ List<DataColumn> rowColumns(Timesheet timesheet, Time time, bool isSmall) {
     );
   }
 
-  if (kIsWeb && !timesheet.archived) {
+  if ((isWeb || isTablet) && !timesheet.archived) {
     columns.add(
       DataColumn(
         label: Text('Actions'),
@@ -142,7 +143,7 @@ List<DataRow> rowValues(BuildContext context, Time time, Timesheet timesheet,
         style: TextStyle(
             color: (Theme.of(context).brightness == Brightness.dark
                 ? Colors.white
-                : Theme.of(context).primaryColorDark),
+                : Theme.of(context).primaryColor),
             fontWeight: FontWeight.bold),
       ),
     )
@@ -157,7 +158,7 @@ List<DataRow> rowValues(BuildContext context, Time time, Timesheet timesheet,
     );
   }
 
-  if (kIsWeb && !timesheet.archived) {
+  if ((isWeb || isTablet) && !timesheet.archived) {
     cells.add(
       DataCell(
         Container(

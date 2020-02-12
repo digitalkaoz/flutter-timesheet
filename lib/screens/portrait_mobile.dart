@@ -33,14 +33,14 @@ class PortraitMobile extends StatelessWidget {
                     : bottomSheet(context, clients, sheet),
                 collapsed: clients.current == null
                     ? Container()
-                    : collapsed(clients, sheet),
+                    : _collapsed(clients, sheet),
               )
             : NoClientsPage(),
       ),
     );
   }
 
-  Widget collapsed(Clients clients, PanelController sheet) {
+  Widget _collapsed(Clients clients, PanelController sheet) {
     return Chip(
       onTap: () => sheet.isPanelOpen() ? sheet.close() : sheet.open(),
       label: Text('Add Time to ${clients.currentTitle}'),
@@ -62,7 +62,7 @@ class PortraitMobile extends StatelessWidget {
                 .headline
                 .copyWith(color: Colors.white),
           ),
-          SizedBox(height: 8),
+          SizedBox(height: 25),
           TimeAddForm(),
         ],
       ),

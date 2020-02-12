@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' as m show RaisedButton, FlatButton;
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:timesheet_flutter/widgets/platform/widget.dart';
 
@@ -41,7 +42,6 @@ class Button extends StatelessWidget {
       ios: (context) => CupertinoButton(
         child: child,
         onPressed: onPressed,
-        color: color,
       ),
       android: (context) => m.FlatButton(
         child: child,

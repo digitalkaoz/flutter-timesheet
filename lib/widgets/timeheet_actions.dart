@@ -29,7 +29,10 @@ class TimesheetActions extends StatelessWidget {
 
     final List<Widget> buttons = [
       Button(
-        child: Text("Export"),
+        child: Text(
+          "Export",
+          style: TextStyle(color: Theme.of(context).accentColor),
+        ),
         onPressed: () async {
           await Printing.layoutPdf(
               onLayout: (PdfPageFormat format) async =>
@@ -41,7 +44,10 @@ class TimesheetActions extends StatelessWidget {
     if (!timesheet.archived) {
       buttons.add(
         Button(
-          child: Text("Finish"),
+          child: Text(
+            "Finish",
+            style: TextStyle(color: Theme.of(context).accentColor),
+          ),
           onPressed: () => showDialog<void>(
             context: context,
             barrierDismissible: false, // user must tap button!

@@ -3,9 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:timesheet_flutter/model/clients.dart';
 import 'package:timesheet_flutter/screens/landscape_desktop.dart';
 import 'package:timesheet_flutter/screens/landscape_mobile.dart';
+import 'package:timesheet_flutter/screens/loading.dart';
 import 'package:timesheet_flutter/screens/portrait_mobile.dart';
+import 'package:timesheet_flutter/screens/portrait_tablet.dart';
 import 'package:timesheet_flutter/widgets/device.dart';
-import 'package:timesheet_flutter/widgets/platform/spinner.dart';
 
 class IndexScreen extends StatefulWidget {
   static const ROUTE = '/';
@@ -30,11 +31,7 @@ class _IndexScreenState extends State<IndexScreen> {
   @override
   Widget build(BuildContext context) {
     if (loadedClients == false) {
-      return Material(
-        child: Center(
-          child: Spinner(),
-        ),
-      );
+      return LoadingPage();
     }
 
     return OrientationBuilder(
@@ -49,7 +46,7 @@ class _IndexScreenState extends State<IndexScreen> {
 
         return DeviceWidget(
           phone: (_) => PortraitMobile(),
-          tablet: (_) => PortraitMobile(),
+          tablet: (_) => PortraitTablet(),
           web: (_) => PortraitMobile(),
         );
       },

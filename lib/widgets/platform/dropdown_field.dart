@@ -51,8 +51,12 @@ class Dropdown<T> extends StatelessWidget {
       ),
       android: (context) => DropdownButtonHideUnderline(
         child: DropdownButton<T>(
+          hint: Text(
+            placeholder ?? "",
+            style: TextStyle(color: Colors.white),
+          ),
           iconSize: 30,
-          iconEnabledColor: defaultColor,
+          iconEnabledColor: Theme.of(context).accentColor,
           value: value,
           isDense: true,
           onChanged: onChange,

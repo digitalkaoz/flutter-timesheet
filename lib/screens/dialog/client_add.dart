@@ -25,7 +25,8 @@ class ClientAddForm extends StatelessWidget {
         validator: (value) => clients.validateName(_controller.text),
         decoration: InputDecoration(
           hintText: 'Client Name',
-        ),
+          focusColor: Theme.of(context).primaryColorDark,
+        ).applyDefaults(Theme.of(context).inputDecorationTheme),
       ),
     );
   }

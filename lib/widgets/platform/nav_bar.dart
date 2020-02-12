@@ -19,7 +19,6 @@ class PlatformNavBar extends StatelessWidget
   Widget build(BuildContext context) {
     return PlatformWidget(
       ios: (context) => CupertinoNavigationBar(
-        backgroundColor: Theme.of(context).primaryColorDark,
         leading: leading ??
             PlatformIcon(
               onTap: () {
@@ -59,7 +58,6 @@ class PlatformNavBar extends StatelessWidget
         trailing: trailing,
       ),
       android: (context) => AppBar(
-        backgroundColor: Theme.of(context).primaryColorDark,
         leading: leading,
         automaticallyImplyLeading: leading == null,
         centerTitle: true,

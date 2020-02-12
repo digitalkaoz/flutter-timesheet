@@ -29,6 +29,8 @@
 .pub/
 /build/
 *.g.dart
+/.gradle
+/coverage
 
 # Web related
 lib/generated_plugin_registrant.dart

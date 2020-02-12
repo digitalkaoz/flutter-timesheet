@@ -23,3 +23,7 @@ class DeviceWidget extends StatelessWidget {
     return phone(context);
   }
 }
+
+final isWeb = kIsWeb;
+final isTablet = Device.get().isTablet;
+final isPhone = Device.get().isPhone;

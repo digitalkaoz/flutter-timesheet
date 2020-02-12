@@ -8,6 +8,7 @@ import 'package:timesheet_flutter/model/time.dart';
 import 'package:timesheet_flutter/model/timesheet.dart';
 import 'package:timesheet_flutter/screens/dialog/delete_time.dart';
 import 'package:timesheet_flutter/services/theme.dart';
+import 'package:timesheet_flutter/widgets/device.dart';
 import 'package:timesheet_flutter/widgets/dismissible_timesheet.dart';
 import 'package:timesheet_flutter/widgets/editable_timesheet.dart';
 
@@ -38,15 +39,14 @@ class TimesheetPanel {
           "${dateFormat(timesheet.last)} - ${dateFormat(timesheet.start)}",
           style: TextStyle(
             fontWeight: FontWeight.bold,
+						color: Theme.of(context).primaryColor,
           ),
         ),
         Text(
           durationFormat(timesheet.total),
           style: TextStyle(
             fontWeight: FontWeight.w400,
-            color: (Theme.of(context).brightness == Brightness.dark
-                ? Theme.of(context).primaryColorLight
-                : Theme.of(context).primaryColorDark),
+            color: Theme.of(context).primaryColor,
           ),
         ),
       ],
@@ -63,7 +63,7 @@ class TimesheetPanel {
       );
     }
 
-    if (timesheet.archived || kIsWeb) {
+    if (timesheet.archived || isWeb || isTablet) {
       return EditableTimsheet(
         timesheet: timesheet,
         deleteCallback: (time) =>
@@ -80,9 +80,11 @@ class TimesheetPanel {
   }
 
   _editTime(Time time, BuildContext context) {
-    final PanelController sheet =
-        Provider.of<PanelController>(context, listen: false);
     client.currentTimesheet.setCurrentTime(time);
-    sheet.open();
+    try {
+      final PanelController sheet =
+          Provider.of<PanelController>(context, listen: false);
+      sheet.open();
+    } catch (e) {}
   }
 }

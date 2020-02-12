@@ -7,8 +7,8 @@
 This whole App is totally educational to me. If you value this work (like me) download the App
 from the App-Store of your Platform :)
 
-<a href="" target="_blank"><img src="https://github.com/digitalkaoz/flutter-timesheet/raw/master/assets/playstore.png" height="100"></a>
-<a href="" target="_blank"><img src="https://github.com/digitalkaoz/flutter-timesheet/raw/master/assets/applestore.png" height="100"></a>
+<a href="" target="_blank"><img src="https://github.com/digitalkaoz/flutter-timesheet/raw/master/assets/playstore.png" height="50"></a>
+<a href="" target="_blank"><img src="https://github.com/digitalkaoz/flutter-timesheet/raw/master/assets/applestore.png" height="50"></a>
 
 
 ## Highlights

@@ -22,19 +22,179 @@ class TimeAddForm extends StatelessWidget {
   final pause = TextEditingController();
   final date = TextEditingController();
   final bool dense;
+  final int columns;
 
-  TimeAddForm({Key key, this.dense = false}) : super(key: key);
+  TimeAddForm({Key key, this.columns = 1, this.dense = false})
+      : super(key: key);
 
   void _unfocus(BuildContext context) {
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     FocusScope.of(context).requestFocus(FocusNode());
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _descriptionField(Time time) {
+    return DescriptionField(
+      value: time.description,
+      controller: description,
+      hint: "Description".padRight(20),
+      onChanged: (String value) {
+        time.description = value;
+      },
+    );
+  }
+
+  Widget _startField(Time time, BuildContext context) {
+    return TimeField(
+      value: time.start,
+      controller: start,
+      onChanged: (TimeOfDay value) {
+        time.start = value;
+        _unfocus(context);
+      },
+      hint: "Start".padRight(20),
+    );
+  }
+
+  Widget _endField(Time time, BuildContext context) {
+    return TimeField(
+      value: time.end,
+      controller: end,
+      onChanged: (TimeOfDay value) {
+        time.end = value;
+        _unfocus(context);
+      },
+      hint: "End".padRight(20),
+    );
+  }
+
+  Widget _durationField(Time time, BuildContext context) {
+    return DurationField(
+      controller: pause,
+      value: time.pause,
+      onChanged: (value) {
+        time.pause = value;
+        _unfocus(context);
+      },
+      hint: "Pause".padRight(20),
+    );
+  }
+
+  Widget _dateField(Time time, BuildContext context) {
+    return DateField(
+      value: time.date,
+      controller: date,
+      onChanged: (DateTime value) {
+        time.date = value;
+        _unfocus(context);
+      },
+      hint: "Date".padRight(15),
+    );
+  }
+
+  List<Widget> _singleColumn(Time time, BuildContext context) {
+    final Widget spacer = SizedBox(height: dense ? 10 : 20);
+
+    return [
+      _descriptionField(time),
+      spacer,
+      _startField(time, context),
+      spacer,
+      _endField(time, context),
+      spacer,
+      _durationField(time, context),
+      spacer,
+      _dateField(time, context),
+      spacer,
+      _buttonBar(time, context)
+    ];
+  }
+
+  List<Widget> _doubleColumn(Time time, BuildContext context) {
+    final Widget spacer = SizedBox(height: dense ? 10 : 20);
+
+    return [
+      spacer,
+      Container(
+        height: 60,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Flexible(flex: 1, child: _dateField(time, context)),
+            SizedBox(width: 16),
+            Flexible(flex: 3, child: _descriptionField(time)),
+          ],
+        ),
+      ),
+      spacer,
+      Container(
+        height: 60,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Flexible(child: _startField(time, context)),
+            SizedBox(width: 16),
+            Flexible(child: _durationField(time, context)),
+            SizedBox(width: 16),
+            Flexible(child: _endField(time, context)),
+          ],
+        ),
+      ),
+      spacer,
+      _buttonBar(time, context)
+    ];
+  }
+
+  Widget _buttonBar(Time time, BuildContext context) {
     final PanelController sheet = Provider.of<PanelController>(context);
     final Client client = Provider.of<Clients>(context).current;
-    final Widget spacer = SizedBox(height: dense ? 10 : 20);
+    final Timesheet timesheet = client.currentTimesheet;
+
+    return ButtonBar(
+      alignment: MainAxisAlignment.spaceBetween,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        timesheet.isNewtime
+            ? Container()
+            : Button(
+                color: defaultColor,
+                child: Text(
+                  "Cancel",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {
+                  // TODO restore initial time!
+                  timesheet.setCurrentTime(Time());
+                  try {
+                    sheet.close();
+                  } catch (e) {}
+                },
+              ),
+        RaisedButton(
+          color: Colors.white,
+          //disabledColor: defaultColor,
+          //disabledTextColor: Colors.white.withAlpha(75),
+          //textColor: defaultColor,
+          onPressed: time.valid
+              ? () {
+                  timesheet.saveTime();
+                  try {
+                    sheet.close();
+                  } catch (e) {}
+                }
+              : null,
+          child: Text(timesheet.isNewtime ? "Save" : "Update"),
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final Client client = Provider.of<Clients>(context).current;
 
     return Observer(
       builder: (_) {
@@ -45,118 +205,18 @@ class TimeAddForm extends StatelessWidget {
         final Time time = timesheet.editableTime;
 
         return Container(
-          color: Theme.of(context).primaryColorDark,
+          color: bg(context),
           width: double.maxFinite,
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              spacer,
-              _invertedInput(
-                _,
-                DescriptionField(
-                  value: time.description,
-                  controller: description,
-                  hint: "Description".padRight(20),
-                  onChanged: (String value) {
-                    time.description = value;
-                  },
-                ),
-              ),
-              spacer,
-              _invertedInput(
-                _,
-                TimeField(
-                  value: time.start,
-                  controller: start,
-                  onChanged: (TimeOfDay value) {
-                    time.start = value;
-                    _unfocus(_);
-                  },
-                  hint: "Start".padRight(20),
-                ),
-              ),
-              spacer,
-              _invertedInput(
-                _,
-                TimeField(
-                  value: time.end,
-                  controller: end,
-                  onChanged: (TimeOfDay value) {
-                    time.end = value;
-                    _unfocus(_);
-                  },
-                  hint: "End".padRight(20),
-                ),
-              ),
-              spacer,
-              _invertedInput(
-                _,
-                DurationField(
-                  controller: pause,
-                  value: time.pause,
-                  onChanged: (value) {
-                    time.pause = value;
-                    _unfocus(_);
-                  },
-                  hint: "Pause".padRight(20),
-                ),
-              ),
-              spacer,
-              _invertedInput(
-                _,
-                DateField(
-                  value: time.date,
-                  controller: date,
-                  onChanged: (DateTime value) {
-                    time.date = value;
-                    _unfocus(_);
-                  },
-                  hint: "Date".padRight(15),
-                ),
-              ),
-              spacer,
-              ButtonBar(
-                alignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  timesheet.isNewtime
-                      ? Container()
-                      : Button(
-                          color: defaultColor,
-                          child: Text("Cancel"),
-                          onPressed: () {
-                            timesheet.setCurrentTime(Time());
-                            sheet.close();
-                          },
-                        ),
-                  RaisedButton(
-                    color: Colors.white,
-                    //disabledColor: defaultColor,
-                    //disabledTextColor: Colors.white.withAlpha(75),
-                    //textColor: defaultColor,
-                    onPressed: time.valid
-                        ? () {
-                            timesheet.saveTime();
-                            try {
-                              sheet.close();
-                            } catch (e) {}
-                          }
-                        : null,
-                    child: Text(timesheet.isNewtime ? "Save" : "Update"),
-                  ),
-                ],
-              ),
-            ],
+            children:
+                columns == 1 ? _singleColumn(time, _) : _doubleColumn(time, _),
           ),
         );
       },
     );
-  }
-
-  Widget _invertedInput(BuildContext context, Widget widget) {
-    return widget;
   }
 }

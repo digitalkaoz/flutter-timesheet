@@ -37,26 +37,35 @@ class _PlatformAppState extends State<PlatformApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return PlatformWidget(
-      ios: (context) => c.CupertinoApp(
-        localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-          DefaultMaterialLocalizations.delegate,
-          DefaultWidgetsLocalizations.delegate,
-        ],
-        title: PlatformApp.APP_TITLE,
-        theme: ios_theme.copyWith(
-          brightness: brightness,
-        ),
-        initialRoute: PlatformApp.INITIAL_ROUTE,
-        routes: routes,
-      ),
-      android: (context) => MaterialApp(
-        title: PlatformApp.APP_TITLE,
-        theme: brightness == Brightness.dark ? themeDark : theme,
-        darkTheme: themeDark,
-        initialRoute: PlatformApp.INITIAL_ROUTE,
-        routes: routes,
-        //localizationsDelegates: ,
-      ),
+      ios: (_) {
+        if (brightness == null) {
+          brightness = WidgetsBinding.instance.window.platformBrightness;
+        }
+
+        return c.CupertinoApp(
+          localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+            DefaultMaterialLocalizations.delegate,
+            DefaultWidgetsLocalizations.delegate,
+          ],
+          title: PlatformApp.APP_TITLE,
+          theme: brightness == Brightness.dark ? iosthemeDark() : ios_theme(),
+          initialRoute: PlatformApp.INITIAL_ROUTE,
+          routes: routes,
+        );
+      },
+      android: (_) {
+        if (brightness == null) {
+          brightness = WidgetsBinding.instance.window.platformBrightness;
+        }
+        return MaterialApp(
+          title: PlatformApp.APP_TITLE,
+          //theme: brightness == Brightness.dark ? themeDark() : theme(),
+          theme: themeDark(),
+          initialRoute: PlatformApp.INITIAL_ROUTE,
+          routes: routes,
+          //localizationsDelegates: ,
+        );
+      },
     );
   }
 }
