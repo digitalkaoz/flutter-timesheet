@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:timesheet_flutter/model/time.dart';
 import 'package:timesheet_flutter/model/timesheet.dart';
+import 'package:timesheet_flutter/widgets/platform/widget.dart';
 import 'package:timesheet_flutter/widgets/rows.dart';
 import 'package:timesheet_flutter/widgets/timeheet_actions.dart';
 
@@ -98,9 +99,11 @@ class TimeRow extends StatelessWidget {
         if (deleteCallback != null) {
           deleteCallback(time);
         }
-        Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text("Deleted Time"),
-        ));
+        if (isAndroid) {
+          Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text("Deleted Time"),
+          ));
+        }
       },
       background: Container(
         color: Colors.red,

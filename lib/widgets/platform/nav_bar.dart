@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:timesheet_flutter/services/theme.dart';
+import 'package:timesheet_flutter/widgets/device.dart';
 import 'package:timesheet_flutter/widgets/platform/icon.dart';
 import 'package:timesheet_flutter/widgets/platform/widget.dart';
 
@@ -29,7 +31,9 @@ class PlatformNavBar extends StatelessWidget
                       Positioned(
                         left: 0,
                         height: MediaQuery.of(_).size.height,
-                        width: (MediaQuery.of(context).size.width / 3) * 2,
+                        width: isTablet || isWeb
+                            ? (MediaQuery.of(context).size.width / 6) * 2
+                            : (MediaQuery.of(context).size.width / 3) * 2,
                         child: drawer ?? Container(),
                       ),
                       Positioned(
@@ -38,7 +42,9 @@ class PlatformNavBar extends StatelessWidget
                           child: PlatformIcon(
                             icon: Icon(
                               Icons.close,
-                              color: Colors.black,
+                              color: brightness(context) == Brightness.dark
+                                  ? accent(context)
+                                  : Colors.white,
                             ),
                           ),
                         ),

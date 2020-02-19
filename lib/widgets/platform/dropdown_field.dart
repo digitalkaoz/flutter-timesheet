@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart' as c;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:timesheet_flutter/services/theme.dart';
@@ -23,18 +23,20 @@ class Dropdown<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PlatformWidget(
-      ios: (context) => FlatButton(
-        textColor: defaultColor,
-        child: Text(value.toString()),
-        highlightColor: Colors.transparent,
-        splashColor: Colors.transparent,
-        color: Colors.white,
-        onPressed: () => showCupertinoModalPopup(
+      ios: (context) => c.CupertinoButton(
+        borderRadius: BorderRadius.zero,
+        color: Colors.transparent,
+        padding: c.EdgeInsets.symmetric(horizontal: 32),
+        child: Text(
+          value.toString(),
+          style: TextStyle(color: accent(context)),
+        ),
+        onPressed: () => c.showCupertinoModalPopup(
           context: context,
           builder: (_) => Container(
             height: 200,
             child: Center(
-              child: CupertinoPicker(
+              child: c.CupertinoPicker(
                 useMagnifier: true,
                 magnification: 1.5,
                 itemExtent: 20,
@@ -56,7 +58,7 @@ class Dropdown<T> extends StatelessWidget {
             style: TextStyle(color: Colors.white),
           ),
           iconSize: 30,
-          iconEnabledColor: Theme.of(context).accentColor,
+          iconEnabledColor: accent(context),
           value: value,
           isDense: true,
           onChanged: onChange,

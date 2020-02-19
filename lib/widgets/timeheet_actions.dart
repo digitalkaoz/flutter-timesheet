@@ -6,6 +6,7 @@ import 'package:timesheet_flutter/model/client.dart';
 import 'package:timesheet_flutter/model/clients.dart';
 import 'package:timesheet_flutter/model/timesheet.dart';
 import 'package:timesheet_flutter/screens/dialog/finish_timesheet.dart';
+import 'package:timesheet_flutter/services/theme.dart';
 import 'package:timesheet_flutter/widgets/platform/button.dart';
 import 'package:timesheet_flutter/widgets/report_pdf.dart';
 
@@ -31,7 +32,7 @@ class TimesheetActions extends StatelessWidget {
       Button(
         child: Text(
           "Export",
-          style: TextStyle(color: Theme.of(context).accentColor),
+          style: TextStyle(color: accent(context)),
         ),
         onPressed: () async {
           await Printing.layoutPdf(
@@ -46,7 +47,7 @@ class TimesheetActions extends StatelessWidget {
         Button(
           child: Text(
             "Finish",
-            style: TextStyle(color: Theme.of(context).accentColor),
+            style: TextStyle(color: accent(context)),
           ),
           onPressed: () => showDialog<void>(
             context: context,

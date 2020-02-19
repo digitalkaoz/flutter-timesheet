@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Chip;
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:timesheet_flutter/model/clients.dart';
@@ -11,7 +11,7 @@ import 'package:timesheet_flutter/widgets/time_add_form.dart';
 import 'client.dart';
 import 'no_clients.dart';
 
-class LandscapeMobile extends StatelessWidget {
+class LandscapeTablet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Clients clients = Provider.of<Clients>(context);
@@ -28,35 +28,31 @@ class LandscapeMobile extends StatelessWidget {
                   Expanded(
                       flex: 3,
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 8, top: 6),
+                        padding: const EdgeInsets.only(left: 16, top: 4),
                         child: ClientOverview(clients.current),
                       )),
+                  SizedBox(width: 12),
                   Flexible(
                     child: Padding(
-                      padding: const EdgeInsets.only(right: 4, top: 2),
+                      padding: const EdgeInsets.only(right: 12, bottom: 12),
                       child: Card(
                         color: bg(_),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              SizedBox(height: 12),
-                              Text(
-                                clients.current.currentTimesheet.isNewtime
-                                    ? "New Time"
-                                    : "Edit Time",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline
-                                    .copyWith(color: Colors.white),
-                              ),
-                              SizedBox(height: 12),
-                              TimeAddForm(
-                                columns: 1,
-                                dense: true,
-                              ),
-                            ],
-                          ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            SizedBox(height: 32),
+                            Text(
+                              clients.current.currentTimesheet.isNewtime
+                                  ? "New Time"
+                                  : "Edit Time",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline
+                                  .copyWith(color: Colors.white),
+                            ),
+                            SizedBox(height: 32),
+                            TimeAddForm(columns: 1),
+                          ],
                         ),
                       ),
                     ),

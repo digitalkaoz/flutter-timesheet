@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:timesheet_flutter/widgets/platform/widget.dart';
 
-final defaultColor = Color(0xff333399);
-final darkColor = Color(0xff333399);
-final accentColor = Color(0xffFF4081);
+final darkColor = Color(0xff00acc1);
+final accentColor = Color(0xff1a237e);
 
 ThemeData theme() => ThemeData(
       primaryColor: darkColor,
@@ -46,14 +46,40 @@ themeDark() => ThemeData.dark().copyWith(
     );
 
 CupertinoThemeData ios_theme() =>
-    MaterialBasedCupertinoThemeData(materialTheme: theme())
-        .copyWith(barBackgroundColor: darkColor);
+    MaterialBasedCupertinoThemeData(materialTheme: theme()).copyWith(
+      barBackgroundColor: darkColor,
+      primaryContrastingColor: accentColor,
+      scaffoldBackgroundColor: Colors.grey[300],
+    );
 
 CupertinoThemeData iosthemeDark() =>
-    MaterialBasedCupertinoThemeData(materialTheme: themeDark());
+    MaterialBasedCupertinoThemeData(materialTheme: themeDark()).copyWith(
+      barBackgroundColor: Colors.grey[900],
+      brightness: Brightness.dark,
+      primaryContrastingColor: accentColor,
+      scaffoldBackgroundColor: Colors.grey[800],
+    );
 
 Color bg(BuildContext context) {
-  return Theme.of(context).primaryColor;
+  return brightness(context) == Brightness.dark ? Colors.grey[900] : darkColor;
+}
+
+Brightness brightness(BuildContext context) {
+  if (isIos) {
+    return CupertinoTheme.of(context).brightness;
+  }
+
+  return Theme.of(context).brightness;
+}
+
+Color accent(BuildContext context) {
+  return brightness(context) == Brightness.dark
+      ? Color(0xffffe0b2)
+      : accentColor;
+}
+
+Color fg(BuildContext context) {
+  return brightness(context) == Brightness.dark ? Colors.grey[900] : darkColor;
 }
 
 String durationFormat(Duration duration) {

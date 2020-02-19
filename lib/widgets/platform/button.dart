@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' as m show RaisedButton, FlatButton;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:timesheet_flutter/services/theme.dart';
 import 'package:timesheet_flutter/widgets/platform/widget.dart';
 
 class RaisedButton extends StatelessWidget {
@@ -16,12 +17,13 @@ class RaisedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return PlatformWidget(
       ios: (context) => CupertinoButton.filled(
+        disabledColor: onPressed == null ? fg(context) : accent(context),
         child: child,
         onPressed: onPressed,
       ),
       android: (context) => m.RaisedButton(
         child: child,
-        color: color,
+        color: onPressed == null ? fg(context) : accent(context),
         onPressed: onPressed,
       ),
     );

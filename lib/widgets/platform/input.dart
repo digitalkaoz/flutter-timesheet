@@ -67,7 +67,7 @@ class Input extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Text(
             placeholder ?? "",
-            style: TextStyle(color: defaultColor),
+            style: TextStyle(color: fg(context)),
           ),
         ),
         onTap: onTap,

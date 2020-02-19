@@ -8,6 +8,7 @@ import 'package:timesheet_flutter/model/clients.dart';
 import 'package:timesheet_flutter/screens/dialog/client_add.dart';
 import 'package:timesheet_flutter/screens/dialog/client_delete.dart';
 import 'package:timesheet_flutter/screens/dialog/client_edit.dart';
+import 'package:timesheet_flutter/services/theme.dart';
 
 class MenuItems extends StatelessWidget {
   @override
@@ -15,6 +16,8 @@ class MenuItems extends StatelessWidget {
     final Clients clients = Provider.of<Clients>(context);
 
     final headerTheme = Theme.of(context).textTheme.subhead;
+    final iconColor =
+        brightness(context) == Brightness.dark ? accent(context) : fg(context);
 
     return Column(
       children: <Widget>[
@@ -31,6 +34,7 @@ class MenuItems extends StatelessWidget {
           title: Text("Import"),
           leading: Icon(
             Icons.cloud_upload,
+            color: iconColor,
           ),
           onTap: () async {
             File file = await FilePicker.getFile(type: FileType.ANY);
@@ -43,6 +47,7 @@ class MenuItems extends StatelessWidget {
           title: Text("Export"),
           leading: Icon(
             Icons.cloud_download,
+            color: iconColor,
           ),
           onTap: () async {
             final file = await clients.export();
@@ -69,6 +74,7 @@ class MenuItems extends StatelessWidget {
           title: Text("Add"),
           leading: Icon(
             Icons.create_new_folder,
+            color: iconColor,
           ),
           onTap: () async {
             await showClientAddDialog(context);
@@ -77,7 +83,10 @@ class MenuItems extends StatelessWidget {
         ),
         ListTile(
           title: Text("Edit"),
-          leading: Icon(Icons.edit),
+          leading: Icon(
+            Icons.edit,
+            color: iconColor,
+          ),
           onTap: () async {
             await showClientEditDialog(context);
             Navigator.pop(context);
@@ -85,7 +94,12 @@ class MenuItems extends StatelessWidget {
         ),
         ListTile(
           title: Text("Delete"),
-          leading: Icon(Icons.delete),
+          leading: Icon(
+            Icons.delete,
+            color: brightness(context) == Brightness.dark
+                ? accent(context)
+                : fg(context),
+          ),
           onTap: () async {
             await showClientDeleteDialog(context);
             Navigator.pop(context);
@@ -102,7 +116,10 @@ class MenuItems extends StatelessWidget {
         ),
         ListTile(
           title: Text("About"),
-          leading: Icon(Icons.view_quilt),
+          leading: Icon(
+            Icons.view_quilt,
+            color: iconColor,
+          ),
           onTap: () async {
             showAboutDialog(
               context: context,

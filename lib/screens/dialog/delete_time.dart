@@ -2,20 +2,25 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:timesheet_flutter/model/time.dart';
 import 'package:timesheet_flutter/model/timesheet.dart';
+import 'package:timesheet_flutter/services/theme.dart';
 import 'package:timesheet_flutter/widgets/platform/dialog.dart';
 import 'package:timesheet_flutter/widgets/platform/dialog_button.dart';
 
 class DeleteTime extends StatelessWidget {
+  final Time time;
+  final Timesheet timesheet;
+  DeleteTime(this.time, this.timesheet);
+
   @override
   Widget build(BuildContext context) {
-    return Text('Really delete this Time?');
+    return Text('${dateFormat(time.date)} - ${durationFormat(time.total)}');
   }
 }
 
 showTimeDeleteDialog(
     BuildContext context, Timesheet timesheet, Time time) async {
-  final message =
-      await showAlertDialog(context, Text("Delete Time"), DeleteTime(), [
+  final message = await showAlertDialog(
+      context, Text("Delete Time?"), DeleteTime(time, timesheet), [
     DialogButton(
       child: Text('Cancel'),
       onTap: () => Navigator.of(context).pop(),

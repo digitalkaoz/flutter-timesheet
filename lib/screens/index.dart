@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:timesheet_flutter/model/clients.dart';
 import 'package:timesheet_flutter/screens/landscape_desktop.dart';
 import 'package:timesheet_flutter/screens/landscape_mobile.dart';
+import 'package:timesheet_flutter/screens/landscape_tablet.dart';
 import 'package:timesheet_flutter/screens/loading.dart';
 import 'package:timesheet_flutter/screens/portrait_mobile.dart';
 import 'package:timesheet_flutter/screens/portrait_tablet.dart';
@@ -39,7 +40,7 @@ class _IndexScreenState extends State<IndexScreen> {
         if (orientation == Orientation.landscape) {
           return DeviceWidget(
             phone: (_) => LandscapeMobile(),
-            tablet: (_) => LandscapeMobile(),
+            tablet: (_) => LandscapeTablet(),
             web: (_) => LandscapeDesktop(),
           );
         }
@@ -47,7 +48,7 @@ class _IndexScreenState extends State<IndexScreen> {
         return DeviceWidget(
           phone: (_) => PortraitMobile(),
           tablet: (_) => PortraitTablet(),
-          web: (_) => PortraitMobile(),
+          web: (_) => PortraitTablet(),
         );
       },
     );

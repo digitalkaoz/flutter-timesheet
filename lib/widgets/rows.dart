@@ -141,9 +141,9 @@ List<DataRow> rowValues(BuildContext context, Time time, Timesheet timesheet,
       Text(
         durationFormat(time.total),
         style: TextStyle(
-            color: (Theme.of(context).brightness == Brightness.dark
+            color: Theme.of(context).brightness == Brightness.dark
                 ? Colors.white
-                : Theme.of(context).primaryColor),
+                : fg(context),
             fontWeight: FontWeight.bold),
       ),
     )
@@ -166,11 +166,14 @@ List<DataRow> rowValues(BuildContext context, Time time, Timesheet timesheet,
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               IconButton(
-                icon: Icon(Icons.edit),
+                icon: Icon(
+                  Icons.edit,
+                  color: fg(context),
+                ),
                 onPressed: () => editCallback(time),
               ),
               IconButton(
-                icon: Icon(Icons.delete),
+                icon: Icon(Icons.delete, color: fg(context)),
                 onPressed: () => deleteCallback(time),
               ),
             ],

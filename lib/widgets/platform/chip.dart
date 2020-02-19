@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:timesheet_flutter/services/theme.dart';
 import 'package:timesheet_flutter/widgets/platform/widget.dart';
 
 class Chip extends StatelessWidget {
@@ -23,12 +24,13 @@ class Chip extends StatelessWidget {
     return ActionChip(
       onPressed: onTap,
       label: label,
-      backgroundColor: Theme.of(_).primaryColor,
-      shape: StadiumBorder(
-          side: BorderSide(color: Theme.of(_).accentColor, width: 2)),
+      backgroundColor: bg(_),
+      shape: StadiumBorder(side: BorderSide(color: accent(_), width: 2)),
       //backgroundColor: Theme.of(_).accentColor,
-      labelStyle: Theme.of(_).textTheme.caption.copyWith(
-          fontWeight: FontWeight.bold, color: Theme.of(_).accentColor),
+      labelStyle: Theme.of(_)
+          .textTheme
+          .caption
+          .copyWith(fontWeight: FontWeight.bold, color: accent(_)),
     );
   }
 }

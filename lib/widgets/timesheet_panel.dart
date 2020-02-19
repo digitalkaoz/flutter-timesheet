@@ -39,14 +39,14 @@ class TimesheetPanel {
           "${dateFormat(timesheet.last)} - ${dateFormat(timesheet.start)}",
           style: TextStyle(
             fontWeight: FontWeight.bold,
-						color: Theme.of(context).primaryColor,
+            color: fg(context),
           ),
         ),
         Text(
           durationFormat(timesheet.total),
           style: TextStyle(
             fontWeight: FontWeight.w400,
-            color: Theme.of(context).primaryColor,
+            color: fg(context),
           ),
         ),
       ],

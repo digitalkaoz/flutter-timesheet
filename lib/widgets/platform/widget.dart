@@ -20,4 +20,3 @@ class PlatformWidget extends StatelessWidget {
 
 final isIos = defaultTargetPlatform == TargetPlatform.iOS;
 final isAndroid = defaultTargetPlatform == TargetPlatform.android;
-final isWeb = kIsWeb;

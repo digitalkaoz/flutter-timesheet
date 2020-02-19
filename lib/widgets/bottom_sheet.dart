@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:timesheet_flutter/services/theme.dart';
+import 'package:timesheet_flutter/widgets/device.dart';
+import 'package:timesheet_flutter/widgets/platform/widget.dart';
 
 class SlidingBottomSheet extends StatelessWidget {
   final double height;
@@ -34,7 +36,7 @@ class SlidingBottomSheet extends StatelessWidget {
       maxHeight: 550,
       controller: controller,
       collapsed: collapsed,
-      backdropEnabled: true,
+      backdropEnabled: isIos && isPhone ? false : true,
       parallaxEnabled: true,
       panel: panel,
       body: body,

@@ -7,6 +7,7 @@ import 'package:timesheet_flutter/model/client.dart';
 import 'package:timesheet_flutter/model/clients.dart';
 import 'package:timesheet_flutter/model/time.dart';
 import 'package:timesheet_flutter/model/timesheet.dart';
+import 'package:timesheet_flutter/widgets/device.dart';
 import 'package:timesheet_flutter/widgets/form/date_field.dart';
 import 'package:timesheet_flutter/widgets/form/description_field.dart';
 import 'package:timesheet_flutter/widgets/form/duration_field.dart';
@@ -154,13 +155,14 @@ class TimeAddForm extends StatelessWidget {
     final Timesheet timesheet = client.currentTimesheet;
 
     return ButtonBar(
-      alignment: MainAxisAlignment.spaceBetween,
-      mainAxisSize: MainAxisSize.min,
+      alignment: isTablet || isWeb
+          ? MainAxisAlignment.center
+          : MainAxisAlignment.spaceBetween,
+      mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         timesheet.isNewtime
             ? Container()
             : Button(
-                color: defaultColor,
                 child: Text(
                   "Cancel",
                   style: TextStyle(color: Colors.white),
@@ -186,7 +188,15 @@ class TimeAddForm extends StatelessWidget {
                   } catch (e) {}
                 }
               : null,
-          child: Text(timesheet.isNewtime ? "Save" : "Update"),
+          child: Text(
+            timesheet.isNewtime ? "Save" : "Update",
+            style: TextStyle(
+                color: time.valid
+                    ? brightness(context) == Brightness.dark
+                        ? Colors.black
+                        : Colors.white
+                    : Colors.grey[600]),
+          ),
         ),
       ],
     );

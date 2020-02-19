@@ -16,26 +16,26 @@ class ClientDrawer extends StatelessWidget {
       return Container();
     }
 
-    final client = clients.current;
-
     return Drawer(
-      child: Column(
-        children: <Widget>[
-          DrawerHeader(
-            decoration: BoxDecoration(color: bg(context)),
-            child: Center(
-              child: Text(
-                client.name,
-                style: Theme.of(context)
-                    .textTheme
-                    .headline
-                    .copyWith(color: Colors.white),
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(color: bg(context)),
+              child: Center(
+                child: Text(
+                  "Timesheets",
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline
+                      .copyWith(color: Colors.white),
+                ),
               ),
             ),
-          ),
-          MenuItems(),
-          child != null ? child : Container()
-        ],
+            MenuItems(),
+            child != null ? child : Container()
+          ],
+        ),
       ),
     );
   }
