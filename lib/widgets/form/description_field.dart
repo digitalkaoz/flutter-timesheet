@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:timesheet_flutter/services/theme.dart';
 import 'package:timesheet_flutter/widgets/platform/input.dart';
 
 class DescriptionField extends StatelessWidget {
@@ -22,6 +23,7 @@ class DescriptionField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Input(
       controller: controller,
+      textStyle: textTheme(context),
       plain: true,
       focusNode: FocusNode(),
       autofocus: false,

@@ -23,6 +23,7 @@ class PlatformScaffold extends StatelessWidget {
         );
       },
       android: (context) => Scaffold(
+        extendBodyBehindAppBar: true,
         drawer: drawer,
         appBar: navBar,
         body: child,

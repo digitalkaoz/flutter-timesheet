@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide FlatButton, IconButton;
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:timesheet_flutter/model/clients.dart';
+import 'package:timesheet_flutter/screens/dialog/client_delete.dart';
+import 'package:timesheet_flutter/screens/dialog/client_edit.dart';
 import 'package:timesheet_flutter/services/theme.dart';
 import 'package:timesheet_flutter/widgets/client_chooser.dart';
 import 'package:timesheet_flutter/widgets/device.dart';
 import 'package:timesheet_flutter/widgets/drawer.dart';
+import 'package:timesheet_flutter/widgets/platform/button.dart';
 import 'package:timesheet_flutter/widgets/platform/nav_bar.dart';
 
 class NavBar extends StatelessWidget
@@ -16,12 +19,13 @@ class NavBar extends StatelessWidget
         ? Container()
         : clients.clients.length == 1
             ? Container(
-                width: 60,
+                width: MediaQuery.of(context).size.width - 80,
                 height: 60,
                 child: Center(
                   child: Text(
                     clients.current.name,
-                    style: TextStyle(color: accent(context)),
+                    style: textTheme(context)
+                        .copyWith(fontSize: 20, color: fgInverted(context)),
                   ),
                 ),
               )
@@ -35,6 +39,13 @@ class NavBar extends StatelessWidget
     return Observer(
       builder: (_) => PlatformNavBar(
         leading: clients.current == null ? Container() : null,
+        trailing: clients.current == null
+            ? Container()
+            : MenuButton(
+                icon: Icons.more_vert,
+                color: Colors.white,
+                items: _menuItems(_),
+              ),
         drawer: ClientDrawer(),
         title: isTablet
             ? Row(
@@ -42,10 +53,12 @@ class NavBar extends StatelessWidget
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(width: 80),
-                  Text(
-                    "Timesheets",
-                    style: TextStyle(color: Colors.white),
-                  ),
+                  clients.current == null
+                      ? Container()
+                      : Text(
+                          "Timesheets",
+                          style: TextStyle(color: Colors.white),
+                        ),
                   Expanded(child: SizedBox(width: 0)),
                   Container(
                       margin: EdgeInsets.only(right: 12),
@@ -54,10 +67,7 @@ class NavBar extends StatelessWidget
                 ],
               )
             : clients.current == null
-                ? Text(
-                    "Timesheets",
-                    style: TextStyle(color: Colors.white),
-                  )
+                ? Container()
                 : _chooser(context, clients),
       ),
     );
@@ -68,6 +78,31 @@ class NavBar extends StatelessWidget
 
   @override
   bool shouldFullyObstruct(BuildContext context) {
-    return true;
+    return false;
+  }
+
+  List<Map<String, dynamic>> _menuItems(BuildContext context) {
+    return [
+      {
+        "child": Text(
+          "Edit",
+          style: textThemeInverted(context),
+        ),
+        "action": () async {
+          await showClientEditDialog(context);
+          Navigator.pop(context);
+        }
+      },
+      {
+        "child": Text(
+          "Delete",
+          style: textThemeInverted(context).copyWith(color: accent(context)),
+        ),
+        "action": () async {
+          await showClientDeleteDialog(context);
+          Navigator.pop(context);
+        }
+      }
+    ];
   }
 }

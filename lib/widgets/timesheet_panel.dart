@@ -22,9 +22,9 @@ class TimesheetPanel {
     return ExpansionPanelRadio(
       value: timesheet,
       canTapOnHeader: true,
-      headerBuilder: (BuildContext context, bool isExpanded) {
+      headerBuilder: (BuildContext _, bool isExpanded) {
         return ListTile(
-          title: Observer(builder: (_) => _builtHeader(_)),
+          title: Observer(builder: (_) => _builtHeader(context)),
         );
       },
       body: _buildBody(context, timesheet),
@@ -36,18 +36,13 @@ class TimesheetPanel {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
-          "${dateFormat(timesheet.last)} - ${dateFormat(timesheet.start)}",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: fg(context),
-          ),
+          "${dateFormat(timesheet.last)} - ${dateFormat(timesheet.start) == dateFormat(DateTime.now()) ? 'today' : dateFormat(timesheet.start)}",
+          style: textThemeInverted(context),
         ),
         Text(
           durationFormat(timesheet.total),
-          style: TextStyle(
-            fontWeight: FontWeight.w400,
-            color: fg(context),
-          ),
+          style:
+              textThemeInverted(context).copyWith(fontWeight: FontWeight.bold),
         ),
       ],
     );
@@ -58,7 +53,11 @@ class TimesheetPanel {
       return Container(
         padding: EdgeInsets.only(bottom: 20),
         child: Center(
-          child: Text("no times added yet"),
+          child: Text(
+            "no times added yet",
+            style: prettyTheme(context)
+                .copyWith(fontSize: 15, color: accent(context)),
+          ),
         ),
       );
     }

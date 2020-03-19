@@ -106,7 +106,7 @@ abstract class ClientsBase with Store {
 
   String validateName(String value) {
     if (value.isEmpty) {
-      return 'Client name cant be blank';
+      return 'Client name can not be blank';
     }
 
     if (clients.isEmpty) {

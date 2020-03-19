@@ -33,7 +33,17 @@ class TimeAddForm extends StatelessWidget {
     FocusScope.of(context).requestFocus(FocusNode());
   }
 
-  Widget _descriptionField(Time time) {
+  ThemeData _theme(BuildContext context) {
+    return Theme.of(context).copyWith(
+      inputDecorationTheme: Theme.of(context).inputDecorationTheme.copyWith(
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: fgInverted(context)),
+            ),
+          ),
+    );
+  }
+
+  Widget _descriptionField(Time time, BuildContext context) {
     return DescriptionField(
       value: time.description,
       controller: description,
@@ -96,7 +106,7 @@ class TimeAddForm extends StatelessWidget {
     final Widget spacer = SizedBox(height: dense ? 10 : 20);
 
     return [
-      _descriptionField(time),
+      _descriptionField(time, context),
       spacer,
       _startField(time, context),
       spacer,
@@ -124,7 +134,7 @@ class TimeAddForm extends StatelessWidget {
           children: <Widget>[
             Flexible(flex: 1, child: _dateField(time, context)),
             SizedBox(width: 16),
-            Flexible(flex: 3, child: _descriptionField(time)),
+            Flexible(flex: 3, child: _descriptionField(time, context)),
           ],
         ),
       ),
@@ -160,26 +170,21 @@ class TimeAddForm extends StatelessWidget {
           : MainAxisAlignment.spaceBetween,
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
-        timesheet.isNewtime
-            ? Container()
-            : Button(
-                child: Text(
-                  "Cancel",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: () {
-                  // TODO restore initial time!
-                  timesheet.setCurrentTime(Time());
-                  try {
-                    sheet.close();
-                  } catch (e) {}
-                },
-              ),
+        Button(
+          child: Text(
+            "CANCEL",
+            style: textTheme(context).copyWith(color: Colors.white),
+          ),
+          onPressed: () {
+            // TODO restore initial time!
+            timesheet.setCurrentTime(Time());
+            try {
+              sheet.close();
+            } catch (e) {}
+          },
+        ),
         RaisedButton(
           color: Colors.white,
-          //disabledColor: defaultColor,
-          //disabledTextColor: Colors.white.withAlpha(75),
-          //textColor: defaultColor,
           onPressed: time.valid
               ? () {
                   timesheet.saveTime();
@@ -189,13 +194,8 @@ class TimeAddForm extends StatelessWidget {
                 }
               : null,
           child: Text(
-            timesheet.isNewtime ? "Save" : "Update",
-            style: TextStyle(
-                color: time.valid
-                    ? brightness(context) == Brightness.dark
-                        ? Colors.black
-                        : Colors.white
-                    : Colors.grey[600]),
+            timesheet.isNewtime ? "SAVE" : "UPDATE",
+            style: textTheme(context),
           ),
         ),
       ],
@@ -215,15 +215,19 @@ class TimeAddForm extends StatelessWidget {
         final Time time = timesheet.editableTime;
 
         return Container(
-          color: bg(context),
+          color: bg(_),
           width: double.maxFinite,
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.max,
-            children:
-                columns == 1 ? _singleColumn(time, _) : _doubleColumn(time, _),
+          child: Theme(
+            data: _theme(_),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.max,
+              children: columns == 1
+                  ? _singleColumn(time, _)
+                  : _doubleColumn(time, _),
+            ),
           ),
         );
       },

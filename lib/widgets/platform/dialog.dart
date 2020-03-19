@@ -20,8 +20,17 @@ Future<T> showAlertDialog<T>(
         context: context,
         builder: (_) => AlertDialog(
           title: title,
-          content: content,
-          actions: actions,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              content,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: actions,
+              )
+            ],
+          ),
+          //actions: actions,
         ),
       );
   }

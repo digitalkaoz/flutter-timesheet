@@ -7,13 +7,27 @@ class DialogButton extends StatelessWidget {
   final Function() onTap;
   final bool primary;
   final Widget child;
+  final Color color;
 
   const DialogButton({
     Key key,
     this.onTap,
     this.primary = false,
     this.child,
+    this.color,
   }) : super(key: key);
+
+  ShapeBorder _shape() {
+    if (primary && color != null) {
+      return RoundedRectangleBorder(borderRadius: BorderRadius.circular(16));
+    }
+
+    if (color != null && !primary) {
+      return OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(color: color));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +39,12 @@ class DialogButton extends StatelessWidget {
       ),
       android: (_) => FlatButton(
         onPressed: onTap,
-        child: child,
+        shape: _shape(),
+        color: color != null && !primary ? Colors.transparent : color,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: child,
+        ),
       ),
     );
   }

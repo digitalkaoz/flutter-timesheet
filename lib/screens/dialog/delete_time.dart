@@ -20,19 +20,24 @@ class DeleteTime extends StatelessWidget {
 showTimeDeleteDialog(
     BuildContext context, Timesheet timesheet, Time time) async {
   final message = await showAlertDialog(
-      context, Text("Delete Time?"), DeleteTime(time, timesheet), [
-    DialogButton(
-      child: Text('Cancel'),
-      onTap: () => Navigator.of(context).pop(),
-    ),
-    DialogButton(
-        primary: true,
-        child: Text('Yes'),
-        onTap: () {
-          timesheet.removeTime(time);
-          Navigator.of(context).pop("deleted time!");
-        }),
-  ]);
+      context,
+      Text(
+        "Delete Time?",
+      ),
+      DeleteTime(time, timesheet),
+      [
+        DialogButton(
+          child: Text('Cancel'),
+          onTap: () => Navigator.of(context).pop(),
+        ),
+        DialogButton(
+            primary: true,
+            child: Text('Yes'),
+            onTap: () {
+              timesheet.removeTime(time);
+              Navigator.of(context).pop("deleted time!");
+            }),
+      ]);
   if (message != null) {
     if (defaultTargetPlatform == TargetPlatform.android) {
       Scaffold.of(context).showSnackBar(SnackBar(

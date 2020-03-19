@@ -19,8 +19,14 @@ class PlatformNavBar extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
+    final double width = isTablet || isWeb
+        ? (MediaQuery.of(context).size.width / 6) * 2
+        : (MediaQuery.of(context).size.width / 3) * 2;
+
     return PlatformWidget(
       ios: (context) => CupertinoNavigationBar(
+        backgroundColor: Colors.transparent,
+        border: null,
         leading: leading ??
             PlatformIcon(
               onTap: () {
@@ -31,9 +37,7 @@ class PlatformNavBar extends StatelessWidget
                       Positioned(
                         left: 0,
                         height: MediaQuery.of(_).size.height,
-                        width: isTablet || isWeb
-                            ? (MediaQuery.of(context).size.width / 6) * 2
-                            : (MediaQuery.of(context).size.width / 3) * 2,
+                        width: width,
                         child: drawer ?? Container(),
                       ),
                       Positioned(
@@ -48,8 +52,8 @@ class PlatformNavBar extends StatelessWidget
                             ),
                           ),
                         ),
-                        left: 16,
-                        top: 56,
+                        left: width - 30,
+                        top: 36,
                       ),
                     ],
                   ),
@@ -64,6 +68,8 @@ class PlatformNavBar extends StatelessWidget
         trailing: trailing,
       ),
       android: (context) => AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
         leading: leading,
         automaticallyImplyLeading: leading == null,
         centerTitle: true,

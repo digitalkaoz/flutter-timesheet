@@ -15,27 +15,28 @@ class ClientChooser extends StatelessWidget {
       return Container();
     }
 
-    final color = accent(context);
-
     return Observer(
-      builder: (_) => Dropdown<Client>(
-        value: clients.current,
-        onChange: (dynamic selected) => selected.runtimeType == Client
-            ? clients.setCurrent(selected)
-            : clients.setCurrentIndex(selected),
-        items: _buildClients(clients, _, color),
+      builder: (_) => Theme(
+        data: Theme.of(context).copyWith(canvasColor: fg(context)),
+        child: Dropdown<Client>(
+          value: clients.current,
+          onChange: (dynamic selected) => selected.runtimeType == Client
+              ? clients.setCurrent(selected)
+              : clients.setCurrentIndex(selected),
+          items: _buildClients(clients, _),
+        ),
       ),
     );
   }
 
-  List<DropdownMenuItem> _buildClients(
-      Clients clients, BuildContext context, Color color) {
+  List<DropdownMenuItem> _buildClients(Clients clients, BuildContext context) {
     return clients.clients
         .map((client) => DropdownMenuItem(
-              child: Center(
-                child: Text(
-                  client.name,
-                  style: TextStyle(color: accent(context)),
+              child: Text(
+                client.name,
+                style: textTheme(context).copyWith(
+                  fontSize: 20,
+                  color: fgInverted(context),
                 ),
               ),
               value: client,

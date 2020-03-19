@@ -10,6 +10,10 @@ class PlatformApp extends StatefulWidget {
   static const String APP_TITLE = "Timesheet";
   static const String INITIAL_ROUTE = IndexScreen.ROUTE;
 
+  final Widget home;
+
+  const PlatformApp({c.Key key, this.home}) : super(key: key);
+
   @override
   _PlatformAppState createState() => _PlatformAppState();
 }
@@ -48,10 +52,11 @@ class _PlatformAppState extends State<PlatformApp> with WidgetsBindingObserver {
             DefaultWidgetsLocalizations.delegate,
           ],
           title: PlatformApp.APP_TITLE,
-          theme: brightness == Brightness.dark ? iosthemeDark() : ios_theme(),
+          theme: brightness == Brightness.dark ? iosthemeDark(_) : ios_theme(_),
           //theme: iosthemeDark(),
-          initialRoute: PlatformApp.INITIAL_ROUTE,
-          routes: routes,
+          home: widget.home,
+          initialRoute: widget.home == null ? PlatformApp.INITIAL_ROUTE : null,
+          routes: widget.home == null ? routes : {},
         );
       },
       android: (_) {
@@ -60,10 +65,11 @@ class _PlatformAppState extends State<PlatformApp> with WidgetsBindingObserver {
         }
         return MaterialApp(
           title: PlatformApp.APP_TITLE,
-          theme: brightness == Brightness.dark ? themeDark() : theme(),
+          theme: brightness == Brightness.dark ? themeDark(_) : theme(_),
           //theme: themeDark(),
-          initialRoute: PlatformApp.INITIAL_ROUTE,
-          routes: routes,
+          home: widget.home,
+          initialRoute: widget.home == null ? PlatformApp.INITIAL_ROUTE : null,
+          routes: widget.home == null ? routes : {},
           //localizationsDelegates: ,
         );
       },

@@ -40,6 +40,7 @@ class Input extends StatelessWidget {
   final Function() onTap;
   final bool plain;
   final InputBorder border;
+  final TextStyle textStyle;
 
   const Input({
     Key key,
@@ -54,12 +55,14 @@ class Input extends StatelessWidget {
     this.onTap,
     this.plain = false,
     this.border,
+    this.textStyle,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return PlatformWidget(
       ios: (context) => CupertinoTextField(
+        style: textThemeInverted(context),
         autofocus: autofocus,
         controller: controller,
         padding: EdgeInsets.symmetric(vertical: 8),
@@ -67,7 +70,7 @@ class Input extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Text(
             placeholder ?? "",
-            style: TextStyle(color: fg(context)),
+            //style: textTheme(context).copyWith(color: fg(context)),
           ),
         ),
         onTap: onTap,
@@ -90,7 +93,7 @@ class Input extends StatelessWidget {
         onTap: onTap,
         validator: validator,
         obscureText: obscure,
-        style: TextStyle(color: Colors.white),
+        style: textStyle ?? text(_).copyWith(color: Colors.white),
         focusNode: focusNode,
         keyboardType: keyboardType,
         textAlignVertical: TextAlignVertical.center,

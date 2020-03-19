@@ -27,7 +27,9 @@ class DismissibleTimesheet extends StatelessWidget {
           timesheet: timesheet,
         ),
         ListView.builder(
+          padding: EdgeInsets.zero,
           scrollDirection: Axis.vertical,
+          physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemBuilder: (_, int index) {
             return TimeRow(
@@ -55,6 +57,7 @@ class HeaderRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DataTable(
+      dataRowHeight: 0,
       columns: headerColumns(timesheet, true),
       rows: [],
       columnSpacing: 0,

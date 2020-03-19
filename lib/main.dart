@@ -3,6 +3,11 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/src/google_fonts_base.dart'
+    show loadFontIfNecessary;
+import 'package:google_fonts/src/google_fonts_descriptor.dart';
+import 'package:google_fonts/src/google_fonts_family_with_variant.dart';
+import 'package:google_fonts/src/google_fonts_variant.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timesheet_flutter/screens/loading.dart';
@@ -16,9 +21,30 @@ void _setTargetPlatformForDesktop() {
   }
 }
 
-void main() {
+void main() async {
   _setTargetPlatformForDesktop();
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await _preloadFonts();
   runApp(TimesheetApp());
+}
+
+Future<void> _preloadFonts() {
+  return loadFontIfNecessary(
+    GoogleFontsDescriptor(
+      file: GoogleFontsFile(
+        '03452c0b90c71f4088222325620904576503c4d5a3a6c563ee22d1e896788d3e',
+        143508,
+      ),
+      familyWithVariant: GoogleFontsFamilyWithVariant(
+        family: 'Pacifico',
+        googleFontsVariant: GoogleFontsVariant(
+          fontWeight: FontWeight.normal,
+          fontStyle: FontStyle.normal,
+        ),
+      ),
+    ),
+  );
 }
 
 class TimesheetApp extends StatelessWidget {

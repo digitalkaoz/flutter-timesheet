@@ -70,6 +70,7 @@ class DurationField extends StatelessWidget {
 
     return Input(
       controller: controller,
+      textStyle: textTheme(context),
       plain: true,
       focusNode: NoKeyboardEditableTextFocusNode(),
       placeholder: hint,

@@ -104,6 +104,7 @@ class TimeInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return Input(
       plain: plain,
+      textStyle: textTheme(context),
       placeholder: placeholder,
       onTap: () => _onTap(context),
       focusNode: focusNode,

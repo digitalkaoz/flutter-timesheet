@@ -1,8 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide RaisedButton;
 import 'package:provider/provider.dart';
 import 'package:timesheet_flutter/model/clients.dart';
+import 'package:timesheet_flutter/screens/dialog/client_add.dart';
 import 'package:timesheet_flutter/services/theme.dart';
+import 'package:timesheet_flutter/widgets/logo.dart';
 import 'package:timesheet_flutter/widgets/menu_items.dart';
+import 'package:timesheet_flutter/widgets/platform/button.dart';
 
 class ClientDrawer extends StatelessWidget {
   final Widget child;
@@ -23,12 +26,23 @@ class ClientDrawer extends StatelessWidget {
             DrawerHeader(
               decoration: BoxDecoration(color: bg(context)),
               child: Center(
-                child: Text(
-                  "Timesheets",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline
-                      .copyWith(color: Colors.white),
+                child: Column(
+                  children: <Widget>[
+                    Logo(
+                      size: 30,
+                    ),
+                    RaisedButton(
+                      child: Text(
+                        "Add Client",
+                        style: textTheme(context),
+                      ),
+                      tooltip: "Add another Client",
+                      onPressed: () async {
+                        await showClientAddDialog(context);
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
                 ),
               ),
             ),

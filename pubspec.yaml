@@ -25,6 +25,7 @@ dependencies:
   intl: ^0.15.8
   sliding_up_panel: ^0.3.6
   datetime_picker_formfield: ^0.4.3
+  google_fonts: ^0.3.9
   flutter_duration_picker:
     git:
       url: git://github.com/cdharris/flutter_duration_picker.git
@@ -47,9 +48,9 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/icon.png"
+  image_path: "assets/app_icon_transparent.png"
   adaptive_icon_background: "#ffffff"
-  adaptive_icon_foreground: "assets/icon.png"
+  adaptive_icon_foreground: "assets/app_icon_transparent.png"
 
 
 # For information on the generic Dart part of this file, see the
@@ -66,6 +67,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
+    - google_fonts/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -4,14 +4,19 @@ import 'package:timesheet_flutter/widgets/platform/widget.dart';
 
 class Spinner extends StatelessWidget {
   final Color color;
+  final double width;
 
-  const Spinner({Key key, this.color: Colors.black}) : super(key: key);
+  const Spinner({Key key, this.color: Colors.black, this.width = 3})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return PlatformWidget(
       ios: (context) => _IosSpinner(),
-      android: (context) => _MaterialSpinner(),
+      android: (context) => _MaterialSpinner(
+        width: width,
+        color: color,
+      ),
     );
   }
 }
@@ -25,8 +30,10 @@ class _IosSpinner extends StatelessWidget {
 
 class _MaterialSpinner extends StatelessWidget {
   final Color color;
+  final double width;
 
-  const _MaterialSpinner({Key key, this.color}) : super(key: key);
+  const _MaterialSpinner({Key key, this.color, this.width = 3})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +41,7 @@ class _MaterialSpinner extends StatelessWidget {
       backgroundColor: Colors.transparent,
       child: Center(
         child: CircularProgressIndicator(
-          strokeWidth: 3,
+          strokeWidth: width,
           valueColor: AlwaysStoppedAnimation(color),
         ),
       ),

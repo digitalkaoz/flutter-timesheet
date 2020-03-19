@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:timesheet_flutter/services/theme.dart';
 import 'package:timesheet_flutter/widgets/platform/icon.dart';
 import 'package:timesheet_flutter/widgets/platform/input.dart';
 
@@ -102,6 +103,7 @@ class DateInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Input(
+      textStyle: textTheme(context),
       plain: plain,
       placeholder: placeholder,
       onTap: () => _onTap(context),
