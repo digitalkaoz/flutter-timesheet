@@ -5,6 +5,7 @@ import 'package:timesheet_flutter/model/client.dart';
 import 'package:timesheet_flutter/model/clients.dart';
 import 'package:timesheet_flutter/services/theme.dart';
 import 'package:timesheet_flutter/widgets/platform/dropdown_field.dart';
+import 'package:timesheet_flutter/widgets/platform/widget.dart';
 
 class ClientChooser extends StatelessWidget {
   @override
@@ -34,9 +35,10 @@ class ClientChooser extends StatelessWidget {
         .map((client) => DropdownMenuItem(
               child: Text(
                 client.name,
+                textAlign: TextAlign.center,
                 style: textTheme(context).copyWith(
                   fontSize: 20,
-                  color: fgInverted(context),
+                  color: isIos ? accent(context) : fgInverted(context),
                 ),
               ),
               value: client,

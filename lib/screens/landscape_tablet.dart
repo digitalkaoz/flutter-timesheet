@@ -19,47 +19,58 @@ class LandscapeTablet extends StatelessWidget {
     return PlatformScaffold(
       navBar: NavBar(),
       drawer: ClientDrawer(),
-      child: Observer(
-        builder: (_) => clients.hasClients
-            ? Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                verticalDirection: VerticalDirection.down,
-                children: <Widget>[
-                  Expanded(
-                      flex: 3,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.bottomLeft,
+            stops: [0.27, 0.7],
+            end: Alignment.topRight,
+            colors: [gradientStart(context), gradientEnd(context)],
+          ),
+        ),
+        child: Observer(
+          builder: (_) => clients.hasClients
+              ? Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  verticalDirection: VerticalDirection.down,
+                  children: <Widget>[
+                    Expanded(
+                        flex: 3,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 16, top: 4),
+                          child: ClientOverview(clients.current),
+                        )),
+                    SizedBox(width: 12),
+                    Flexible(
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 16, top: 4),
-                        child: ClientOverview(clients.current),
-                      )),
-                  SizedBox(width: 12),
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 12, bottom: 12),
-                      child: Card(
-                        color: bg(_),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            SizedBox(height: 32),
-                            Text(
-                              clients.current.currentTimesheet.isNewtime
-                                  ? "New Time"
-                                  : "Edit Time",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline
-                                  .copyWith(color: Colors.white),
-                            ),
-                            SizedBox(height: 32),
-                            TimeAddForm(columns: 1),
-                          ],
+                        padding: const EdgeInsets.only(
+                            top: kToolbarHeight + 28, right: 12, bottom: 12),
+                        child: Card(
+                          color: bg(_),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              SizedBox(height: 32),
+                              Text(
+                                clients.current.currentTimesheet.isNewtime
+                                    ? "New Time"
+                                    : "Edit Time",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline
+                                    .copyWith(color: Colors.white),
+                              ),
+                              SizedBox(height: 32),
+                              TimeAddForm(columns: 1),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              )
-            : NoClientsPage(),
+                  ],
+                )
+              : NoClientsPage(),
+        ),
       ),
     );
   }

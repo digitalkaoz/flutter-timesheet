@@ -65,9 +65,7 @@ abstract class ClientsBase with Store {
   void setCurrent(Client client) {
     currentIndex = clients.indexOf(client);
 
-    autorun((_) async {
-      await storage.setCurrentClient(client);
-    });
+    storage.setCurrentClient(client);
   }
 
   @action
@@ -84,9 +82,7 @@ abstract class ClientsBase with Store {
     clients.add(client);
     setCurrent(client);
 
-    autorun((_) async {
-      await storage.saveClient(client);
-    });
+    storage.saveClient(client);
   }
 
   @action
@@ -96,10 +92,9 @@ abstract class ClientsBase with Store {
       currentIndex = currentIndex - 1;
     }
 
-    autorun((_) async {
-      await storage.deleteClient(client);
+    storage.deleteClient(client).then((_) {
       if (clients.isNotEmpty) {
-        await storage.setCurrentClient(clients.elementAt(currentIndex));
+        storage.setCurrentClient(clients.elementAt(currentIndex));
       }
     });
   }

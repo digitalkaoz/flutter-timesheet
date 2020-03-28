@@ -19,41 +19,51 @@ class PortraitTablet extends StatelessWidget {
     return PlatformScaffold(
       navBar: NavBar(),
       drawer: ClientDrawer(),
-      child: Observer(
-        builder: (_) => clients.hasClients
-            ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                    Card(
-                      color: bg(_),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          SizedBox(height: 24),
-                          Text(
-                            clients.current.currentTimesheet.isNewtime
-                                ? "New Time"
-                                : "Edit Time",
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline
-                                .copyWith(color: Colors.white),
-                          ),
-                          TimeAddForm(columns: 2),
-                        ],
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.bottomLeft,
+            stops: [0.27, 0.7],
+            end: Alignment.topRight,
+            colors: [gradientStart(context), gradientEnd(context)],
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(
+              top: kToolbarHeight + 16, left: 16, right: 16),
+          child: Observer(
+            builder: (_) => clients.hasClients
+                ? Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      Card(
+                        color: bg(_),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            SizedBox(height: 24),
+                            Text(
+                              clients.current.currentTimesheet.isNewtime
+                                  ? "New Time"
+                                  : "Edit Time",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline
+                                  .copyWith(color: Colors.white),
+                            ),
+                            TimeAddForm(columns: 2),
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 16),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: ClientOverview(clients.current),
-                    )
-                  ],
-                ),
-              )
-            : NoClientsPage(),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 32),
+                        child: ClientOverview(clients.current, secondary: true),
+                      )
+                    ],
+                  )
+                : NoClientsPage(),
+          ),
+        ),
       ),
     );
   }

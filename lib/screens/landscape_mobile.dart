@@ -19,51 +19,61 @@ class LandscapeMobile extends StatelessWidget {
     return PlatformScaffold(
       navBar: NavBar(),
       drawer: ClientDrawer(),
-      child: Observer(
-        builder: (_) => clients.hasClients
-            ? Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                verticalDirection: VerticalDirection.down,
-                children: <Widget>[
-                  Expanded(
-                      flex: 3,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.bottomLeft,
+            stops: [0.27, 0.7],
+            end: Alignment.topRight,
+            colors: [gradientStart(context), gradientEnd(context)],
+          ),
+        ),
+        child: Observer(
+          builder: (_) => clients.hasClients
+              ? Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  verticalDirection: VerticalDirection.down,
+                  children: <Widget>[
+                    Expanded(
+                        flex: 3,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8, top: 6),
+                          child: ClientOverview(clients.current),
+                        )),
+                    Flexible(
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 8, top: 6),
-                        child: ClientOverview(clients.current),
-                      )),
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 4, top: 2),
-                      child: Card(
-                        color: bg(_),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              SizedBox(height: 12),
-                              Text(
-                                clients.current.currentTimesheet.isNewtime
-                                    ? "New Time"
-                                    : "Edit Time",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline
-                                    .copyWith(color: Colors.white),
-                              ),
-                              SizedBox(height: 12),
-                              TimeAddForm(
-                                columns: 1,
-                                dense: true,
-                              ),
-                            ],
+                        padding: const EdgeInsets.only(right: 4, top: 2),
+                        child: Card(
+                          color: bg(_),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                SizedBox(height: 12),
+                                Text(
+                                  clients.current.currentTimesheet.isNewtime
+                                      ? "New Time"
+                                      : "Edit Time",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline
+                                      .copyWith(color: Colors.white),
+                                ),
+                                SizedBox(height: 12),
+                                TimeAddForm(
+                                  columns: 1,
+                                  dense: true,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              )
-            : NoClientsPage(),
+                  ],
+                )
+              : NoClientsPage(),
+        ),
       ),
     );
   }

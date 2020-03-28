@@ -1,3 +1,6 @@
+clean:
+	flutter clean
+
 test-coverage:
 	flutter test --coverage
 	genhtml -o coverage/html coverage/lcov.info
@@ -6,10 +9,11 @@ test-coverage:
 codegen-watch:
 	flutter packages pub run build_runner watch --delete-conflicting-outputs
 
-bundle:
+build: clean
 	rm -f build/timesheet.apks
 	flutter build appbundle
 	bundletool build-apks --bundle=build/app/outputs/bundle/release/app-release.aab --output=build/timesheet.apks
+	flutter build ios
 
 install:
 	flutter pub get
@@ -19,3 +23,4 @@ icons:
 
 to_device:
 	bundletool install-apks --apks=build/timesheet.apks --device-id=9A261FFAZ004EC
+

@@ -72,19 +72,15 @@ abstract class ClientBase with Store {
     timesheets.add(timesheet);
     _sortSheets();
 
-    autorun((_) async {
-      await storage.saveClient(this);
-      await storage.saveTimesheet(timesheet);
-    });
+    storage.saveClient(this);
+    storage.saveTimesheet(timesheet);
   }
 
   @action
   setName(String newName) {
     name = newName;
 
-    autorun((_) async {
-      await storage.saveClient(this);
-    });
+    storage.saveClient(this);
   }
 
   @action
@@ -92,14 +88,10 @@ abstract class ClientBase with Store {
     final sheet = timesheets.firstWhere((t) => t.id == timesheet.id);
 
     if (sheet != null) {
-      final ts = Timesheet.generate(storage);
-      timesheets.insert(0, ts);
       sheet.archive();
-
-      autorun((_) async {
-        await storage.saveClient(this);
-        await storage.saveTimesheet(ts);
-      });
+      final ts = Timesheet.generate(storage);
+      addSheet(ts);
+      _sortSheets();
     }
   }
 
@@ -112,6 +104,13 @@ abstract class ClientBase with Store {
     timesheets.sort((Timesheet a, Timesheet b) {
       if (a.last != null && b.last != null) {
         return a.last.compareTo(b.last);
+      }
+
+      return 0;
+    });
+    timesheets.sort((Timesheet a, Timesheet b) {
+      if (a.last != null) {
+        return a.archived == false ? -1 : 1;
       }
 
       return 0;

@@ -25,7 +25,7 @@ class Dropdown<T> extends StatelessWidget {
     return PlatformWidget(
       ios: (context) => c.CupertinoButton(
         borderRadius: BorderRadius.zero,
-        color: Colors.transparent,
+        color: fg(context),
         padding: c.EdgeInsets.symmetric(horizontal: 32),
         child: Text(
           value.toString(),
@@ -39,9 +39,9 @@ class Dropdown<T> extends StatelessWidget {
               child: c.CupertinoPicker(
                 useMagnifier: true,
                 magnification: 1.5,
-                itemExtent: 20,
+                itemExtent: 22,
                 squeeze: 1,
-                children: items,
+                children: items.map((i) => i.child).toList(),
                 backgroundColor: Colors.white,
                 onSelectedItemChanged: (int index) {
                   onChange(index);

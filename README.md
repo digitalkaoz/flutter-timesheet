@@ -1,43 +1,46 @@
 # Flutter Timesheet App
 
-<img src="https://github.com/digitalkaoz/flutter-timesheet/raw/master/assets/icon_android.png" width="100" height="100">
+<img src="https://github.com/digitalkaoz/flutter-timesheet/raw/master/assets/app_icon_transparent.png" width="100" height="100">
 
 > a Timesheet Application, because all others suxx ;)
 
 This whole App is totally educational to me. If you value this work (like me) download the App
 from the App-Store of your Platform :)
 
-<a href="" target="_blank"><img src="https://github.com/digitalkaoz/flutter-timesheet/raw/master/assets/playstore.png" height="50"></a>
+<a href="https://play.google.com/store/apps/details?id=net.digitalkaoz.timesheet_flutter" target="_blank"><img src="https://github.com/digitalkaoz/flutter-timesheet/raw/master/assets/playstore.png" height="50"></a>
 <a href="" target="_blank"><img src="https://github.com/digitalkaoz/flutter-timesheet/raw/master/assets/applestore.png" height="50"></a>
 
 
-## Highlights
+## Features
+* multiple clients
+* automatic Range/Sum of Timesheets
+* editable/deletable Times
+* automatic dark mode detection
+* export/print timesheets as PDF
+* dynamic billing ranges
+* export/import Data from other Instances
+
+## Technical Highlights
 
 * 🤖 🍎 Cross-Platform (native Android/IOS Components)
 * 📲 Adaptive Layouts for different Orientations and Devices
 * 🧠 Mobx for State-Management
 * 💾 Stored in Local-Storage
-* ⬇️ Export/Import Data from other Instances 
 * 🖥 Works on Web (t.b.d.)
 * 🌓 Dark Mode aware
+* 🤖 🍎 native Controls
+
 
 **Android**
 
-| ![Timesheet](screenshots/android5.png) | ![Dark Mode](screenshots/android1.png) | ![New Time](screenshots/android2.png) | ![Edit Time](screenshots/android3.png) | ![PDF Export](screenshots/android4.png) |
+| ![Empty](screenshots/android/android_1.png) | ![Timesheet](screenshots/android/android_4.png) | ![Timesheet](screenshots/android/android_2.png) | ![New Time](screenshots/android/android_3.png) | ![PDF Export](screenshots/android/android_5.png) |
 |------------|-------------|-------------|-------------|-------------|
 
 **iOS**
 
-| ![Timesheet](screenshots/ios_iphone1.png) | ![New Time](screenshots/ios_iphone2.png) | ![Edit Time](screenshots/ios_iphone3.png) |
+| ![Empty](screenshots/ios/ios_1.png) | ![Timesheets](screenshots/ios/ios_3.png) | ![New Time](screenshots/ios/ios_2.png) | ![Print](screenshots/ios/ios_4.png) |
 |------------|-------------|-------------|
 
-## Features
-
-* multiple Clients
-* PDF Export of Timesheets
-* automatic Range/Sum of Timesheets
-* editable/deletable Times
-* automatic dark mode detection
 
 ## Getting Started
 
@@ -70,17 +73,5 @@ $ make icons
 **Create Production Bundles**
 
 ```shell script
-$ make bundle
+$ make build
 ```
-
-**Sync Production Bundle to a device**
-
-```shell script
-$ make to_device
-```
-
-## TODOS
-
-* Landscape Mobile
-* Portrait/Landscape Tablet
-* Portrait/Landscape Web

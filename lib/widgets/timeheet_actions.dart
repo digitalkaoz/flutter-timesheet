@@ -63,32 +63,33 @@ class TimesheetActions extends StatelessWidget {
     if (!timesheet.archived) {
       buttons.add(
         Button(
-          child: Row(
-            children: <Widget>[
-              PlatformIcon(
-                icon: Icon(
-                  Icons.check,
-                  color: accent(context),
+            child: Row(
+              children: <Widget>[
+                PlatformIcon(
+                  icon: Icon(
+                    Icons.check,
+                    color: accent(context),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: Text(
-                  "Finish",
-                  style: buttonTheme,
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Text(
+                    "Finish",
+                    style: buttonTheme,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          onPressed: () => showDialog<void>(
-            context: context,
-            barrierDismissible: false, // user must tap button!
-            builder: (BuildContext context) => FinishTimesheet(
-              client: client,
-              timesheet: timesheet,
+              ],
             ),
-          ),
-        ),
+            onPressed: () async {
+              await showDialog<void>(
+                context: context,
+                barrierDismissible: false, // user must tap button!
+                builder: (BuildContext context) => FinishTimesheet(
+                  client: client,
+                  timesheet: timesheet,
+                ),
+              );
+            }),
       );
     }
 

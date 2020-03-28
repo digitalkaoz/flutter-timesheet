@@ -49,6 +49,8 @@ abstract class TimesheetBase with Store {
   @observable
   Time editableTime = Time();
 
+  Time oldTime;
+
   @computed
   DateTime get start {
     if (times.isEmpty) {
@@ -83,7 +85,7 @@ abstract class TimesheetBase with Store {
       return true;
     }
 
-    return !times.contains(editableTime);
+    return !times.contains(oldTime != null ? oldTime : editableTime);
   }
 
   @action
@@ -113,6 +115,11 @@ abstract class TimesheetBase with Store {
   }
 
   @action
+  void setOldTime(Time time) {
+    oldTime = time;
+  }
+
+  @action
   saveTime() {
     if (archived) {
       throw Exception('Timesheet already archived');
@@ -122,10 +129,11 @@ abstract class TimesheetBase with Store {
       times.add(editableTime);
     } else {
       times.replaceRange(
-        times.indexOf(editableTime),
-        times.indexOf(editableTime) + 1,
+        times.indexOf(oldTime),
+        times.indexOf(oldTime) + 1,
         [editableTime],
       );
+      oldTime = null;
     }
 
     times.sort((a, b) => b.date.compareTo(a.date));

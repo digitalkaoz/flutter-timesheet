@@ -43,6 +43,5 @@
 	<false/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>For uploading and downloading Timesheet-Data</string>
-
 </dict>
 </plist>

@@ -33,7 +33,10 @@ class DurationField extends StatelessWidget {
           context: context,
           builder: (_) => Container(
             height: 250,
-            color: Theme.of(context).backgroundColor,
+            width: double.infinity,
+            color: brightness(context) == Brightness.light
+                ? CupertinoColors.white
+                : CupertinoColors.black,
             child: GestureDetector(
               onTap: () => null,
               child: CupertinoTimerPicker(
