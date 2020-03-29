@@ -4,7 +4,7 @@
 
 > a Timesheet Application, because all others suxx ;)
 
-This whole App is totally educational to me. If you value this work (like me) download the App
+This whole App is totally educational to me. I used it for learning [Dart](https://dart.dev/) and [Flutter](https://flutter.dev/). If you value this work (like me) download the App
 from the App-Store of your Platform :)
 
 <a href="https://play.google.com/store/apps/details?id=net.digitalkaoz.timesheet_flutter" target="_blank"><img src="https://github.com/digitalkaoz/flutter-timesheet/raw/master/assets/playstore.png" height="50"></a>
@@ -76,7 +76,8 @@ $ make icons
 $ make build
 ```
 
-##TODO
+## TODO
 
 * darkmode ui glitches
 * functional tests
+* multi-device with firebase ?
