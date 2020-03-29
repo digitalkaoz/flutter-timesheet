@@ -38,7 +38,8 @@ class LandscapeTablet extends StatelessWidget {
                         flex: 3,
                         child: Padding(
                           padding: const EdgeInsets.only(left: 16, top: 4),
-                          child: ClientOverview(clients.current),
+                          child: ClientOverview(clients.current,
+                              noBottomSheet: true),
                         )),
                     SizedBox(width: 12),
                     Flexible(

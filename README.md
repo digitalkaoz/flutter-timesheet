@@ -33,13 +33,13 @@ from the App-Store of your Platform :)
 
 **Android**
 
-| ![Empty](screenshots/android/android_1.png) | ![Timesheet](screenshots/android/android_4.png) | ![Timesheet](screenshots/android/android_2.png) | ![New Time](screenshots/android/android_3.png) | ![PDF Export](screenshots/android/android_5.png) |
-|------------|-------------|-------------|-------------|-------------|
+| ![Empty](screenshots/android/android_1.png) | ![Timesheet](screenshots/android/android_4.png) | ![New Time](screenshots/android/android_3.png) | ![PDF Export](screenshots/android/android_5.png) |
+|------------|-------------|-------------|-------------|
 
 **iOS**
 
-| ![Empty](screenshots/ios/ios_1.png) | ![Timesheets](screenshots/ios/ios_3.png) | ![New Time](screenshots/ios/ios_2.png) | ![Print](screenshots/ios/ios_4.png) |
-|------------|-------------|-------------|
+| ![Empty](screenshots/ios/ios_1.png) | ![Timesheets](screenshots/ios/ios_3.png) | ![New Time](screenshots/ios/ios_2.png) | ![Edit Time](screenshots/ios/ios_4.png) | ![Print](screenshots/ios/ios_5.png) |
+|------------|-------------|-------------|-------------|-------------|
 
 
 ## Getting Started
@@ -75,3 +75,8 @@ $ make icons
 ```shell script
 $ make build
 ```
+
+##TODO
+
+* darkmode ui glitches
+* functional tests

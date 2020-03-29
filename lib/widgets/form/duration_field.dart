@@ -25,7 +25,7 @@ class DurationField extends StatelessWidget {
   _showDialog(BuildContext context, Duration value) async {
     SystemChannels.textInput.invokeMethod('TextInput.hide');
 
-    Duration duration;
+    Duration duration = Duration(hours: 0, minutes: 0);
 
     switch (defaultTargetPlatform) {
       case TargetPlatform.iOS:
@@ -43,7 +43,7 @@ class DurationField extends StatelessWidget {
                 onTimerDurationChanged: (Duration pause) {
                   duration = pause;
                 },
-                initialTimerDuration: value ?? Duration(hours: 0, minutes: 0),
+                initialTimerDuration: value ?? duration,
                 minuteInterval: 5,
                 mode: CupertinoTimerPickerMode.hm,
                 alignment: Alignment.bottomCenter,
@@ -56,7 +56,7 @@ class DurationField extends StatelessWidget {
         duration = await showDurationPicker(
           context: context,
           snapToMins: 5.0,
-          initialTime: value ?? Duration(hours: 0, minutes: 0),
+          initialTime: value ?? duration,
         );
     }
 

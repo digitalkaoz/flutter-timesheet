@@ -20,15 +20,23 @@ class RaisedButton extends StatelessWidget {
   final Color color;
   final Function() onPressed;
   final String tooltip;
+  final double padding;
 
   const RaisedButton(
-      {Key key, this.color, this.onPressed, this.child, this.tooltip})
+      {Key key,
+      this.color,
+      this.onPressed,
+      this.child,
+      this.tooltip,
+      this.padding})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return PlatformWidget(
       ios: (context) => CupertinoButton(
+        padding:
+            padding != null ? EdgeInsets.symmetric(horizontal: padding) : null,
         borderRadius: buttonBorderRadius,
         color: onPressed == null ? fg(context) : accent(context),
         disabledColor: brightness(context) == Brightness.dark

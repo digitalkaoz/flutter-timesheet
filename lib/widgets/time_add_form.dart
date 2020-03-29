@@ -176,7 +176,6 @@ class TimeAddForm extends StatelessWidget {
             style: textTheme(context).copyWith(color: Colors.white),
           ),
           onPressed: () {
-            // TODO restore initial time!
             timesheet.setCurrentTime(Time());
             try {
               sheet.close();
@@ -184,6 +183,7 @@ class TimeAddForm extends StatelessWidget {
           },
         ),
         RaisedButton(
+          padding: dense ? 16 : null,
           color: Colors.white,
           onPressed: time.valid
               ? () {

@@ -10,8 +10,10 @@ import 'package:timesheet_flutter/widgets/timesheet_panel.dart';
 class ClientOverview extends StatefulWidget {
   final Client client;
   final bool secondary;
+  final bool noBottomSheet;
 
-  ClientOverview(this.client, {this.secondary = false});
+  ClientOverview(this.client,
+      {this.secondary = false, this.noBottomSheet = false});
 
   @override
   _ClientOverviewState createState() => _ClientOverviewState();
@@ -88,7 +90,9 @@ class _ClientOverviewState extends State<ClientOverview> {
     }
 
     return Container(
-      margin: EdgeInsets.only(bottom: 158, top: kToolbarHeight + 30),
+      margin: EdgeInsets.only(
+          bottom: widget.noBottomSheet ? 0 : 70,
+          top: widget.noBottomSheet ? kToolbarHeight : kToolbarHeight + 30),
       padding: EdgeInsets.symmetric(horizontal: 16),
       child: _content(context),
     );

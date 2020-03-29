@@ -20,6 +20,7 @@ class ClientChooser extends StatelessWidget {
       builder: (_) => Theme(
         data: Theme.of(context).copyWith(canvasColor: fg(context)),
         child: Dropdown<Client>(
+          color: Colors.transparent,
           value: clients.current,
           onChange: (dynamic selected) => selected.runtimeType == Client
               ? clients.setCurrent(selected)

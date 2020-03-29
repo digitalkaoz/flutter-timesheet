@@ -35,19 +35,24 @@ class LandscapeMobile extends StatelessWidget {
                   verticalDirection: VerticalDirection.down,
                   children: <Widget>[
                     Expanded(
-                        flex: 3,
+                        flex: 5,
                         child: Padding(
                           padding: const EdgeInsets.only(left: 8, top: 6),
-                          child: ClientOverview(clients.current),
+                          child: ClientOverview(
+                            clients.current,
+                            noBottomSheet: true,
+                          ),
                         )),
                     Flexible(
+                      flex: 2,
                       child: Padding(
-                        padding: const EdgeInsets.only(right: 4, top: 2),
+                        padding: const EdgeInsets.only(
+                            right: 4, top: kToolbarHeight),
                         child: Card(
                           color: bg(_),
                           child: SingleChildScrollView(
                             child: Column(
-                              mainAxisSize: MainAxisSize.min,
+                              mainAxisSize: MainAxisSize.max,
                               children: <Widget>[
                                 SizedBox(height: 12),
                                 Text(

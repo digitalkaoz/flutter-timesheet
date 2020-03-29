@@ -75,6 +75,7 @@ class PortraitMobile extends StatelessWidget {
       child: Container(
         color: fg(context),
         child: Column(
+          mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             SizedBox(height: 20),
             Text(

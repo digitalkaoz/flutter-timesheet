@@ -81,14 +81,7 @@ class TimesheetActions extends StatelessWidget {
               ],
             ),
             onPressed: () async {
-              await showDialog<void>(
-                context: context,
-                barrierDismissible: false, // user must tap button!
-                builder: (BuildContext context) => FinishTimesheet(
-                  client: client,
-                  timesheet: timesheet,
-                ),
-              );
+              await showFinishTimesheetDialog(context, client, timesheet);
             }),
       );
     }

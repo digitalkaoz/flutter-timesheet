@@ -46,7 +46,7 @@ class TimeInput extends StatelessWidget {
   _onTap(BuildContext context) async {
     SystemChannels.textInput.invokeMethod('TextInput.hide');
 
-    TimeOfDay time;
+    TimeOfDay time = TimeOfDay.now();
 
     switch (defaultTargetPlatform) {
       case TargetPlatform.iOS:
@@ -54,8 +54,8 @@ class TimeInput extends StatelessWidget {
             DateTime.now().year,
             DateTime.now().month,
             DateTime.now().day,
-            (initial ?? TimeOfDay.now()).hour,
-            (initial ?? TimeOfDay.now()).minute);
+            (initial ?? time).hour,
+            (initial ?? time).minute);
         await showCupertinoModalPopup(
           context: context,
           builder: (_) => Container(
@@ -89,7 +89,7 @@ class TimeInput extends StatelessWidget {
               child: child,
             );
           },
-          initialTime: initial ?? TimeOfDay.now(),
+          initialTime: initial ?? time,
         );
 
         if (time != null) {

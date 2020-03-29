@@ -73,8 +73,9 @@ class LocalStorage implements Storage {
       return true;
     }
 
-    await Future.wait(
-        client.timesheets.map((t) => deleteTimesheet(t)).toList());
+    await Future.wait(client.timesheets
+        .map((t) => t != null ? deleteTimesheet(t) : null)
+        .toList());
 
     clients.removeWhere((serializedClient) {
       final persistedClient = Client.fromString(this, serializedClient);

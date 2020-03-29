@@ -30,7 +30,8 @@ class LandscapeDesktop extends StatelessWidget {
                 child: clients.current == null
                     ? NoClientsPage()
                     : SingleChildScrollView(
-                        child: ClientOverview(clients.current),
+                        child: ClientOverview(clients.current,
+                            noBottomSheet: true),
                       ),
               ),
             ),

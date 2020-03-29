@@ -11,7 +11,6 @@ import 'package:timesheet_flutter/widgets/device.dart';
 import 'package:timesheet_flutter/widgets/drawer.dart';
 import 'package:timesheet_flutter/widgets/platform/button.dart';
 import 'package:timesheet_flutter/widgets/platform/nav_bar.dart';
-import 'package:timesheet_flutter/widgets/platform/widget.dart';
 
 class NavBar extends StatelessWidget
     implements PreferredSizeWidget, ObstructingPreferredSizeWidget {
@@ -21,7 +20,6 @@ class NavBar extends StatelessWidget
         : clients.clients.length == 1
             ? Container(
                 width: MediaQuery.of(context).size.width - 80,
-                color: isIos ? fg(context) : null,
                 height: 60,
                 child: Center(
                   child: Text(
@@ -67,7 +65,6 @@ class NavBar extends StatelessWidget
                   Flexible(
                     child: Container(
                         margin: EdgeInsets.only(right: 12),
-                        color: Colors.grey[300],
                         child: _chooser(context, clients)),
                   )
                 ],

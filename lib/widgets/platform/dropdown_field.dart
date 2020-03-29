@@ -10,6 +10,7 @@ class Dropdown<T> extends StatelessWidget {
   final String Function(T) validator;
   final dynamic Function(dynamic) onChange;
   final String placeholder;
+  final Color color;
 
   const Dropdown(
       {Key key,
@@ -17,7 +18,8 @@ class Dropdown<T> extends StatelessWidget {
       this.items,
       this.validator,
       this.placeholder,
-      this.onChange})
+      this.onChange,
+      this.color})
       : super(key: key);
 
   @override
@@ -25,11 +27,18 @@ class Dropdown<T> extends StatelessWidget {
     return PlatformWidget(
       ios: (context) => c.CupertinoButton(
         borderRadius: BorderRadius.zero,
-        color: fg(context),
+        color: this.color ?? fg(context),
         padding: c.EdgeInsets.symmetric(horizontal: 32),
-        child: Text(
-          value.toString(),
-          style: TextStyle(color: accent(context)),
+        child: c.Row(
+          mainAxisSize: c.MainAxisSize.max,
+          mainAxisAlignment: c.MainAxisAlignment.center,
+          children: <c.Widget>[
+            Text(
+              value.toString(),
+              style: TextStyle(color: fgInverted(context)),
+            ),
+            Icon(Icons.arrow_drop_down)
+          ],
         ),
         onPressed: () => c.showCupertinoModalPopup(
           context: context,

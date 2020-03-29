@@ -1,0 +1,19 @@
+name: Flutter CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - uses: subosito/flutter-action@v1.1.1
+      with:
+        channel: 'beta'
+    - run: make install
+    - run: make codegen
+    - run: make icons
+    - run: make test-coverage
+    - run: make build-android
