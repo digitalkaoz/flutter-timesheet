@@ -12,9 +12,13 @@ jobs:
     - uses: subosito/flutter-action@v1.1.1
       with:
         channel: 'stable'
-    - run: apt-get install genhtml
+    - run: sudo apt-get install lcov
     - run: make install
     - run: make codegen
     - run: make icons
-    - run: make test-coverage
-    - run: make build-android
+    - run: make test-ci
+    - run: make build-android-ci
+    - uses: actions/upload-artifact@v1
+      with:
+        name: coverage
+        path: coverage

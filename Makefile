@@ -6,11 +6,20 @@ test-coverage:
 	genhtml -o coverage/html coverage/lcov.info
 	open coverage/html/index.html
 
+
+test-ci:
+	flutter test --coverage
+	genhtml -o coverage/html coverage/lcov.info
+
 codegen:
 	flutter packages pub run build_runner build  --delete-conflicting-outputs
 
 codegen-watch:
 	flutter packages pub run build_runner watch --delete-conflicting-outputs
+
+
+build-android-ci:
+	flutter build appbundle --debug
 
 build-android:
 	rm -f build/timesheet.apks

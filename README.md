@@ -2,13 +2,15 @@
 
 <img src="https://github.com/digitalkaoz/flutter-timesheet/raw/master/assets/app_icon_transparent.png" width="100" height="100">
 
+![Flutter CI](https://github.com/digitalkaoz/flutter-timesheet/workflows/Flutter%20CI/badge.svg)
+
 > a Timesheet Application, because all others suxx ;)
 
 This whole App is totally educational to me. I used it for learning [Dart](https://dart.dev/) and [Flutter](https://flutter.dev/). If you value this work (like me) download the App
 from the App-Store of your Platform :)
 
 <a href="https://play.google.com/store/apps/details?id=net.digitalkaoz.timesheet_flutter" target="_blank"><img src="https://github.com/digitalkaoz/flutter-timesheet/raw/master/assets/playstore.png" height="50"></a>
-<a href="" target="_blank"><img src="https://github.com/digitalkaoz/flutter-timesheet/raw/master/assets/applestore.png" height="50"></a>
+<a href="https://apps.apple.com/us/app/timesheets-by-digitalkaoz/id1498314656" target="_blank"><img src="https://github.com/digitalkaoz/flutter-timesheet/raw/master/assets/applestore.png" height="50"></a>
 
 
 ## Features
