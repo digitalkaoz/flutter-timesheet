@@ -12,6 +12,7 @@ jobs:
     - uses: subosito/flutter-action@v1.1.1
       with:
         channel: 'stable'
+    - run: apt-get install genhtml
     - run: make install
     - run: make codegen
     - run: make icons
