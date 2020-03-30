@@ -68,27 +68,27 @@ abstract class ClientBase with Store {
   }
 
   @action
-  void addSheet(Timesheet timesheet) {
+  Future<dynamic> addSheet(Timesheet timesheet) async {
     timesheets.add(timesheet);
     _sortSheets();
 
-    storage.saveClient(this);
-    storage.saveTimesheet(timesheet);
+    await storage.saveClient(this);
+    await storage.saveTimesheet(timesheet);
   }
 
   @action
-  setName(String newName) {
+  Future<bool> setName(String newName) {
     name = newName;
 
-    storage.saveClient(this);
+    return storage.saveClient(this);
   }
 
   @action
-  void finishSheet(Timesheet timesheet) {
+  finishSheet(Timesheet timesheet) async {
     final sheet = timesheets.firstWhere((t) => t.id == timesheet.id);
 
     if (sheet != null) {
-      sheet.archive();
+      await sheet.archive();
       final ts = Timesheet.generate(storage);
       addSheet(ts);
       _sortSheets();

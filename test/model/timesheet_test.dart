@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:timesheet_flutter/model/time.dart';
 import 'package:timesheet_flutter/model/timesheet.dart';
 
@@ -64,13 +65,16 @@ void main() {
 
   group('adding/removing times', () {
     test('add time', () async {
-      final sheet = storage().emptySheet();
+      final s = storage();
+      final sheet = s.emptySheet();
+
+      when(s.saveTimesheet(sheet)).thenAnswer((_) => Future.value(true));
 
       expect(sheet.total, Duration());
 
-      sheet.editableTime = storage().robertTime();
+      sheet.setCurrentTime(storage().robertTime());
 
-      sheet.saveTime();
+      await sheet.saveTime();
 
       expect(sheet.start, DateTime(1981, 5, 25));
       expect(sheet.last, DateTime(1981, 5, 25));
@@ -81,7 +85,7 @@ void main() {
       sheet.archive();
 
       try {
-        sheet.saveTime();
+        await sheet.saveTime();
         fail("saving times should have failed");
       } catch (e) {}
     });
@@ -129,15 +133,18 @@ void main() {
     });
 
     test('newTime', () async {
-      final sheet = storage().sheet();
+      final s = storage();
+      final sheet = s.sheet();
       expect(sheet.total, Duration(hours: 3));
+
+      when(s.saveTimesheet(sheet)).thenAnswer((_) => Future.value(true));
 
       expect(sheet.isNewtime, true);
 
       sheet.setCurrentTime(sheet.times.first);
       expect(sheet.isNewtime, false);
 
-      sheet.saveTime();
+      await sheet.saveTime();
       expect(sheet.isNewtime, true);
       expect(sheet.total, Duration(hours: 3));
 
@@ -147,6 +154,24 @@ void main() {
         sheet.setCurrentTime(sheet.times.first);
         fail("editing times should have failed");
       } catch (e) {}
+    });
+
+    test('editTime', () async {
+      final s = storage();
+      final sheet = s.sheet();
+      expect(sheet.times.length, 2);
+
+      when(s.saveTimesheet(sheet)).thenAnswer((_) => Future.value(true));
+
+      sheet.setCurrentTime(sheet.times.first);
+      sheet.editableTime.description = "lolcat";
+      expect(sheet.isNewtime, false);
+
+      await sheet.saveTime();
+
+      expect(sheet.times.first.description, "lolcat");
+      expect(sheet.times.length, 2);
+      expect(sheet.isNewtime, true);
     });
   });
 

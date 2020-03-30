@@ -30,7 +30,7 @@ void main() {
       final client = storage().client();
       final sheet = client.timesheets.first;
 
-      client.finishSheet(sheet);
+      await client.finishSheet(sheet);
 
       expect(sheet.archived, true);
       expect(client.timesheets.first != sheet, true);

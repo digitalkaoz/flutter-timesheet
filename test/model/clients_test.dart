@@ -6,14 +6,17 @@ import '../test_storage.dart';
 
 void main() {
   test('current client', () async {
-    final c = Clients(storage());
-    final client = storage().client();
+    final s = storage();
+    final c = Clients(s);
+    final client = s.client();
+
+    when(s.saveClient(client)).thenAnswer((_) => Future.value(true));
 
     expect(c.current, null);
     expect(c.currentIndex, 0);
     expect(c.currentTitle, "Timesheet");
 
-    c.addClient(client);
+    await c.addClient(client);
 
     expect(c.current, client);
     expect(c.currentIndex, 0);
@@ -59,12 +62,16 @@ void main() {
     });
 
     test('remove', () async {
-      final c = Clients(storage());
-      final client = storage().client();
+      final s = storage();
+      final c = Clients(s);
+      final client = s.client();
+
       client.name = "bar";
 
-      final client2 = storage().client();
+      final client2 = s.client();
       client2.name = "foo";
+
+      when(s.deleteClient(client2)).thenAnswer((_) => Future.value(true));
 
       c.addClient(client);
       c.addClient(client2);

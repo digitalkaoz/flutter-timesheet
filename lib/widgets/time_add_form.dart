@@ -176,7 +176,7 @@ class TimeAddForm extends StatelessWidget {
             style: textTheme(context).copyWith(color: Colors.white),
           ),
           onPressed: () {
-            timesheet.setCurrentTime(Time());
+            timesheet.setCurrentTime(null);
             try {
               sheet.close();
             } catch (e) {}
@@ -186,8 +186,8 @@ class TimeAddForm extends StatelessWidget {
           padding: dense ? 16 : null,
           color: Colors.white,
           onPressed: time.valid
-              ? () {
-                  timesheet.saveTime();
+              ? () async {
+                  await timesheet.saveTime();
                   try {
                     sheet.close();
                   } catch (e) {}

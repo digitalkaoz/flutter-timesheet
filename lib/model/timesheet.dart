@@ -89,20 +89,20 @@ abstract class TimesheetBase with Store {
   }
 
   @action
-  removeTime(Time time) {
+  Future<bool> removeTime(Time time) {
     if (archived) {
       throw Exception('Timesheet already archived');
     }
     times.remove(time);
 
-    storage.saveTimesheet(this);
+    return storage.saveTimesheet(this);
   }
 
   @action
-  archive() {
+  Future<bool> archive() {
     archived = true;
 
-    storage.saveTimesheet(this);
+    return storage.saveTimesheet(this);
   }
 
   @action
@@ -111,7 +111,13 @@ abstract class TimesheetBase with Store {
       throw Exception('Timesheet already archived');
     }
 
-    editableTime = time;
+    if (time == null) {
+      oldTime = null;
+      editableTime = Time();
+    } else {
+      oldTime = time;
+      editableTime = Time.fromMap(time.toMap());
+    }
   }
 
   @action
@@ -120,13 +126,14 @@ abstract class TimesheetBase with Store {
   }
 
   @action
-  saveTime() {
+  Future<dynamic> saveTime() {
     if (archived) {
       throw Exception('Timesheet already archived');
     }
 
     if (isNewtime) {
       times.add(editableTime);
+      oldTime = null;
     } else {
       times.replaceRange(
         times.indexOf(oldTime),
@@ -138,7 +145,7 @@ abstract class TimesheetBase with Store {
 
     times.sort((a, b) => b.date.compareTo(a.date));
 
-    storage.saveTimesheet(this).then((value) => editableTime = Time());
+    return storage.saveTimesheet(this).then((value) => editableTime = Time());
   }
 
   @override

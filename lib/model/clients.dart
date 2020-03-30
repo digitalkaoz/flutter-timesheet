@@ -78,21 +78,21 @@ abstract class ClientsBase with Store {
   }
 
   @action
-  void addClient(Client client) {
+  Future<dynamic> addClient(Client client) {
     clients.add(client);
     setCurrent(client);
 
-    storage.saveClient(client);
+    return storage.saveClient(client);
   }
 
   @action
-  void removeClient(Client client) {
+  Future<dynamic> removeClient(Client client) {
     clients.remove(client);
     if (currentIndex != 0) {
       currentIndex = currentIndex - 1;
     }
 
-    storage.deleteClient(client).then((_) {
+    return storage.deleteClient(client).then((_) {
       if (clients.isNotEmpty) {
         storage.setCurrentClient(clients.elementAt(currentIndex));
       }

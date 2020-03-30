@@ -79,8 +79,7 @@ class TimesheetPanel {
   }
 
   _editTime(Time time, BuildContext context) {
-    client.currentTimesheet.setOldTime(time);
-    client.currentTimesheet.setCurrentTime(Time.fromMap(time.toMap()));
+    client.currentTimesheet.setCurrentTime(time);
     try {
       final PanelController sheet =
           Provider.of<PanelController>(context, listen: false);

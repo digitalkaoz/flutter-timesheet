@@ -59,10 +59,9 @@ void main() {
     test('remove on empty list', () async {
       final p = MockPrefs();
       final s = LocalStorage(p);
-      final c = storage().client();
+      final c = storage().emptyClient();
 
       when(p.getStringList('clients')).thenReturn([]);
-
       await s.deleteClient(c);
 
       verify(p.setStringList('clients', []));
@@ -71,7 +70,7 @@ void main() {
     test('remove', () async {
       final p = MockPrefs();
       final s = LocalStorage(p);
-      final c = storage().client();
+      final c = storage().emptyClient();
 
       when(p.getStringList('clients')).thenReturn([c.toJson()]);
 
@@ -83,11 +82,14 @@ void main() {
     test('remove unknown', () async {
       final p = MockPrefs();
       final s = LocalStorage(p);
-      final c = storage().client();
+      final c = storage().emptyClient();
+      final c2 = Client.generate(s);
 
+      when(p.remove('timesheet_${c2.timesheets.first.id}'))
+          .thenAnswer((_) => Future.value(true));
       when(p.getStringList('clients')).thenReturn([c.toJson()]);
 
-      await s.deleteClient(Client.generate(s));
+      await s.deleteClient(c2);
 
       verify(p.setStringList('clients', [c.toJson()]));
     });
