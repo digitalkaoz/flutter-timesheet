@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-Future<T> showAlertDialog<T>(
-    BuildContext context, Widget title, Widget content, List<Widget> actions) {
+Future<T> showAlertDialog<T>(@required BuildContext context,
+    @required Widget title, Widget content, @required List<Widget> actions) {
   switch (defaultTargetPlatform) {
     case TargetPlatform.iOS:
       return showCupertinoDialog<T>(
