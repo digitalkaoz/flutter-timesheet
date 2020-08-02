@@ -54,3 +54,26 @@ class _IndexScreenState extends State<IndexScreen> {
     );
   }
 }
+
+class Example extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return OrientationBuilder(
+      builder: (_, Orientation orientation) {
+        if (orientation == Orientation.landscape) {
+          return DeviceWidget(
+            phone: (_) => LandscapeMobile(),
+            tablet: (_) => LandscapeTablet(),
+            web: (_) => LandscapeDesktop(),
+          );
+        }
+
+        return DeviceWidget(
+          phone: (_) => PortraitMobile(),
+          tablet: (_) => PortraitTablet(),
+          web: (_) => PortraitTablet(),
+        );
+      },
+    );
+  }
+}

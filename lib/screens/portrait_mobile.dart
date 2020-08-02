@@ -7,6 +7,7 @@ import 'package:timesheet_flutter/services/theme.dart';
 import 'package:timesheet_flutter/widgets/app_bar.dart';
 import 'package:timesheet_flutter/widgets/bottom_sheet.dart';
 import 'package:timesheet_flutter/widgets/drawer.dart';
+import 'package:timesheet_flutter/widgets/gradient.dart';
 import 'package:timesheet_flutter/widgets/platform/button.dart';
 import 'package:timesheet_flutter/widgets/platform/scaffold.dart';
 import 'package:timesheet_flutter/widgets/time_add_form.dart';
@@ -23,17 +24,7 @@ class PortraitMobile extends StatelessWidget {
     return PlatformScaffold(
       navBar: NavBar(),
       drawer: ClientDrawer(),
-      child: Container(
-        //width: double.infinity,
-        //height: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.bottomLeft,
-            stops: [0.27, 0.7],
-            end: Alignment.topRight,
-            colors: [gradientStart(context), gradientEnd(context)],
-          ),
-        ),
+      child: GradientContainer(
         child: Observer(
           builder: (_) => clients.hasClients
               ? SlidingBottomSheet(

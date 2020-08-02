@@ -52,7 +52,9 @@ class _PlatformAppState extends State<PlatformApp> with WidgetsBindingObserver {
             DefaultWidgetsLocalizations.delegate,
           ],
           title: PlatformApp.APP_TITLE,
-          theme: brightness == Brightness.dark ? iosthemeDark(_) : ios_theme(_),
+          theme: brightness == Brightness.dark
+              ? iosThemeDark(_)
+              : iosThemeLight(_),
           //theme: iosthemeDark(),
           home: widget.home,
           initialRoute: widget.home == null ? PlatformApp.INITIAL_ROUTE : null,
@@ -65,7 +67,9 @@ class _PlatformAppState extends State<PlatformApp> with WidgetsBindingObserver {
         }
         return MaterialApp(
           title: PlatformApp.APP_TITLE,
-          theme: brightness == Brightness.dark ? themeDark(_) : theme(_),
+          theme: brightness == Brightness.dark
+              ? androidThemeDark(_)
+              : androidThemeLight(_),
           //theme: themeDark(),
           home: widget.home,
           initialRoute: widget.home == null ? PlatformApp.INITIAL_ROUTE : null,

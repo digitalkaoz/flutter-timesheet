@@ -48,7 +48,7 @@ final textThemeInverted = (BuildContext context) => GoogleFonts.signika(
           fontSize: 15),
     );
 
-ThemeData theme(BuildContext context) => ThemeData(
+ThemeData androidThemeLight(BuildContext context) => ThemeData(
       primaryColor: darkColor,
       accentColor: accentColor,
       iconTheme: IconThemeData(color: darkColor),
@@ -73,7 +73,7 @@ ThemeData theme(BuildContext context) => ThemeData(
       ),
     );
 
-ThemeData themeDark(BuildContext context) => ThemeData.dark().copyWith(
+ThemeData androidThemeDark(BuildContext context) => ThemeData.dark().copyWith(
       accentColor: accentDark,
       iconTheme: IconThemeData(color: accentDark),
       brightness: Brightness.dark,
@@ -95,16 +95,18 @@ ThemeData themeDark(BuildContext context) => ThemeData.dark().copyWith(
       )),
     );
 
-c.CupertinoThemeData ios_theme(BuildContext context) =>
-    MaterialBasedCupertinoThemeData(materialTheme: theme(context)).copyWith(
+c.CupertinoThemeData iosThemeLight(BuildContext context) =>
+    MaterialBasedCupertinoThemeData(materialTheme: androidThemeLight(context))
+        .copyWith(
       brightness: Brightness.light,
       barBackgroundColor: darkColor,
       primaryContrastingColor: accentColor,
       scaffoldBackgroundColor: Colors.grey[300],
     );
 
-c.CupertinoThemeData iosthemeDark(BuildContext context) =>
-    MaterialBasedCupertinoThemeData(materialTheme: themeDark(context)).copyWith(
+c.CupertinoThemeData iosThemeDark(BuildContext context) =>
+    MaterialBasedCupertinoThemeData(materialTheme: androidThemeDark(context))
+        .copyWith(
       barBackgroundColor: Colors.grey[900],
       brightness: Brightness.dark,
       primaryContrastingColor: accentDark,

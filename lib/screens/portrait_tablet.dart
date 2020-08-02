@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:timesheet_flutter/model/clients.dart';
 import 'package:timesheet_flutter/widgets/app_bar.dart';
 import 'package:timesheet_flutter/widgets/drawer.dart';
+import 'package:timesheet_flutter/widgets/gradient.dart';
 import 'package:timesheet_flutter/widgets/platform/scaffold.dart';
 import 'package:timesheet_flutter/widgets/time_add_form.dart';
 
@@ -19,15 +20,7 @@ class PortraitTablet extends StatelessWidget {
     return PlatformScaffold(
       navBar: NavBar(),
       drawer: ClientDrawer(),
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.bottomLeft,
-            stops: [0.27, 0.7],
-            end: Alignment.topRight,
-            colors: [gradientStart(context), gradientEnd(context)],
-          ),
-        ),
+      child: GradientContainer(
         child: Padding(
           padding: const EdgeInsets.only(
               top: kToolbarHeight + 16, left: 16, right: 16),
